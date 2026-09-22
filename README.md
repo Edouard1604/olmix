@@ -24,6 +24,7 @@ données distante.
 9. [Robustesse : file d'attente, brouillon, sauvegardes](#9-robustesse--file-dattente-brouillon-sauvegardes)
 10. [Dépannage](#10-dépannage)
 11. [Organisation du code](#11-organisation-du-code)
+12. [Version web de démonstration](#12-version-web-de-démonstration)
 
 ---
 
@@ -124,10 +125,37 @@ du mode administrateur.
 
 ## 4. Fabriquer l'exécutable `.exe`
 
+> **Node.js n'est nécessaire que pour fabriquer l'exécutable, jamais pour l'utiliser.**
+> L'installeur produit embarque son propre moteur : le poste de l'atelier qui l'installe
+> n'a besoin ni de Node.js, ni de droits administrateur.
+
+### Sans rien installer : laisser GitHub le fabriquer
+
+C'est la voie à suivre lorsqu'on ne peut pas installer Node.js sur son poste. La
+fabrication a lieu sur une machine Windows fournie par GitHub
+([`.github/workflows/executable-windows.yml`](.github/workflows/executable-windows.yml)).
+
+1. Sur le dépôt GitHub, onglet **Actions**.
+2. Dans la colonne de gauche, **Executable Windows**.
+3. Bouton **Run workflow**, choisir la branche, confirmer.
+4. Attendre la coche verte (compter 5 à 10 minutes).
+5. Cliquer sur l'exécution terminée, puis, tout en bas, télécharger l'artefact
+   **Olmix-Saisie-Production-Windows**.
+6. **Décompresser le `.zip` obtenu** — GitHub distribue toujours les artefacts sous
+   cette forme — puis lancer le `.exe`.
+
+Pour obtenir les `.exe` en téléchargement direct, sans `.zip` : pousser une étiquette de
+version (`git tag v1.0.0 && git push origin v1.0.0`). Le même workflow les attache alors
+à une **Release**, d'où ils se téléchargent d'un clic.
+
+### En local, depuis Windows
+
 ```bash
 npm run dist              # installeur NSIS + version portable, dans release/
 npm run dist:portable     # version portable seule
 ```
+
+Ou, sans ligne de commande, double-clic sur `Creer-executable.bat`.
 
 La compilation doit être lancée **depuis Windows** (ou depuis Linux/macOS avec Wine
 installé) : `electron-builder` a besoin des outils Windows pour signer et empaqueter
@@ -477,6 +505,7 @@ Creer-executable.bat         Double-clic : fabrique l'installeur .exe
 config/produits.example.json Configuration d'exemple (2 produits)
 exemples/                    Classeur Excel d'exemple pré-rempli
 scripts/                     Build du processus principal, test e2e, générateurs
+.github/workflows/           Fabrication de l'exécutable Windows par GitHub
 ```
 
 Les règles de saisie de `shared/validation.ts` sont appliquées **deux fois** : par
@@ -499,3 +528,59 @@ l'application et la parcourt comme le ferait un opérateur.
 | *Valeur hors plage : alerte orange et commentaire exigé* | *Récapitulatif, modifiable étape par étape* |
 | ![Confirmation](captures/7-confirmation.png) | ![Administration](captures/9-admin-produits.png) |
 | *Confirmation horodatée et état de l'export* | *Mode administrateur, thème sombre* |
+
+---
+
+## 12. Version web de démonstration
+
+L'application peut aussi être publiée sur le web, pour être **montrée** sans rien
+installer : une URL suffit, et plusieurs personnes peuvent la parcourir en parallèle.
+
+> **C'est une vitrine, pas le poste de production.** Les cycles validés restent dans le
+> navigateur du visiteur, aucun classeur Excel n'est alimenté, et rien n'est partagé
+> entre visiteurs. Un bandeau le rappelle à l'écran. La version installée en atelier
+> reste la seule qui écrive dans le classeur et fonctionne hors connexion.
+
+### Comment cela fonctionne
+
+Dans l'application de bureau, `electron/preload.ts` pose `window.olmix` et toutes les
+opérations passent par le processus principal, seul à toucher le disque. Dans un
+navigateur ce pont n'existe pas : [`src/lib/apiWeb.ts`](src/lib/apiWeb.ts) réimplémente
+la même surface d'API sur le stockage local. `src/main.tsx` l'installe uniquement
+lorsque `window.olmix` est absent — l'application de bureau n'est donc pas affectée.
+
+Les règles métier, elles, ne sont pas simulées : validation de la configuration,
+contrôle des réponses et construction des cycles viennent de `shared/`, exactement comme
+sur le poste réel. Ce que l'on essaie en ligne se comporte comme ce que l'atelier
+utilisera.
+
+| Fonctionne en ligne | Ne fonctionne pas en ligne |
+|---|---|
+| Parcours opérateur complet, des 5 écrans | Écriture du classeur Excel cumulatif |
+| Champs obligatoires, bornes min/max, commentaire exigé | File d'attente et reprise automatique |
+| Cartographie du process, thèmes clair et sombre | Sauvegardes quotidiennes |
+| Mode administrateur, édition des produits et questions | Ouverture de dossiers du poste |
+| Brouillon, reprise d'une saisie interrompue | Fonctionnement hors connexion |
+
+### Déployer sur Vercel
+
+Aucun outil local n'est nécessaire : Vercel compile lui-même depuis GitHub.
+
+1. Sur [vercel.com](https://vercel.com), se connecter **avec son compte GitHub**.
+2. **Add New… → Project**, puis importer le dépôt `olmix`.
+3. Laisser les réglages proposés : ils sont lus dans
+   [`vercel.json`](vercel.json) (commande `npm run build:web`, sortie `dist/renderer`).
+4. **Deploy**, puis attendre une à deux minutes.
+
+> **Vérifier la branche déployée.** Vercel publie la *branche par défaut* du dépôt, pas
+> celle sur laquelle on vient de travailler. Si la page affiche une erreur alors que la
+> compilation réussit en local, c'est presque toujours cela : Vercel déploie une branche
+> dépourvue de `vercel.json`, cherche le résultat dans `dist/` au lieu de
+> `dist/renderer`, et ne trouve rien. Cela se règle dans **Settings → Git → Production
+> Branch**, ou en changeant la branche par défaut du dépôt sur GitHub.
+
+L'URL obtenue (`https://…vercel.app`) est publique et se partage telle quelle. Chaque
+poussée sur la branche redéploie automatiquement.
+
+Pour compiler la vitrine en local, si Node.js est disponible : `npm run build:web`,
+puis servir le dossier `dist/renderer`.
