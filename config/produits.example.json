@@ -37,9 +37,18 @@
               "type": "liste",
               "obligatoire": true,
               "options": [
-                { "valeur": "ALG_OUEST", "libelle": "Algues de l'Ouest" },
-                { "valeur": "MARIN_BZH", "libelle": "Marin BZH" },
-                { "valeur": "COOP_BREHAN", "libelle": "Coopérative de Bréhan" }
+                {
+                  "valeur": "ALG_OUEST",
+                  "libelle": "Algues de l'Ouest"
+                },
+                {
+                  "valeur": "MARIN_BZH",
+                  "libelle": "Marin BZH"
+                },
+                {
+                  "valeur": "COOP_BREHAN",
+                  "libelle": "Coopérative de Bréhan"
+                }
               ]
             },
             {
@@ -88,9 +97,18 @@
               "type": "liste",
               "obligatoire": true,
               "options": [
-                { "valeur": "0_2MM", "libelle": "0 à 2 mm" },
-                { "valeur": "2_4MM", "libelle": "2 à 4 mm" },
-                { "valeur": "4_6MM", "libelle": "4 à 6 mm" }
+                {
+                  "valeur": "0_2MM",
+                  "libelle": "0 à 2 mm"
+                },
+                {
+                  "valeur": "2_4MM",
+                  "libelle": "2 à 4 mm"
+                },
+                {
+                  "valeur": "4_6MM",
+                  "libelle": "4 à 6 mm"
+                }
               ]
             },
             {
@@ -123,10 +141,22 @@
               "type": "choix_multiple",
               "obligatoire": false,
               "options": [
-                { "valeur": "BOURRAGE", "libelle": "Bourrage" },
-                { "valeur": "SURCHAUFFE", "libelle": "Surchauffe" },
-                { "valeur": "VIBRATION", "libelle": "Vibrations anormales" },
-                { "valeur": "CORPS_ETRANGER", "libelle": "Corps étranger" }
+                {
+                  "valeur": "BOURRAGE",
+                  "libelle": "Bourrage"
+                },
+                {
+                  "valeur": "SURCHAUFFE",
+                  "libelle": "Surchauffe"
+                },
+                {
+                  "valeur": "VIBRATION",
+                  "libelle": "Vibrations anormales"
+                },
+                {
+                  "valeur": "CORPS_ETRANGER",
+                  "libelle": "Corps étranger"
+                }
               ]
             }
           ]
@@ -173,10 +203,22 @@
               "type": "choix_multiple",
               "obligatoire": false,
               "options": [
-                { "valeur": "MINERAUX", "libelle": "Complexe minéral" },
-                { "valeur": "VITAMINES", "libelle": "Prémix vitaminé" },
-                { "valeur": "LIANT", "libelle": "Liant" },
-                { "valeur": "ANTIOXYDANT", "libelle": "Antioxydant" }
+                {
+                  "valeur": "MINERAUX",
+                  "libelle": "Complexe minéral"
+                },
+                {
+                  "valeur": "VITAMINES",
+                  "libelle": "Prémix vitaminé"
+                },
+                {
+                  "valeur": "LIANT",
+                  "libelle": "Liant"
+                },
+                {
+                  "valeur": "ANTIOXYDANT",
+                  "libelle": "Antioxydant"
+                }
               ]
             },
             {
@@ -251,9 +293,18 @@
               "type": "liste",
               "obligatoire": true,
               "options": [
-                { "valeur": "SAC_10", "libelle": "Sac 10 kg" },
-                { "valeur": "SAC_25", "libelle": "Sac 25 kg" },
-                { "valeur": "BIGBAG_600", "libelle": "Big-bag 600 kg" }
+                {
+                  "valeur": "SAC_10",
+                  "libelle": "Sac 10 kg"
+                },
+                {
+                  "valeur": "SAC_25",
+                  "libelle": "Sac 25 kg"
+                },
+                {
+                  "valeur": "BIGBAG_600",
+                  "libelle": "Big-bag 600 kg"
+                }
               ]
             },
             {
@@ -333,8 +384,14 @@
               "type": "liste",
               "obligatoire": true,
               "options": [
-                { "valeur": "ALG_OUEST", "libelle": "Algues de l'Ouest" },
-                { "valeur": "ATLANTIQUE", "libelle": "Atlantique Marine" }
+                {
+                  "valeur": "ALG_OUEST",
+                  "libelle": "Algues de l'Ouest"
+                },
+                {
+                  "valeur": "ATLANTIQUE",
+                  "libelle": "Atlantique Marine"
+                }
               ]
             },
             {
@@ -470,8 +527,14 @@
               "type": "liste",
               "obligatoire": true,
               "options": [
-                { "valeur": "SACHET_5", "libelle": "Sachet 5 kg" },
-                { "valeur": "SAC_20", "libelle": "Sac 20 kg" }
+                {
+                  "valeur": "SACHET_5",
+                  "libelle": "Sachet 5 kg"
+                },
+                {
+                  "valeur": "SAC_20",
+                  "libelle": "Sac 20 kg"
+                }
               ]
             },
             {
@@ -507,6 +570,243 @@
               "id": "controle_metaux_ok",
               "colonne": "Controle_Metaux_OK",
               "libelle": "Détecteur de métaux : test conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            },
+            {
+              "id": "observations",
+              "colonne": "Observations",
+              "libelle": "Observations de fin de cycle",
+              "type": "textarea",
+              "obligatoire": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edouard_vasse",
+      "nom": "Edouard Vasse",
+      "description": "Produit de démonstration — à adapter ou à supprimer",
+      "couleur": "#3FA7A0",
+      "icone": "🧪",
+      "actif": true,
+      "etapes": [
+        {
+          "id": "reception",
+          "nom": "Réception matières premières",
+          "description": "Contrôle et pesée des matières entrantes",
+          "icone": "📦",
+          "questions": [
+            {
+              "id": "lot_matiere_premiere",
+              "colonne": "Lot_Matiere_Premiere",
+              "libelle": "Numéro de lot de la matière première",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "date_reception",
+              "colonne": "Date_Reception",
+              "libelle": "Date de réception",
+              "type": "date",
+              "obligatoire": true
+            },
+            {
+              "id": "quantite_recue",
+              "colonne": "Quantite_Recue_kg",
+              "libelle": "Quantité reçue",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 2000,
+              "decimales": 1
+            },
+            {
+              "id": "controle_visuel_ok",
+              "colonne": "Controle_Visuel_OK",
+              "libelle": "Contrôle visuel conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            }
+          ]
+        },
+        {
+          "id": "preparation",
+          "nom": "Préparation",
+          "description": "Dosage et mélange selon recette",
+          "icone": "🌀",
+          "questions": [
+            {
+              "id": "numero_recette",
+              "colonne": "Numero_Recette",
+              "libelle": "Numéro de recette",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "masse_totale_melange",
+              "colonne": "Masse_Totale_Melange_kg",
+              "libelle": "Masse totale du mélange",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 2500,
+              "decimales": 1
+            },
+            {
+              "id": "duree_melange",
+              "colonne": "Duree_Melange_min",
+              "libelle": "Durée de mélange",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "min",
+              "min": 3,
+              "max": 45,
+              "decimales": 0
+            },
+            {
+              "id": "additifs_ajoutes",
+              "colonne": "Additifs_Ajoutes",
+              "libelle": "Additifs ajoutés",
+              "type": "choix_multiple",
+              "obligatoire": false,
+              "options": [
+                {
+                  "valeur": "MINERAUX",
+                  "libelle": "Complexe minéral"
+                },
+                {
+                  "valeur": "VITAMINES",
+                  "libelle": "Prémix vitaminé"
+                },
+                {
+                  "valeur": "LIANT",
+                  "libelle": "Liant"
+                }
+              ]
+            },
+            {
+              "id": "indice_qualite",
+              "colonne": "Indice_Qualite",
+              "libelle": "Indice qualité relevé en fin de préparation",
+              "aide": "Note de 0 à 100 donnée par le banc de contrôle",
+              "type": "nombre",
+              "obligatoire": false,
+              "min": 0,
+              "max": 100,
+              "decimales": 0
+            }
+          ]
+        },
+        {
+          "id": "sechage",
+          "nom": "Séchage",
+          "description": "Passage tour de séchage",
+          "icone": "🔥",
+          "questions": [
+            {
+              "id": "temperature_sechage",
+              "colonne": "Temperature_Sechage_C",
+              "libelle": "Température de séchage",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "°C",
+              "min": 55,
+              "max": 90,
+              "decimales": 1
+            },
+            {
+              "id": "duree_sechage",
+              "colonne": "Duree_Sechage_min",
+              "libelle": "Durée de séchage",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "min",
+              "min": 20,
+              "max": 180,
+              "decimales": 0
+            },
+            {
+              "id": "humidite_sortie",
+              "colonne": "Humidite_Sortie_Pct",
+              "libelle": "Humidité en sortie",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "%",
+              "min": 4,
+              "max": 9,
+              "decimales": 2
+            },
+            {
+              "id": "heure_fin_sechage",
+              "colonne": "Heure_Fin_Sechage",
+              "libelle": "Heure de fin de séchage",
+              "type": "heure",
+              "obligatoire": false
+            }
+          ]
+        },
+        {
+          "id": "conditionnement",
+          "nom": "Conditionnement",
+          "description": "Ensachage et étiquetage",
+          "icone": "🏷️",
+          "questions": [
+            {
+              "id": "format_sac",
+              "colonne": "Format_Sac",
+              "libelle": "Format de conditionnement",
+              "type": "liste",
+              "obligatoire": true,
+              "options": [
+                {
+                  "valeur": "SAC_10",
+                  "libelle": "Sac 10 kg"
+                },
+                {
+                  "valeur": "SAC_25",
+                  "libelle": "Sac 25 kg"
+                }
+              ]
+            },
+            {
+              "id": "nombre_sacs",
+              "colonne": "Nombre_Sacs",
+              "libelle": "Nombre d'unités conditionnées",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "u",
+              "min": 1,
+              "max": 400,
+              "decimales": 0
+            },
+            {
+              "id": "masse_nette_produite",
+              "colonne": "Masse_Nette_Produite_kg",
+              "libelle": "Masse nette produite",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 2500,
+              "decimales": 1
+            },
+            {
+              "id": "numero_lot_sortie",
+              "colonne": "Numero_Lot_Sortie",
+              "libelle": "Numéro de lot de sortie",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "etiquetage_conforme",
+              "colonne": "Etiquetage_Conforme",
+              "libelle": "Étiquetage vérifié et conforme ?",
               "type": "booleen",
               "obligatoire": true,
               "defaut": true

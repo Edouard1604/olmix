@@ -186,8 +186,9 @@ Deux voies équivalentes, qui écrivent le même fichier :
   bouton « Recharger » du bandeau d'erreur permet aussi de le faire à chaud).
 
 Le fichier d'exemple livré est [`config/produits.example.json`](config/produits.example.json) :
-2 produits fictifs, 5 et 4 étapes (réception matières premières, broyage, mélange,
-séchage, conditionnement).
+3 produits fictifs de 4 à 5 étapes (réception matières premières, broyage, mélange,
+séchage, conditionnement). Le troisième, **Edouard Vasse**, est un produit de
+démonstration : supprimez-le, ou renommez-le pour en faire votre premier vrai produit.
 
 ### Structure du JSON
 
@@ -281,7 +282,7 @@ comparer sur un même indicateur.
 Un **seul fichier**, enrichi cycle après cycle. Emplacement configurable dans le mode
 administrateur : dossier local, partage réseau, OneDrive ou SharePoint synchronisé.
 
-Un exemple pré-rempli de 7 cycles fictifs est livré :
+Un exemple pré-rempli de 8 cycles fictifs est livré :
 [`exemples/Saisies_Production_exemple.xlsx`](exemples/Saisies_Production_exemple.xlsx).
 
 ### Trois feuilles, trois Tableaux nommés

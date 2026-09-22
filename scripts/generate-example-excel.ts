@@ -153,31 +153,32 @@ async function principal(): Promise<void> {
   for (const p of validation.problemes) console.warn(` ! [${p.niveau}] ${p.message}`);
 
   const produits = validation.configuration.produits;
-  const granules = produits[0]!;
-  const poudre = produits[1]!;
+  const premier = produits[0]!;
 
   fs.rmSync(sortie, { force: true });
   fs.mkdirSync(path.dirname(sortie), { recursive: true });
 
   // Passe 1 : creation du classeur avec un seul produit.
   const passe1 = [
-    fabriquerCycle(granules, 15, 6, 0),
-    fabriquerCycle(granules, 15, 14, 1),
-    fabriquerCycle(granules, 16, 6, 2),
+    fabriquerCycle(premier, 15, 6, 0),
+    fabriquerCycle(premier, 15, 14, 1),
+    fabriquerCycle(premier, 16, 6, 2),
   ];
   const r1 = await ajouterCyclesAuClasseur(passe1, produits, reglages);
   console.log(`Passe 1 : ${r1.ajoutes.length} cycle(s) ajoute(s).`);
 
-  // Passe 2 : second produit -> de NOUVELLES colonnes apparaissent a droite,
-  // sans toucher aux lignes deja ecrites.
-  const passe2 = [
-    fabriquerCycle(poudre, 16, 13, 3),
-    fabriquerCycle(poudre, 17, 6, 4),
-    fabriquerCycle(granules, 17, 14, 5),
-    fabriquerCycle(poudre, 18, 6, 6),
-  ];
+  // Passe 2 : les autres produits -> de NOUVELLES colonnes apparaissent a
+  // droite, sans toucher aux lignes deja ecrites.
+  let index = 3;
+  let jour = 16;
+  const passe2 = [fabriquerCycle(premier, 17, 14, index += 1)];
+  for (const produit of produits.slice(1)) {
+    passe2.push(fabriquerCycle(produit, jour, 13, index += 1));
+    passe2.push(fabriquerCycle(produit, jour + 1, 6, index += 1));
+    jour += 1;
+  }
   const r2 = await ajouterCyclesAuClasseur(passe2, produits, reglages);
-  console.log(`Passe 2 : ${r2.ajoutes.length} cycle(s) ajoute(s).`);
+  console.log(`Passe 2 : ${r2.ajoutes.length} cycle(s) ajoute(s) sur ${produits.length - 1} autre(s) produit(s).`);
 
   // Passe 3 : on rejoue la passe 1 pour verifier l'absence de doublon.
   const r3 = await ajouterCyclesAuClasseur(passe1, produits, reglages);
