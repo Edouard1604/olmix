@@ -24,6 +24,7 @@ données distante.
 9. [Robustesse : file d'attente, brouillon, sauvegardes](#9-robustesse--file-dattente-brouillon-sauvegardes)
 10. [Dépannage](#10-dépannage)
 11. [Organisation du code](#11-organisation-du-code)
+12. [Version web de démonstration](#12-version-web-de-démonstration)
 
 ---
 
@@ -526,3 +527,52 @@ l'application et la parcourt comme le ferait un opérateur.
 | *Valeur hors plage : alerte orange et commentaire exigé* | *Récapitulatif, modifiable étape par étape* |
 | ![Confirmation](captures/7-confirmation.png) | ![Administration](captures/9-admin-produits.png) |
 | *Confirmation horodatée et état de l'export* | *Mode administrateur, thème sombre* |
+
+---
+
+## 12. Version web de démonstration
+
+L'application peut aussi être publiée sur le web, pour être **montrée** sans rien
+installer : une URL suffit, et plusieurs personnes peuvent la parcourir en parallèle.
+
+> **C'est une vitrine, pas le poste de production.** Les cycles validés restent dans le
+> navigateur du visiteur, aucun classeur Excel n'est alimenté, et rien n'est partagé
+> entre visiteurs. Un bandeau le rappelle à l'écran. La version installée en atelier
+> reste la seule qui écrive dans le classeur et fonctionne hors connexion.
+
+### Comment cela fonctionne
+
+Dans l'application de bureau, `electron/preload.ts` pose `window.olmix` et toutes les
+opérations passent par le processus principal, seul à toucher le disque. Dans un
+navigateur ce pont n'existe pas : [`src/lib/apiWeb.ts`](src/lib/apiWeb.ts) réimplémente
+la même surface d'API sur le stockage local. `src/main.tsx` l'installe uniquement
+lorsque `window.olmix` est absent — l'application de bureau n'est donc pas affectée.
+
+Les règles métier, elles, ne sont pas simulées : validation de la configuration,
+contrôle des réponses et construction des cycles viennent de `shared/`, exactement comme
+sur le poste réel. Ce que l'on essaie en ligne se comporte comme ce que l'atelier
+utilisera.
+
+| Fonctionne en ligne | Ne fonctionne pas en ligne |
+|---|---|
+| Parcours opérateur complet, des 5 écrans | Écriture du classeur Excel cumulatif |
+| Champs obligatoires, bornes min/max, commentaire exigé | File d'attente et reprise automatique |
+| Cartographie du process, thèmes clair et sombre | Sauvegardes quotidiennes |
+| Mode administrateur, édition des produits et questions | Ouverture de dossiers du poste |
+| Brouillon, reprise d'une saisie interrompue | Fonctionnement hors connexion |
+
+### Déployer sur Vercel
+
+Aucun outil local n'est nécessaire : Vercel compile lui-même depuis GitHub.
+
+1. Sur [vercel.com](https://vercel.com), se connecter **avec son compte GitHub**.
+2. **Add New… → Project**, puis importer le dépôt `olmix`.
+3. Laisser les réglages proposés : ils sont lus dans
+   [`vercel.json`](vercel.json) (commande `npm run build:web`, sortie `dist/renderer`).
+4. **Deploy**, puis attendre une à deux minutes.
+
+L'URL obtenue (`https://…vercel.app`) est publique et se partage telle quelle. Chaque
+poussée sur la branche redéploie automatiquement.
+
+Pour compiler la vitrine en local, si Node.js est disponible : `npm run build:web`,
+puis servir le dossier `dist/renderer`.
