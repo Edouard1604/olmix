@@ -1,0 +1,526 @@
+{
+  "version": 1,
+  "produits": [
+    {
+      "id": "granules_nutri_algue",
+      "nom": "Granulés Nutri-Algue",
+      "description": "Granulés séchés pour alimentation animale — ligne 1",
+      "couleur": "#1F8A70",
+      "icone": "🌿",
+      "actif": true,
+      "etapes": [
+        {
+          "id": "reception",
+          "nom": "Réception matières premières",
+          "description": "Contrôle et pesée des matières entrantes",
+          "icone": "📦",
+          "questions": [
+            {
+              "id": "lot_matiere_premiere",
+              "colonne": "Lot_Matiere_Premiere",
+              "libelle": "Numéro de lot de la matière première",
+              "aide": "Recopier l'étiquette du big-bag",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "date_reception",
+              "colonne": "Date_Reception",
+              "libelle": "Date de réception",
+              "type": "date",
+              "obligatoire": true
+            },
+            {
+              "id": "fournisseur",
+              "colonne": "Fournisseur",
+              "libelle": "Fournisseur",
+              "type": "liste",
+              "obligatoire": true,
+              "options": [
+                { "valeur": "ALG_OUEST", "libelle": "Algues de l'Ouest" },
+                { "valeur": "MARIN_BZH", "libelle": "Marin BZH" },
+                { "valeur": "COOP_BREHAN", "libelle": "Coopérative de Bréhan" }
+              ]
+            },
+            {
+              "id": "quantite_recue",
+              "colonne": "Quantite_Recue_kg",
+              "libelle": "Quantité reçue",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 5000,
+              "decimales": 1
+            },
+            {
+              "id": "temperature_reception",
+              "colonne": "Temperature_Reception_C",
+              "libelle": "Température à la réception",
+              "aide": "Sonde à cœur du big-bag",
+              "type": "nombre",
+              "obligatoire": false,
+              "unite": "°C",
+              "min": 0,
+              "max": 25,
+              "decimales": 1
+            },
+            {
+              "id": "controle_visuel_ok",
+              "colonne": "Controle_Visuel_OK",
+              "libelle": "Contrôle visuel conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            }
+          ]
+        },
+        {
+          "id": "broyage",
+          "nom": "Broyage",
+          "description": "Réduction granulométrique",
+          "icone": "⚙️",
+          "questions": [
+            {
+              "id": "granulometrie_cible",
+              "colonne": "Granulometrie_Cible",
+              "libelle": "Granulométrie cible",
+              "type": "liste",
+              "obligatoire": true,
+              "options": [
+                { "valeur": "0_2MM", "libelle": "0 à 2 mm" },
+                { "valeur": "2_4MM", "libelle": "2 à 4 mm" },
+                { "valeur": "4_6MM", "libelle": "4 à 6 mm" }
+              ]
+            },
+            {
+              "id": "duree_broyage",
+              "colonne": "Duree_Broyage_min",
+              "libelle": "Durée de broyage",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "min",
+              "min": 5,
+              "max": 120,
+              "decimales": 0
+            },
+            {
+              "id": "intensite_moteur",
+              "colonne": "Intensite_Moteur_A",
+              "libelle": "Intensité moteur moyenne",
+              "aide": "Lecture sur l'afficheur du variateur",
+              "type": "nombre",
+              "obligatoire": false,
+              "unite": "A",
+              "min": 8,
+              "max": 22,
+              "decimales": 1
+            },
+            {
+              "id": "incidents_broyage",
+              "colonne": "Incidents_Broyage",
+              "libelle": "Incidents rencontrés",
+              "type": "choix_multiple",
+              "obligatoire": false,
+              "options": [
+                { "valeur": "BOURRAGE", "libelle": "Bourrage" },
+                { "valeur": "SURCHAUFFE", "libelle": "Surchauffe" },
+                { "valeur": "VIBRATION", "libelle": "Vibrations anormales" },
+                { "valeur": "CORPS_ETRANGER", "libelle": "Corps étranger" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "melange",
+          "nom": "Mélange",
+          "description": "Incorporation des additifs selon recette",
+          "icone": "🌀",
+          "questions": [
+            {
+              "id": "numero_recette",
+              "colonne": "Numero_Recette",
+              "libelle": "Numéro de recette",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "masse_totale_melange",
+              "colonne": "Masse_Totale_Melange_kg",
+              "libelle": "Masse totale du mélange",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 6000,
+              "decimales": 1
+            },
+            {
+              "id": "duree_melange",
+              "colonne": "Duree_Melange_min",
+              "libelle": "Durée de mélange",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "min",
+              "min": 3,
+              "max": 60,
+              "decimales": 0
+            },
+            {
+              "id": "additifs_ajoutes",
+              "colonne": "Additifs_Ajoutes",
+              "libelle": "Additifs ajoutés",
+              "type": "choix_multiple",
+              "obligatoire": false,
+              "options": [
+                { "valeur": "MINERAUX", "libelle": "Complexe minéral" },
+                { "valeur": "VITAMINES", "libelle": "Prémix vitaminé" },
+                { "valeur": "LIANT", "libelle": "Liant" },
+                { "valeur": "ANTIOXYDANT", "libelle": "Antioxydant" }
+              ]
+            },
+            {
+              "id": "homogeneite_conforme",
+              "colonne": "Homogeneite_Conforme",
+              "libelle": "Homogénéité conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            }
+          ]
+        },
+        {
+          "id": "sechage",
+          "nom": "Séchage",
+          "description": "Passage tour de séchage",
+          "icone": "🔥",
+          "questions": [
+            {
+              "id": "temperature_sechage",
+              "colonne": "Temperature_Sechage_C",
+              "libelle": "Température de séchage",
+              "aide": "Consigne moyenne relevée sur le cycle",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "°C",
+              "min": 60,
+              "max": 95,
+              "decimales": 1
+            },
+            {
+              "id": "duree_sechage",
+              "colonne": "Duree_Sechage_min",
+              "libelle": "Durée de séchage",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "min",
+              "min": 20,
+              "max": 240,
+              "decimales": 0
+            },
+            {
+              "id": "humidite_sortie",
+              "colonne": "Humidite_Sortie_Pct",
+              "libelle": "Humidité en sortie",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "%",
+              "min": 4,
+              "max": 10,
+              "decimales": 2
+            },
+            {
+              "id": "heure_fin_sechage",
+              "colonne": "Heure_Fin_Sechage",
+              "libelle": "Heure de fin de séchage",
+              "type": "heure",
+              "obligatoire": false
+            }
+          ]
+        },
+        {
+          "id": "conditionnement",
+          "nom": "Conditionnement",
+          "description": "Ensachage, étiquetage et palettisation",
+          "icone": "🏷️",
+          "questions": [
+            {
+              "id": "format_sac",
+              "colonne": "Format_Sac",
+              "libelle": "Format de conditionnement",
+              "type": "liste",
+              "obligatoire": true,
+              "options": [
+                { "valeur": "SAC_10", "libelle": "Sac 10 kg" },
+                { "valeur": "SAC_25", "libelle": "Sac 25 kg" },
+                { "valeur": "BIGBAG_600", "libelle": "Big-bag 600 kg" }
+              ]
+            },
+            {
+              "id": "nombre_sacs",
+              "colonne": "Nombre_Sacs",
+              "libelle": "Nombre d'unités conditionnées",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "u",
+              "min": 1,
+              "max": 500,
+              "decimales": 0
+            },
+            {
+              "id": "masse_nette_produite",
+              "colonne": "Masse_Nette_Produite_kg",
+              "libelle": "Masse nette produite",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 6000,
+              "decimales": 1
+            },
+            {
+              "id": "numero_lot_sortie",
+              "colonne": "Numero_Lot_Sortie",
+              "libelle": "Numéro de lot de sortie",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "etiquetage_conforme",
+              "colonne": "Etiquetage_Conforme",
+              "libelle": "Étiquetage vérifié et conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            },
+            {
+              "id": "observations",
+              "colonne": "Observations",
+              "libelle": "Observations de fin de cycle",
+              "aide": "Tout élément utile pour l'équipe suivante",
+              "type": "textarea",
+              "obligatoire": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "poudre_marine_premium",
+      "nom": "Poudre Marine Premium",
+      "description": "Poudre fine micronisée — ligne 2",
+      "couleur": "#1D6F8C",
+      "icone": "🌊",
+      "actif": true,
+      "etapes": [
+        {
+          "id": "reception",
+          "nom": "Réception matières premières",
+          "description": "Contrôle et pesée des matières entrantes",
+          "icone": "📦",
+          "questions": [
+            {
+              "id": "lot_matiere_premiere",
+              "colonne": "Lot_Matiere_Premiere",
+              "libelle": "Numéro de lot de la matière première",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "fournisseur",
+              "colonne": "Fournisseur",
+              "libelle": "Fournisseur",
+              "type": "liste",
+              "obligatoire": true,
+              "options": [
+                { "valeur": "ALG_OUEST", "libelle": "Algues de l'Ouest" },
+                { "valeur": "ATLANTIQUE", "libelle": "Atlantique Marine" }
+              ]
+            },
+            {
+              "id": "quantite_recue",
+              "colonne": "Quantite_Recue_kg",
+              "libelle": "Quantité reçue",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 3000,
+              "decimales": 1
+            },
+            {
+              "id": "taux_matiere_seche_entree",
+              "colonne": "Taux_Matiere_Seche_Entree_Pct",
+              "libelle": "Taux de matière sèche à l'entrée",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "%",
+              "min": 8,
+              "max": 30,
+              "decimales": 2
+            }
+          ]
+        },
+        {
+          "id": "melange",
+          "nom": "Mélange",
+          "description": "Préparation de la charge",
+          "icone": "🌀",
+          "questions": [
+            {
+              "id": "numero_recette",
+              "colonne": "Numero_Recette",
+              "libelle": "Numéro de recette",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "masse_totale_melange",
+              "colonne": "Masse_Totale_Melange_kg",
+              "libelle": "Masse totale du mélange",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 3500,
+              "decimales": 1
+            },
+            {
+              "id": "ph_melange",
+              "colonne": "Ph_Melange",
+              "libelle": "pH du mélange",
+              "type": "nombre",
+              "obligatoire": true,
+              "min": 5.5,
+              "max": 8.5,
+              "decimales": 2
+            },
+            {
+              "id": "homogeneite_conforme",
+              "colonne": "Homogeneite_Conforme",
+              "libelle": "Homogénéité conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            }
+          ]
+        },
+        {
+          "id": "sechage",
+          "nom": "Séchage",
+          "description": "Séchage puis micronisation",
+          "icone": "🔥",
+          "questions": [
+            {
+              "id": "temperature_sechage",
+              "colonne": "Temperature_Sechage_C",
+              "libelle": "Température de séchage",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "°C",
+              "min": 70,
+              "max": 110,
+              "decimales": 1
+            },
+            {
+              "id": "duree_sechage",
+              "colonne": "Duree_Sechage_min",
+              "libelle": "Durée de séchage",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "min",
+              "min": 30,
+              "max": 300,
+              "decimales": 0
+            },
+            {
+              "id": "humidite_sortie",
+              "colonne": "Humidite_Sortie_Pct",
+              "libelle": "Humidité en sortie",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "%",
+              "min": 3,
+              "max": 8,
+              "decimales": 2
+            },
+            {
+              "id": "finesse_mouture",
+              "colonne": "Finesse_Mouture_um",
+              "libelle": "Finesse de mouture",
+              "type": "nombre",
+              "obligatoire": false,
+              "unite": "µm",
+              "min": 50,
+              "max": 400,
+              "decimales": 0
+            }
+          ]
+        },
+        {
+          "id": "conditionnement",
+          "nom": "Conditionnement",
+          "description": "Ensachage sous atmosphère contrôlée",
+          "icone": "🏷️",
+          "questions": [
+            {
+              "id": "format_sac",
+              "colonne": "Format_Sac",
+              "libelle": "Format de conditionnement",
+              "type": "liste",
+              "obligatoire": true,
+              "options": [
+                { "valeur": "SACHET_5", "libelle": "Sachet 5 kg" },
+                { "valeur": "SAC_20", "libelle": "Sac 20 kg" }
+              ]
+            },
+            {
+              "id": "nombre_sacs",
+              "colonne": "Nombre_Sacs",
+              "libelle": "Nombre d'unités conditionnées",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "u",
+              "min": 1,
+              "max": 800,
+              "decimales": 0
+            },
+            {
+              "id": "masse_nette_produite",
+              "colonne": "Masse_Nette_Produite_kg",
+              "libelle": "Masse nette produite",
+              "type": "nombre",
+              "obligatoire": true,
+              "unite": "kg",
+              "min": 0,
+              "max": 3500,
+              "decimales": 1
+            },
+            {
+              "id": "numero_lot_sortie",
+              "colonne": "Numero_Lot_Sortie",
+              "libelle": "Numéro de lot de sortie",
+              "type": "texte",
+              "obligatoire": true
+            },
+            {
+              "id": "controle_metaux_ok",
+              "colonne": "Controle_Metaux_OK",
+              "libelle": "Détecteur de métaux : test conforme ?",
+              "type": "booleen",
+              "obligatoire": true,
+              "defaut": true
+            },
+            {
+              "id": "observations",
+              "colonne": "Observations",
+              "libelle": "Observations de fin de cycle",
+              "type": "textarea",
+              "obligatoire": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

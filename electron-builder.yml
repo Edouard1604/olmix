@@ -1,0 +1,30 @@
+appId: com.olmix.saisie-production
+productName: Olmix Saisie Production
+copyright: Copyright © Olmix
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**/*
+  - package.json
+extraResources:
+  # Configuration de reference embarquee : copiee dans les donnees utilisateur
+  # au premier lancement si aucune configuration n'existe encore.
+  - from: config/produits.example.json
+    to: config/produits.example.json
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+  artifactName: Olmix-Saisie-Production-${version}-${arch}.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Saisie Production
+  installerLanguages: [fr_FR]
+  language: "1036"

@@ -1,0 +1,110 @@
+/* ------------------------------------------------------------------ *
+ * Jetons de design — palette inspiree du vegetal et du marin.
+ * Toutes les couleurs sont declarees ici : changer la charte revient a
+ * modifier ce seul fichier.
+ * ------------------------------------------------------------------ */
+
+:root {
+  /* Verts profonds */
+  --vert-900: #093d33;
+  --vert-800: #0f5e4e;
+  --vert-700: #167a63;
+  --vert-600: #1f8a70;
+  --vert-500: #2fa387;
+
+  /* Bleus-verts marins */
+  --marin-800: #0e4a5a;
+  --marin-700: #135f73;
+  --marin-600: #1d6f8c;
+
+  /* Accents lumineux */
+  --menthe: #4dd0a7;
+  --menthe-clair: #a8efd5;
+  --ecume: #d8f5ea;
+
+  /* Etats */
+  --alerte: #d9822b;
+  --alerte-fond: #fdf2e3;
+  --alerte-bord: #f0c48a;
+  --erreur: #c0392b;
+  --erreur-fond: #fdecea;
+  --erreur-bord: #f1b0a9;
+  --succes: #1f8a70;
+  --succes-fond: #e6f6f1;
+
+  /* Surfaces — theme clair */
+  --fond: #f1f6f4;
+  --fond-degrade: radial-gradient(1200px 600px at 12% -8%, #e2f2ec 0%, transparent 60%),
+    radial-gradient(900px 500px at 105% 10%, #dceef3 0%, transparent 55%), #f1f6f4;
+  --surface: #ffffff;
+  --surface-2: #f7faf9;
+  --surface-3: #eef4f2;
+  --bordure: #d9e5e1;
+  --bordure-forte: #b9cfc8;
+
+  /* Texte */
+  --texte: #10221e;
+  --texte-doux: #4f6862;
+  --texte-inverse: #ffffff;
+
+  /* Rayons, ombres, espacement */
+  --r-s: 10px;
+  --r-m: 16px;
+  --r-l: 22px;
+  --r-xl: 28px;
+  --ombre-1: 0 1px 2px rgba(9, 61, 51, 0.06), 0 2px 8px rgba(9, 61, 51, 0.05);
+  --ombre-2: 0 4px 14px rgba(9, 61, 51, 0.09), 0 14px 38px rgba(9, 61, 51, 0.07);
+  --ombre-3: 0 18px 50px rgba(9, 61, 51, 0.16);
+  --anneau: 0 0 0 4px rgba(77, 208, 167, 0.35);
+
+  /* Typographie — volontairement grande pour la lecture en atelier */
+  --police: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --t-xs: 0.8125rem;
+  --t-s: 0.9375rem;
+  --t-m: 1.0625rem;
+  --t-l: 1.25rem;
+  --t-xl: 1.5rem;
+  --t-2xl: 2rem;
+  --t-3xl: 2.75rem;
+
+  /* Cible tactile minimale (recommandation d'ergonomie : 48 px) */
+  --cible: 56px;
+
+  --transition: 180ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+[data-theme='sombre'] {
+  --fond: #0b1a18;
+  --fond-degrade: radial-gradient(1100px 600px at 10% -10%, #10302b 0%, transparent 60%),
+    radial-gradient(900px 500px at 105% 5%, #0f2c35 0%, transparent 55%), #0b1a18;
+  --surface: #122724;
+  --surface-2: #16302c;
+  --surface-3: #1b3a35;
+  --bordure: #25443e;
+  --bordure-forte: #35625a;
+
+  --texte: #e8f4f0;
+  --texte-doux: #9dbab2;
+
+  --ecume: #17403a;
+  --alerte-fond: #3a2a13;
+  --alerte-bord: #7a5520;
+  --erreur-fond: #3b1d19;
+  --erreur-bord: #7d3229;
+  --succes-fond: #113a31;
+
+  --ombre-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
+  --ombre-2: 0 6px 18px rgba(0, 0, 0, 0.38);
+  --ombre-3: 0 22px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Respect du reglage systeme « animations reduites ». */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
