@@ -124,10 +124,37 @@ du mode administrateur.
 
 ## 4. Fabriquer l'exécutable `.exe`
 
+> **Node.js n'est nécessaire que pour fabriquer l'exécutable, jamais pour l'utiliser.**
+> L'installeur produit embarque son propre moteur : le poste de l'atelier qui l'installe
+> n'a besoin ni de Node.js, ni de droits administrateur.
+
+### Sans rien installer : laisser GitHub le fabriquer
+
+C'est la voie à suivre lorsqu'on ne peut pas installer Node.js sur son poste. La
+fabrication a lieu sur une machine Windows fournie par GitHub
+([`.github/workflows/executable-windows.yml`](.github/workflows/executable-windows.yml)).
+
+1. Sur le dépôt GitHub, onglet **Actions**.
+2. Dans la colonne de gauche, **Executable Windows**.
+3. Bouton **Run workflow**, choisir la branche, confirmer.
+4. Attendre la coche verte (compter 5 à 10 minutes).
+5. Cliquer sur l'exécution terminée, puis, tout en bas, télécharger l'artefact
+   **Olmix-Saisie-Production-Windows**.
+6. **Décompresser le `.zip` obtenu** — GitHub distribue toujours les artefacts sous
+   cette forme — puis lancer le `.exe`.
+
+Pour obtenir les `.exe` en téléchargement direct, sans `.zip` : pousser une étiquette de
+version (`git tag v1.0.0 && git push origin v1.0.0`). Le même workflow les attache alors
+à une **Release**, d'où ils se téléchargent d'un clic.
+
+### En local, depuis Windows
+
 ```bash
 npm run dist              # installeur NSIS + version portable, dans release/
 npm run dist:portable     # version portable seule
 ```
+
+Ou, sans ligne de commande, double-clic sur `Creer-executable.bat`.
 
 La compilation doit être lancée **depuis Windows** (ou depuis Linux/macOS avec Wine
 installé) : `electron-builder` a besoin des outils Windows pour signer et empaqueter
@@ -476,6 +503,7 @@ Creer-executable.bat         Double-clic : fabrique l'installeur .exe
 config/produits.example.json Configuration d'exemple (2 produits)
 exemples/                    Classeur Excel d'exemple pré-rempli
 scripts/                     Build du processus principal, test e2e, générateurs
+.github/workflows/           Fabrication de l'exécutable Windows par GitHub
 ```
 
 Les règles de saisie de `shared/validation.ts` sont appliquées **deux fois** : par
