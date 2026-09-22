@@ -571,6 +571,13 @@ Aucun outil local n'est nécessaire : Vercel compile lui-même depuis GitHub.
    [`vercel.json`](vercel.json) (commande `npm run build:web`, sortie `dist/renderer`).
 4. **Deploy**, puis attendre une à deux minutes.
 
+> **Vérifier la branche déployée.** Vercel publie la *branche par défaut* du dépôt, pas
+> celle sur laquelle on vient de travailler. Si la page affiche une erreur alors que la
+> compilation réussit en local, c'est presque toujours cela : Vercel déploie une branche
+> dépourvue de `vercel.json`, cherche le résultat dans `dist/` au lieu de
+> `dist/renderer`, et ne trouve rien. Cela se règle dans **Settings → Git → Production
+> Branch**, ou en changeant la branche par défaut du dépôt sur GitHub.
+
 L'URL obtenue (`https://…vercel.app`) est publique et se partage telle quelle. Chaque
 poussée sur la branche redéploie automatiquement.
 

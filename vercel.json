@@ -1,12 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build:web",
-  "outputDirectory": "dist/renderer",
-  "installCommand": "npm ci",
   "framework": null,
-  "build": {
-    "env": {
-      "ELECTRON_SKIP_BINARY_DOWNLOAD": "1"
-    }
-  }
+  "installCommand": "ELECTRON_SKIP_BINARY_DOWNLOAD=1 npm ci",
+  "buildCommand": "npm run build:web",
+  "outputDirectory": "dist/renderer"
 }
