@@ -181,7 +181,10 @@ win:
    définie en configuration, sert d'infobulle et reste visible dans le mode
    administrateur.
 2. **Formulaire** — une page par étape du processus.
-   - À gauche (≈ 55 %) : les questions de l'étape.
+   - À gauche (≈ 55 %) : les questions de l'étape. Le libellé d'une question est
+     volontairement plus grand que la valeur saisie : c'est la question qu'on lit en
+     premier, pas le chiffre qu'on vient de taper. Sa taille se règle d'un seul jeton,
+     `--t-question` dans `src/styles/tokens.css`.
    - À droite (≈ 45 %) : la cartographie du processus. L'étape en cours est mise en
      surbrillance et animée, les étapes terminées portent une coche verte, les suivantes
      sont grisées. Les étapes déjà parcourues sont cliquables.

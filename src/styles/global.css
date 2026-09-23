@@ -281,7 +281,7 @@ h1, h2, h3, p { margin: 0; }
 /* --- Champs --- */
 
 .champ {
-  padding: 22px 24px; border-radius: var(--r-l); background: var(--surface);
+  padding: 26px 28px; border-radius: var(--r-l); background: var(--surface);
   border: 1px solid var(--bordure); box-shadow: var(--ombre-1);
   transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
 }
@@ -289,11 +289,11 @@ h1, h2, h3, p { margin: 0; }
 .champ--erreur { border-color: var(--erreur-bord); background: var(--erreur-fond); }
 .champ--valide { border-color: color-mix(in srgb, var(--succes) 42%, var(--bordure)); }
 
-.champ__entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
-.champ__libelle { font-size: var(--t-l); font-weight: 680; line-height: 1.3; }
+.champ__entete { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+.champ__libelle { font-size: var(--t-question); font-weight: 700; line-height: 1.24; }
 .champ__obligatoire { color: var(--erreur); margin-left: 6px; font-weight: 800; }
-.champ__aide { margin-top: 5px; font-size: var(--t-s); color: var(--texte-doux); }
-.champ__bornes { font-size: var(--t-xs); color: var(--texte-doux); white-space: nowrap; padding-top: 6px; }
+.champ__aide { margin-top: 8px; font-size: var(--t-m); color: var(--texte-doux); }
+.champ__bornes { font-size: var(--t-s); color: var(--texte-doux); white-space: nowrap; padding-top: 10px; }
 
 .saisie {
   width: 100%; min-height: var(--cible); padding: 0 18px;
@@ -335,7 +335,7 @@ select.saisie { cursor: pointer; appearance: none;
 .case-option {
   display: flex; align-items: center; gap: 13px; min-height: var(--cible); padding: 0 18px;
   border: 2px solid var(--bordure-forte); border-radius: var(--r-m); background: var(--surface-2);
-  font-size: var(--t-m); font-weight: 600; cursor: pointer; transition: all var(--transition);
+  font-size: var(--t-l); font-weight: 600; cursor: pointer; transition: all var(--transition);
 }
 .case-option:hover { border-color: var(--vert-500); }
 .case-option--cochee { background: var(--ecume); border-color: var(--vert-600); }
@@ -347,13 +347,13 @@ select.saisie { cursor: pointer; appearance: none;
 .case-option--cochee .case-option__boite { background: var(--vert-600); border-color: var(--vert-600); }
 
 /* Messages de champ */
-.message { display: flex; align-items: flex-start; gap: 9px; margin-top: 13px; font-size: var(--t-s); font-weight: 600; }
+.message { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: var(--t-m); font-weight: 600; }
 .message--erreur { color: var(--erreur); }
 .message--alerte { color: var(--alerte-texte); }
 .message__icone { display: flex; flex: none; padding-top: 1px; }
 
 .commentaire-requis { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--alerte-bord); }
-.commentaire-requis__titre { font-size: var(--t-s); font-weight: 700; margin-bottom: 9px; color: var(--alerte-texte); }
+.commentaire-requis__titre { font-size: var(--t-m); font-weight: 700; margin-bottom: 11px; color: var(--alerte-texte); }
 
 /* --- Cartographie du processus --- */
 

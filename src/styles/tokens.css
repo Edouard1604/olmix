@@ -105,6 +105,12 @@
   --t-2xl: 2rem;
   --t-3xl: 2.75rem;
 
+  /* Taille du libellé d'une question. Elle doit dominer la valeur saisie
+     (--t-xl) : c'est la question qu'on lit en premier, pas le chiffre qu'on
+     vient de taper. Un seul jeton à ajuster si l'atelier la veut encore plus
+     grande. */
+  --t-question: 1.625rem;
+
   /* Cible tactile minimale (recommandation d'ergonomie : 48 px) */
   --cible: 56px;
 
