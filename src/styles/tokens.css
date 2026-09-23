@@ -82,12 +82,19 @@
   --anneau: 0 0 0 4px rgba(1, 73, 90, 0.34);
 
   /* Typographie.
-     Le site associe un serif éditorial aux grands titres et un sans-serif
-     géométrique au reste. Les polices d'Olmix étant sous licence, on s'appuie
+     Le serif éditorial de la charte est appliqué à toute l'interface, titres
+     comme texte courant. Les polices d'Olmix étant sous licence, on s'appuie
      sur des polices présentes sur tout poste Windows : l'application doit
-     fonctionner hors connexion, sans téléchargement de fonte. */
-  --police: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  --police-titre: Georgia, 'Cambria', 'Times New Roman', serif;
+     fonctionner hors connexion, sans téléchargement de fonte.
+     Cambria passe devant Georgia : Georgia n'a que des chiffres elzéviriens
+     (le 3, le 4, le 7 et le 9 descendent sous la ligne de base), ce qui gêne
+     la lecture d'un relevé numérique — or c'est le cœur du métier ici.
+     Cambria, livrée avec Windows depuis Vista et dessinée pour l'écran, a des
+     chiffres alignés.
+     `--police-titre` reste défini séparément pour pouvoir redonner une police
+     distincte aux titres sans toucher au reste. */
+  --police: Cambria, Georgia, 'Times New Roman', serif;
+  --police-titre: var(--police);
 
   --t-xs: 0.8125rem;
   --t-s: 0.9375rem;

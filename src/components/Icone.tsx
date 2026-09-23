@@ -143,15 +143,3 @@ export default function Icone({
     </svg>
   );
 }
-
-/** Initiales d'un nom de produit, pour la vignette qui remplace l'émoji. */
-export function initiales(nom: string): string {
-  const mots = nom
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .split(/[^A-Za-z0-9]+/)
-    .filter(Boolean);
-  if (!mots.length) return '?';
-  if (mots.length === 1) return mots[0]!.slice(0, 2).toUpperCase();
-  return `${mots[0]![0]}${mots[1]![0]}`.toUpperCase();
-}

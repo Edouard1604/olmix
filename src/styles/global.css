@@ -206,7 +206,7 @@ h1, h2, h3, p { margin: 0; }
 
 .produit {
   position: relative; display: flex; flex-direction: column; gap: 10px;
-  padding: 24px; text-align: left; min-height: 178px;
+  padding: 26px; text-align: left; min-height: 158px;
   border: 1px solid var(--bordure); border-radius: var(--r-l);
   background: var(--surface); box-shadow: var(--ombre-1); cursor: pointer;
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
@@ -228,7 +228,7 @@ h1, h2, h3, p { margin: 0; }
   color: var(--accent-lisible, var(--accent, var(--vert-600)));
   background: color-mix(in srgb, var(--accent, var(--vert-600)) 14%, var(--surface-2));
 }
-.produit__nom { font-size: var(--t-xl); font-weight: 750; letter-spacing: -0.01em; }
+.produit__nom { font-size: var(--t-2xl); font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
 .produit__desc { font-size: var(--t-s); color: var(--texte-doux); }
 .produit__pied { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -453,7 +453,11 @@ select.saisie { cursor: pointer; appearance: none;
 }
 .admin__element:hover { background: var(--surface-3); }
 .admin__element--actif { background: var(--ecume); border-color: var(--vert-600); }
-.admin__initiales { font-weight: 800; color: var(--accent-lisible, var(--accent, var(--vert-600))); }
+/* Pastille de couleur : rappelle l'accent du produit sans recourir à un texte. */
+.admin__pastille {
+  width: 12px; height: 12px; border-radius: 50%; flex: none;
+  background: var(--accent, var(--vert-600));
+}
 .admin__panneau { padding: 26px; }
 .admin__section + .admin__section { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--bordure); }
 .admin__titre-section { font-size: var(--t-l); font-weight: 750; margin-bottom: 16px; }
@@ -485,13 +489,13 @@ textarea.saisie--compacte { padding: 11px 13px; min-height: 74px; }
 .produit__icone,
 .etape-entete,
 .etape-entete__icone,
-.admin__initiales {
+.admin__pastille {
   --accent-lisible: color-mix(in srgb, var(--accent, var(--vert-600)) 70%, #01203a);
 }
 [data-theme='sombre'] .produit,
 [data-theme='sombre'] .produit__icone,
 [data-theme='sombre'] .etape-entete,
 [data-theme='sombre'] .etape-entete__icone,
-[data-theme='sombre'] .admin__initiales {
+[data-theme='sombre'] .admin__pastille {
   --accent-lisible: color-mix(in srgb, var(--accent, var(--vert-600)) 42%, #ffffff);
 }

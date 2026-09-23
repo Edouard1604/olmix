@@ -9,7 +9,7 @@
 import { useState } from 'react';
 import { suggererColonne } from '@shared/schema';
 import { normaliserEntete } from '@shared/columns';
-import Icone, { initiales } from '../../components/Icone';
+import Icone from '../../components/Icone';
 import type {
   ConfigurationProduits,
   EtapeProcessus,
@@ -147,11 +147,9 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
           >
             <span
               aria-hidden
-              className="admin__initiales"
+              className="admin__pastille"
               style={{ ['--accent' as string]: p.couleur ?? 'var(--vert-600)' }}
-            >
-              {p.icone ?? initiales(p.nom)}
-            </span>
+            />
             <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nom}</span>
             {p.actif === false && <span className="mini-puce">inactif</span>}
           </button>

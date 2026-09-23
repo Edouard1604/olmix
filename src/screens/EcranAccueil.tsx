@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Brouillon, Produit } from '@shared/types';
 import Bandeau from '../components/Bandeau';
-import Icone, { initiales } from '../components/Icone';
+import Icone from '../components/Icone';
 import { dateHeure } from '../lib/format';
 
 interface Proprietes {
@@ -201,9 +201,13 @@ export default function EcranAccueil({
                 transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.3 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="produit__icone" aria-hidden>
-                  {produit.icone ?? initiales(produit.nom)}
-                </div>
+                {/* Vignette affichée uniquement si un symbole est défini en
+                    configuration ; sinon la carte s'en tient à son titre. */}
+                {produit.icone && (
+                  <div className="produit__icone" aria-hidden>
+                    {produit.icone}
+                  </div>
+                )}
                 <div className="produit__nom">{produit.nom}</div>
                 {produit.description && <div className="produit__desc">{produit.description}</div>}
                 <div className="produit__pied">

@@ -553,12 +553,23 @@ du teal profond, et non d'un gris neutre.
 
 ### Typographie
 
-Le site associe un serif éditorial aux grands titres et un sans-serif géométrique au
-reste. Les polices d'Olmix étant sous licence, l'application s'appuie sur des polices
-présentes sur tout poste Windows (Georgia pour les titres, Segoe UI pour le reste) :
-elle doit fonctionner hors connexion, sans téléchargement de fonte. Pour utiliser les
-vraies polices, déposer les fichiers dans `src/assets/` et ajuster `--police` et
-`--police-titre`.
+Le serif éditorial de la charte est appliqué à **toute** l'interface, titres comme
+texte courant. Les polices d'Olmix étant sous licence, l'application s'appuie sur des
+polices présentes sur tout poste Windows : elle doit fonctionner hors connexion, sans
+téléchargement de fonte.
+
+La pile est `Cambria, Georgia, 'Times New Roman', serif`. **Cambria passe devant
+Georgia volontairement** : Georgia n'a que des chiffres elzéviriens — le 3, le 4, le 7
+et le 9 descendent sous la ligne de base — ce qui gêne la lecture d'un relevé
+numérique, or c'est précisément ce que saisissent les opérateurs. Cambria, livrée avec
+Windows depuis Vista et dessinée pour l'écran, a des chiffres alignés.
+
+Seuls l'identifiant de cycle et les chemins de fichiers restent en police à chasse
+fixe : on les recopie ou on les compare caractère par caractère, et la distinction
+entre `0` et `O` y est essentielle.
+
+Pour utiliser les vraies polices d'Olmix, déposer les fichiers dans `src/assets/` et
+ajuster `--police` (et `--police-titre` si les titres doivent différer).
 
 ### Logo
 
