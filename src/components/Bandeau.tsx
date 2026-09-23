@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import Icone, { type NomIcone } from './Icone';
+import { duree, ease, transitionAdaptee, useAnimationsReduites } from '../lib/motion';
 
 export default function Bandeau({
   ton = 'info',
@@ -12,25 +12,22 @@ export default function Bandeau({
   actions,
 }: {
   ton?: 'info' | 'alerte' | 'erreur' | 'succes';
-  icone?: NomIcone;
+  icone?: string;
   titre?: string;
   children?: ReactNode;
   actions?: ReactNode;
 }) {
-  const icones: Record<'info' | 'alerte' | 'erreur' | 'succes', NomIcone> = {
-    info: 'info',
-    alerte: 'alerte',
-    erreur: 'erreur',
-    succes: 'succes',
-  };
+  const icones = { info: 'ℹ️', alerte: '⚠️', erreur: '⛔', succes: '✅' } as const;
+  const reduit = useAnimationsReduites();
   return (
     <motion.div
       className={`bandeau${ton === 'info' ? '' : ` bandeau--${ton}`}`}
-      initial={{ opacity: 0, y: -8 }}
+      initial={{ opacity: 0, y: reduit ? 0 : -8 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={transitionAdaptee(reduit, { duration: duree.base, ease: ease.out })}
     >
       <span className="bandeau__icone" aria-hidden>
-        <Icone nom={icone ?? icones[ton]} taille={24} />
+        {icone ?? icones[ton]}
       </span>
       <div style={{ minWidth: 0 }}>
         {titre && <div className="bandeau__titre">{titre}</div>}

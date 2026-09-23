@@ -9,7 +9,6 @@
 import { useState } from 'react';
 import { suggererColonne } from '@shared/schema';
 import { normaliserEntete } from '@shared/columns';
-import Icone from '../../components/Icone';
 import type {
   ConfigurationProduits,
   EtapeProcessus,
@@ -17,9 +16,6 @@ import type {
   Question,
   TypeQuestion,
 } from '@shared/types';
-
-/** Accent proposé pour un nouveau produit ; repris du jeu de jetons. */
-const COULEUR_PRODUIT_DEFAUT = '#269755';
 
 const TYPES: { valeur: TypeQuestion; libelle: string }[] = [
   { valeur: 'texte', libelle: 'Texte court' },
@@ -88,7 +84,8 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
     const nouveau: Produit = {
       id: `produit_${numero}`,
       nom: `Nouveau produit ${numero}`,
-      couleur: COULEUR_PRODUIT_DEFAUT,
+      couleur: '#0f6349',
+      icone: '🏭',
       actif: true,
       etapes: [{ id: 'etape_1', nom: 'Étape 1', questions: [] }],
     };
@@ -145,11 +142,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             className={`admin__element${index === selection ? ' admin__element--actif' : ''}`}
             onClick={() => setSelection(index)}
           >
-            <span
-              aria-hidden
-              className="admin__pastille"
-              style={{ ['--accent' as string]: p.couleur ?? 'var(--vert-600)' }}
-            />
+            <span aria-hidden>{p.icone ?? '🏭'}</span>
             <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nom}</span>
             {p.actif === false && <span className="mini-puce">inactif</span>}
           </button>
@@ -167,7 +160,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
               Produit
             </div>
             <button type="button" className="btn btn--fantome pousser" onClick={supprimerProduit}>
-              <Icone nom="corbeille" taille={18} /> Supprimer ce produit
+              🗑 Supprimer ce produit
             </button>
           </div>
 
@@ -199,13 +192,20 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             />
           </div>
           <div className="admin__ligne">
-            <label>Couleur d'accent</label>
+            <label>Icône et couleur</label>
             <div className="rangee">
+              <input
+                className="saisie saisie--compacte"
+                style={{ width: 80, textAlign: 'center' }}
+                value={produit.icone ?? ''}
+                onChange={(e) => majProduit({ icone: e.target.value })}
+                aria-label="Icône du produit"
+              />
               <input
                 type="color"
                 className="saisie saisie--compacte"
                 style={{ width: 70, padding: 4 }}
-                value={produit.couleur ?? COULEUR_PRODUIT_DEFAUT}
+                value={produit.couleur ?? '#0f6349'}
                 onChange={(e) => majProduit({ couleur: e.target.value })}
                 aria-label="Couleur d'accent"
               />
@@ -285,7 +285,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                       }}
                       title="Supprimer l'étape"
                     >
-                      <Icone nom="corbeille" taille={18} />
+                      🗑
                     </button>
                   </div>
                 </div>
@@ -314,13 +314,11 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                         />
                       </div>
                       <div>
-                        <span className="admin__mini">Symbole</span>
+                        <span className="admin__mini">Icône</span>
                         <input
                           className="saisie saisie--compacte"
                           style={{ textAlign: 'center' }}
                           value={etape.icone ?? ''}
-                          placeholder="Auto"
-                          title="Laissez vide pour afficher le numéro de l'étape"
                           onChange={(e) => majEtape(etape.id, { icone: e.target.value })}
                         />
                       </div>
@@ -429,7 +427,7 @@ function EditeurQuestion({
             onClick={onSupprimer}
             title="Supprimer la question"
           >
-            <Icone nom="corbeille" taille={18} />
+            🗑
           </button>
         </div>
       </div>

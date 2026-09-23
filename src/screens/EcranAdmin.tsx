@@ -7,10 +7,12 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { Sauvegarde } from '@shared/api';
 import type { ConfigurationProduits, Cycle, InfosApplication, Reglages, StatutSync } from '@shared/types';
 import Bandeau from '../components/Bandeau';
-import Icone from '../components/Icone';
+import LogoOlmix from '../components/motion/LogoOlmix';
+import { duree, FONDU_REDUIT, useAnimationsReduites, useMouvement } from '../lib/motion';
 import EditeurProduits from './admin/EditeurProduits';
 import PanneauReglages from './admin/PanneauReglages';
 import PanneauDiagnostic from './admin/PanneauDiagnostic';
@@ -37,6 +39,8 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [sauvegardes, setSauvegardes] = useState<Sauvegarde[]>([]);
   const [messageConfig, setMessageConfig] = useState<{ ton: 'succes' | 'erreur'; texte: string } | null>(null);
+  const reduit = useAnimationsReduites();
+  const definirMouvementReduit = useMouvement((e) => e.definirReglage);
 
   const chargerTout = useCallback(async () => {
     const [config, regl, inf, cyc, sauv] = await Promise.all([
@@ -79,9 +83,7 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
     return (
       <div className="connexion">
         <div className="carte connexion__carte">
-          <div style={{ marginBottom: 14, color: 'var(--vert-600)' }} aria-hidden>
-            <Icone nom="verrou" taille={52} epaisseur={1.5} style={{ margin: '0 auto' }} />
-          </div>
+          <LogoOlmix hauteur={88} />
           <h1 className="titre-ecran" style={{ fontSize: 'var(--t-2xl)' }}>
             Mode administrateur
           </h1>
@@ -148,117 +150,132 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
         </button>
       </div>
 
-      <div className="rangee" style={{ marginBottom: 18, gap: 10 }}>
+      {/* Onglets en pilule : le fond degrade de l'onglet actif apparait en fondu. */}
+      <div className="onglets" role="tablist">
         {(
           [
-            ['produits', 'liste', 'Produits et questions'],
-            ['reglages', 'reglages', 'Réglages'],
-            ['diagnostic', 'diagnostic', 'Diagnostic'],
+            ['produits', '📋 Produits et questions'],
+            ['reglages', '⚙️ Réglages'],
+            ['diagnostic', '🩺 Diagnostic'],
           ] as const
-        ).map(([cle, icone, libelle]) => (
+        ).map(([cle, libelle]) => (
           <button
             key={cle}
             type="button"
-            className={`btn ${onglet === cle ? 'btn--principal' : 'btn--secondaire'}`}
+            role="tab"
+            aria-selected={onglet === cle}
+            className={`btn onglet${onglet === cle ? ' onglet--actif' : ''}`}
             onClick={() => setOnglet(cle)}
           >
-            <Icone nom={icone} taille={19} />
             {libelle}
           </button>
         ))}
       </div>
 
-      {onglet === 'produits' && brouillonConfig && (
-        <>
-          {messageConfig && (
-            <Bandeau ton={messageConfig.ton} titre={messageConfig.ton === 'succes' ? 'Enregistré' : 'Refusé'}>
-              <div style={{ whiteSpace: 'pre-line' }}>{messageConfig.texte}</div>
-            </Bandeau>
+      {/* Transition d'onglet : simple fondu, l'administration reste sobre. */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={onglet}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduit ? FONDU_REDUIT : duree.rapide }}
+        >
+          {onglet === 'produits' && brouillonConfig && (
+            <>
+              {messageConfig && (
+                <Bandeau ton={messageConfig.ton} titre={messageConfig.ton === 'succes' ? 'Enregistré' : 'Refusé'}>
+                  <div style={{ whiteSpace: 'pre-line' }}>{messageConfig.texte}</div>
+                </Bandeau>
+              )}
+              <div className="rangee" style={{ marginBottom: 16 }}>
+                <button
+                  type="button"
+                  className="btn btn--secondaire"
+                  onClick={async () => {
+                    const resultat = await window.olmix.importerConfiguration();
+                    if (!resultat.ok) setMessageConfig({ ton: 'erreur', texte: resultat.erreur });
+                    else if (resultat.valeur) {
+                      await chargerTout();
+                      setMessageConfig({ ton: 'succes', texte: 'Configuration importée.' });
+                      onConfigurationModifiee();
+                    }
+                  }}
+                >
+                  ⬇ Importer un JSON
+                </button>
+                <button
+                  type="button"
+                  className="btn btn--secondaire"
+                  onClick={async () => {
+                    const resultat = await window.olmix.exporterConfiguration();
+                    if (!resultat.ok) setMessageConfig({ ton: 'erreur', texte: resultat.erreur });
+                    else if (resultat.valeur)
+                      setMessageConfig({ ton: 'succes', texte: `Exporté vers ${resultat.valeur}` });
+                  }}
+                >
+                  ⬆ Exporter en JSON
+                </button>
+                <div className="pousser rangee">
+                  <button
+                    type="button"
+                    className="btn btn--secondaire"
+                    disabled={!configModifiee}
+                    onClick={() => setBrouillonConfig(configuration)}
+                  >
+                    Annuler les modifications
+                  </button>
+                  <button type="button" className="btn btn--principal" disabled={!configModifiee} onClick={enregistrerConfig}>
+                    Enregistrer la configuration
+                  </button>
+                </div>
+              </div>
+              <EditeurProduits configuration={brouillonConfig} onChangement={setBrouillonConfig} />
+            </>
           )}
-          <div className="rangee" style={{ marginBottom: 16 }}>
-            <button
-              type="button"
-              className="btn btn--secondaire"
-              onClick={async () => {
-                const resultat = await window.olmix.importerConfiguration();
-                if (!resultat.ok) setMessageConfig({ ton: 'erreur', texte: resultat.erreur });
-                else if (resultat.valeur) {
-                  await chargerTout();
-                  setMessageConfig({ ton: 'succes', texte: 'Configuration importée.' });
-                  onConfigurationModifiee();
-                }
-              }}
-            >
-              <Icone nom="importer" taille={19} /> Importer un JSON
-            </button>
-            <button
-              type="button"
-              className="btn btn--secondaire"
-              onClick={async () => {
-                const resultat = await window.olmix.exporterConfiguration();
-                if (!resultat.ok) setMessageConfig({ ton: 'erreur', texte: resultat.erreur });
-                else if (resultat.valeur)
-                  setMessageConfig({ ton: 'succes', texte: `Exporté vers ${resultat.valeur}` });
-              }}
-            >
-              <Icone nom="exporter" taille={19} /> Exporter en JSON
-            </button>
-            <div className="pousser rangee">
-              <button
-                type="button"
-                className="btn btn--secondaire"
-                disabled={!configModifiee}
-                onClick={() => setBrouillonConfig(configuration)}
-              >
-                Annuler les modifications
-              </button>
-              <button type="button" className="btn btn--principal" disabled={!configModifiee} onClick={enregistrerConfig}>
-                Enregistrer la configuration
-              </button>
-            </div>
-          </div>
-          <EditeurProduits configuration={brouillonConfig} onChangement={setBrouillonConfig} />
-        </>
-      )}
 
-      {onglet === 'reglages' && reglages && (
-        <PanneauReglages
-          reglages={reglages}
-          motDePasseParDefaut={motDePasseParDefaut}
-          onEnregistrer={async (partiel) => {
-            const resultat = await window.olmix.ecrireReglages(partiel);
-            if (!resultat.ok) return resultat.erreur;
-            setReglages(resultat.valeur);
-            setInfos(await window.olmix.infos());
-            return null;
-          }}
-          onParcourir={async () => {
-            const resultat = await window.olmix.choisirFichierExcel();
-            return resultat.ok ? resultat.valeur : null;
-          }}
-          onChangerMotDePasse={async (ancien, nouveau) => {
-            const resultat = await window.olmix.changerMotDePasseAdmin(ancien, nouveau);
-            if (!resultat.ok) return resultat.erreur;
-            setMotDePasseParDefaut(false);
-            return null;
-          }}
-        />
-      )}
+          {onglet === 'reglages' && reglages && (
+            <PanneauReglages
+              reglages={reglages}
+              motDePasseParDefaut={motDePasseParDefaut}
+              onEnregistrer={async (partiel) => {
+                const resultat = await window.olmix.ecrireReglages(partiel);
+                if (!resultat.ok) return resultat.erreur;
+                setReglages(resultat.valeur);
+                // Applique tout de suite le reglage « Animations reduites ».
+                definirMouvementReduit(resultat.valeur.animationsReduites ?? false);
+                setInfos(await window.olmix.infos());
+                return null;
+              }}
+              onParcourir={async () => {
+                const resultat = await window.olmix.choisirFichierExcel();
+                return resultat.ok ? resultat.valeur : null;
+              }}
+              onChangerMotDePasse={async (ancien, nouveau) => {
+                const resultat = await window.olmix.changerMotDePasseAdmin(ancien, nouveau);
+                if (!resultat.ok) return resultat.erreur;
+                setMotDePasseParDefaut(false);
+                return null;
+              }}
+            />
+          )}
 
-      {onglet === 'diagnostic' && (
-        <PanneauDiagnostic
-          infos={infos}
-          statut={statut}
-          cycles={cycles}
-          sauvegardes={sauvegardes}
-          onOuvrirDossier={(cible) => void window.olmix.ouvrirDossier(cible)}
-          onOuvrirClasseur={() => void window.olmix.ouvrirClasseur()}
-          onForcerSync={async () => {
-            await window.olmix.forcerSync();
-            await chargerTout();
-          }}
-        />
-      )}
+          {onglet === 'diagnostic' && (
+            <PanneauDiagnostic
+              infos={infos}
+              statut={statut}
+              cycles={cycles}
+              sauvegardes={sauvegardes}
+              onOuvrirDossier={(cible) => void window.olmix.ouvrirDossier(cible)}
+              onOuvrirClasseur={() => void window.olmix.ouvrirClasseur()}
+              onForcerSync={async () => {
+                await window.olmix.forcerSync();
+                await chargerTout();
+              }}
+            />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

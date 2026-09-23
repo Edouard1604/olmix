@@ -42,6 +42,7 @@ export default function PanneauReglages({
       sauvegardeQuotidienne: brouillon.sauvegardeQuotidienne,
       retentionSauvegardesJours: brouillon.retentionSauvegardesJours,
       intervalleFileAttenteMs: brouillon.intervalleFileAttenteMs,
+      animationsReduites: brouillon.animationsReduites ?? false,
     });
     setMessage(
       erreur ? { ton: 'erreur', texte: erreur } : { ton: 'succes', texte: 'Réglages enregistrés.' },
@@ -175,7 +176,28 @@ export default function PanneauReglages({
         </div>
       </div>
 
-      <div className="rangee">
+      <div className="admin__section">
+        <div className="admin__titre-section">Affichage</div>
+        <p className="admin__aide">
+          Sur un poste lent, les animations décoratives (apparitions, compteurs, traits qui se dessinent)
+          peuvent être coupées : seuls restent de courts fondus. Le réglage « animations réduites » de
+          Windows produit le même effet.
+        </p>
+        <div className="admin__ligne">
+          <label htmlFor="r-animations">Animations réduites</label>
+          <label className="rangee" style={{ gap: 9, fontSize: 'var(--t-s)', fontWeight: 600 }}>
+            <input
+              id="r-animations"
+              type="checkbox"
+              checked={brouillon.animationsReduites ?? false}
+              onChange={(e) => setBrouillon({ ...brouillon, animationsReduites: e.target.checked })}
+            />
+            Couper les animations décoratives sur ce poste
+          </label>
+        </div>
+      </div>
+
+      <div className="rangee" style={{ marginTop: 'var(--e-8)' }}>
         <button type="button" className="btn btn--secondaire" onClick={() => setBrouillon(reglages)} disabled={!modifie}>
           Annuler
         </button>

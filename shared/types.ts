@@ -145,6 +145,8 @@ export interface Reglages {
   nomFeuilleQuestions: string;
   nomTableQuestions: string;
   theme: Theme;
+  /** Coupe les animations decoratives (postes lents). Absent = faux. */
+  animationsReduites?: boolean;
   /** Empreinte scrypt du mot de passe administrateur. */
   adminHash: string;
   adminSel: string;
