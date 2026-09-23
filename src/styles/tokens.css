@@ -26,6 +26,7 @@
   --alerte: #d9822b;
   --alerte-fond: #fdf2e3;
   --alerte-bord: #f0c48a;
+  --alerte-texte: #8a5512;
   --erreur: #c0392b;
   --erreur-fond: #fdecea;
   --erreur-bord: #f1b0a9;
@@ -89,6 +90,7 @@
   --ecume: #17403a;
   --alerte-fond: #3a2a13;
   --alerte-bord: #7a5520;
+  --alerte-texte: #f0c48a;
   --erreur-fond: #3b1d19;
   --erreur-bord: #7d3229;
   --succes-fond: #113a31;

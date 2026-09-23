@@ -153,7 +153,7 @@ h1, h2, h3, p { margin: 0; }
 .sync--ecriture .sync__point { background: var(--marin-600); animation: pulsation 1s ease-in-out infinite; }
 .sync--en_attente .sync__point { background: var(--alerte); animation: pulsation 1.6s ease-in-out infinite; }
 .sync--erreur .sync__point { background: var(--erreur); }
-.sync--en_attente { border-color: var(--alerte-bord); background: var(--alerte-fond); color: #8a5512; }
+.sync--en_attente { border-color: var(--alerte-bord); background: var(--alerte-fond); color: var(--alerte-texte); }
 .sync--erreur { border-color: var(--erreur-bord); background: var(--erreur-fond); color: var(--erreur); }
 
 @keyframes pulsation {
@@ -310,11 +310,11 @@ select.saisie { cursor: pointer; appearance: none;
 /* Messages de champ */
 .message { display: flex; align-items: flex-start; gap: 9px; margin-top: 13px; font-size: var(--t-s); font-weight: 600; }
 .message--erreur { color: var(--erreur); }
-.message--alerte { color: #8a5512; }
+.message--alerte { color: var(--alerte-texte); }
 .message__icone { display: flex; flex: none; padding-top: 1px; }
 
 .commentaire-requis { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--alerte-bord); }
-.commentaire-requis__titre { font-size: var(--t-s); font-weight: 700; margin-bottom: 9px; color: #8a5512; }
+.commentaire-requis__titre { font-size: var(--t-s); font-weight: 700; margin-bottom: 9px; color: var(--alerte-texte); }
 
 /* --- Cartographie du processus --- */
 
@@ -391,7 +391,7 @@ select.saisie { cursor: pointer; appearance: none;
 .recap__v--vide { color: var(--texte-doux); font-weight: 500; font-style: italic; }
 .recap__commentaire {
   display: flex; align-items: flex-start; gap: 8px;
-  margin-top: 7px; font-size: var(--t-s); font-weight: 500; color: #8a5512;
+  margin-top: 7px; font-size: var(--t-s); font-weight: 500; color: var(--alerte-texte);
 }
 
 /* --- Confirmation --- */
@@ -416,7 +416,7 @@ select.saisie { cursor: pointer; appearance: none;
 
 .bandeau { display: flex; align-items: flex-start; gap: 14px; padding: 17px 20px; border-radius: var(--r-m);
   border: 1px solid var(--bordure); background: var(--surface-3); font-size: var(--t-s); margin-bottom: 18px; }
-.bandeau--alerte { background: var(--alerte-fond); border-color: var(--alerte-bord); color: #8a5512; }
+.bandeau--alerte { background: var(--alerte-fond); border-color: var(--alerte-bord); color: var(--alerte-texte); }
 .bandeau--erreur { background: var(--erreur-fond); border-color: var(--erreur-bord); color: var(--erreur); }
 .bandeau--succes { background: var(--succes-fond); border-color: color-mix(in srgb, var(--succes) 35%, var(--bordure)); }
 .bandeau__icone { display: flex; flex: none; padding-top: 1px; }

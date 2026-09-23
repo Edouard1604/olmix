@@ -18,6 +18,9 @@ import type {
   TypeQuestion,
 } from '@shared/types';
 
+/** Accent proposé pour un nouveau produit ; repris du jeu de jetons. */
+const COULEUR_PRODUIT_DEFAUT = '#1f8a70';
+
 const TYPES: { valeur: TypeQuestion; libelle: string }[] = [
   { valeur: 'texte', libelle: 'Texte court' },
   { valeur: 'textarea', libelle: 'Texte long' },
@@ -85,7 +88,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
     const nouveau: Produit = {
       id: `produit_${numero}`,
       nom: `Nouveau produit ${numero}`,
-      couleur: '#1f8a70',
+      couleur: COULEUR_PRODUIT_DEFAUT,
       actif: true,
       etapes: [{ id: 'etape_1', nom: 'Étape 1', questions: [] }],
     };
@@ -209,7 +212,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                 type="color"
                 className="saisie saisie--compacte"
                 style={{ width: 70, padding: 4 }}
-                value={produit.couleur ?? '#1f8a70'}
+                value={produit.couleur ?? COULEUR_PRODUIT_DEFAUT}
                 onChange={(e) => majProduit({ couleur: e.target.value })}
                 aria-label="Couleur d'accent"
               />

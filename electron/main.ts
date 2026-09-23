@@ -68,6 +68,12 @@ function demarrer(): void {
   });
 }
 
+/**
+ * Fond de la fenetre avant le premier rendu : il evite le flash blanc au
+ * demarrage. Doit rester aligne sur `--fond` dans src/styles/tokens.css.
+ */
+const FOND_FENETRE = { clair: '#f1f6f4', sombre: '#0b1a18' } as const;
+
 function creerFenetre(): void {
   const sombre = lireReglages().theme === 'sombre';
 
@@ -77,7 +83,7 @@ function creerFenetre(): void {
     minWidth: 1100,
     minHeight: 720,
     show: false,
-    backgroundColor: sombre ? '#0d1b1a' : '#f4f8f6',
+    backgroundColor: sombre ? FOND_FENETRE.sombre : FOND_FENETRE.clair,
     title: 'Olmix — Saisie de fin de cycle',
     autoHideMenuBar: !enDeveloppement,
     webPreferences: {

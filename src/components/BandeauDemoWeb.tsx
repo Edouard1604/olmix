@@ -38,7 +38,7 @@ export default function BandeauDemoWeb() {
             borderRadius: 'var(--r-m)',
             background: 'var(--alerte-fond)',
             border: '1px solid var(--alerte-bord)',
-            color: '#8a5512',
+            color: 'var(--alerte-texte)',
             boxShadow: 'var(--ombre-3)',
             fontSize: 'var(--t-s)',
           }}
