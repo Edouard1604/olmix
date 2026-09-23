@@ -176,7 +176,10 @@ win:
 ## 5. Parcours opérateur
 
 1. **Accueil** — nom (obligatoire) et matricule (facultatif), puis choix du produit
-   parmi des cartes visuelles. Une barre de recherche apparaît au-delà de 4 produits.
+   parmi des tuiles ne portant que son nom, repérées par leur couleur d'accent. Une
+   barre de recherche apparaît au-delà de 4 produits. La description d'un produit,
+   définie en configuration, sert d'infobulle et reste visible dans le mode
+   administrateur.
 2. **Formulaire** — une page par étape du processus.
    - À gauche (≈ 55 %) : les questions de l'étape.
    - À droite (≈ 45 %) : la cartographie du processus. L'étape en cours est mise en

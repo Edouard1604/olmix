@@ -187,38 +187,25 @@ export default function EcranAccueil({
         </div>
       ) : (
         <div className="grille-produits">
-          {filtres.map((produit, index) => {
-            const nbQuestions = produit.etapes.reduce((n, e) => n + e.questions.length, 0);
-            return (
-              <motion.button
-                key={produit.id}
-                type="button"
-                className="produit"
-                style={{ ['--accent' as string]: produit.couleur ?? 'var(--vert-600)' }}
-                onClick={() => choisir(produit)}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.3 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* Vignette affichée uniquement si un symbole est défini en
-                    configuration ; sinon la carte s'en tient à son titre. */}
-                {produit.icone && (
-                  <div className="produit__icone" aria-hidden>
-                    {produit.icone}
-                  </div>
-                )}
-                <div className="produit__nom">{produit.nom}</div>
-                {produit.description && <div className="produit__desc">{produit.description}</div>}
-                <div className="produit__pied">
-                  <span className="mini-puce">
-                    {produit.etapes.length} étape{produit.etapes.length > 1 ? 's' : ''}
-                  </span>
-                  <span className="mini-puce">{nbQuestions} questions</span>
-                </div>
-              </motion.button>
-            );
-          })}
+          {/* La carte ne porte que le nom du produit : c'est la seule
+              information dont l'opérateur a besoin pour choisir, et une tuile
+              dépouillée se repère plus vite qu'une fiche détaillée. */}
+          {filtres.map((produit, index) => (
+            <motion.button
+              key={produit.id}
+              type="button"
+              className="produit"
+              style={{ ['--accent' as string]: produit.couleur ?? 'var(--vert-600)' }}
+              onClick={() => choisir(produit)}
+              title={produit.description}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.3 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="produit__nom">{produit.nom}</span>
+            </motion.button>
+          ))}
           {filtres.length === 0 && (
             <div className="carte vide" style={{ gridColumn: '1 / -1' }}>
               Aucun produit ne correspond à « {recherche} ».

@@ -199,17 +199,8 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             />
           </div>
           <div className="admin__ligne">
-            <label>Symbole et couleur</label>
+            <label>Couleur d'accent</label>
             <div className="rangee">
-              <input
-                className="saisie saisie--compacte"
-                style={{ width: 80, textAlign: 'center' }}
-                value={produit.icone ?? ''}
-                onChange={(e) => majProduit({ icone: e.target.value })}
-                placeholder="Auto"
-                title="Laissez vide pour afficher les initiales du produit"
-                aria-label="Symbole du produit"
-              />
               <input
                 type="color"
                 className="saisie saisie--compacte"
