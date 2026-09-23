@@ -27,7 +27,7 @@ function reglagesParDefaut(): Reglages {
     nomTableReponses: 'T_Reponses',
     nomFeuilleQuestions: 'Catalogue',
     nomTableQuestions: 'T_Questions',
-    theme: 'clair',
+    theme: 'sombre',
     adminSel: sel,
     adminHash: derivation(MOT_DE_PASSE_INITIAL, sel),
     sauvegardeQuotidienne: true,

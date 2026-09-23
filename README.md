@@ -533,21 +533,30 @@ relevées directement sur les visuels du site, pas estimées à l'œil.
 
 ### Application à l'interface
 
+L'interface est bâtie sur un **canvas sombre et des surfaces claires** : le fond de page
+reprend le teal nuit d'Olmix, les cartes, champs et panneaux sont blancs et posés
+dessus. C'est ce qui donne à la fois le caractère de la charte et la lisibilité d'un
+document imprimé là où l'opérateur lit et saisit.
+
 | Élément | Couleur |
 |---|---|
-| Fond de page | `#ECF8F2` — éclairci à partir du vert clair `#BEE0CC` de la charte |
-| Cartes, champs, barre supérieure | blanc `#FFFFFF` |
-| Texte | `#01495A` — le teal profond |
-| Texte secondaire | `#375E68` |
+| Fond de page | dégradé `#04212A` → `#083C48` |
+| Cartes, champs, panneaux | blanc `#FFFFFF` |
+| Texte **sur le fond** | `#F2FBF8`, secondaire `#A3C6C9` |
+| Texte **sur les cartes** | `#01495A`, secondaire `#375E68` |
+| Grands titres | vert lumineux `#4FD08A` |
 | Bouton principal | dégradé `#186849` → `#005263`, texte blanc |
-| Surlignage des mots-clés | `#7FC79B` |
+| Barre supérieure | voile sombre translucide sur le fond |
 
-Le fond étant très clair, une carte blanche ne s'en détache plus par sa couleur
-(1,09:1) : ce sont **le filet `#B0D5C3` et l'ombre portée** qui dessinent les cartes.
-Éclaircir davantage le fond, ou affaiblir l'un des deux, ferait perdre à la page sa
-structure. Le dégradé de fond assombrit très légèrement les bords plutôt que
-d'éclaircir le centre, pour que la
-teinte perçue reste bien `#ECF8F2` sur la majeure partie de l'écran.
+**Deux contextes de texte coexistent donc**, et c'est le point structurant du fichier de
+jetons : `--texte` et `--texte-doux` portent les valeurs du canvas, et chaque surface
+claire (`.carte`, `.champ`, `.produit`, `.actions`, `.bandeau`, `.saisie`,
+`.btn--secondaire`) les redéfinit pour elle-même et sa descendance. Ces règles
+réappliquent aussi `color` : redéfinir la variable ne suffit pas, la couleur héritée du
+`body` resterait celle du canvas.
+
+Un **thème clair** reste disponible via le bouton de la barre supérieure : canvas vert
+`#BEE0CC`, mêmes cartes blanches, texte teal.
 
 Tout est déclaré dans [`src/styles/tokens.css`](src/styles/tokens.css) : **changer la
 charte ne demande de modifier que ce fichier**. Le thème sombre y est décliné à partir
@@ -581,21 +590,18 @@ logo étant monochrome, il est passé en blanc par un filtre CSS en thème sombr
 
 ### Lisibilité en atelier
 
-Une charte corporate est pensée pour un écran de bureau, pas pour un poste tactile
-sous éclairage industriel. Deux écarts assumés :
+Une charte corporate est pensée pour un écran de bureau, pas pour un poste tactile sous
+éclairage industriel. Trois écarts assumés :
 
-- **Le vert Olmix `#269755` n'est pas utilisé comme couleur de texte.** Sur blanc il
-  plafonne à 3,7:1, sous le seuil WCAG AA de 4,5:1. Il reste la couleur des aplats et
-  des tracés (seuil 3:1), et c'est le vert foncé `#186849` — lui aussi de la charte —
-  qui prend le relais dès qu'il s'agit de texte : 6,7:1.
-- **Les bordures de champ de saisie sont plus marquées que sur le site** (`#5F8890` au
-  lieu d'un filet très clair), pour atteindre les 3:1 qu'exige la délimitation d'un
-  composant de saisie (WCAG 1.4.11).
-
-La couleur d'accent d'un produit est par ailleurs recalculée dès qu'elle sert de
-couleur de **texte** (initiales sur les cartes, numéro d'étape) : assombrie en thème
-clair, éclaircie en thème sombre. Sans cela, le vert vif tombait à 2,97:1 sur sa propre
-vignette teintée, et le teal devenait invisible sur fond sombre.
+- **Le vert Olmix `#269755` n'est pas utilisé comme couleur de texte sur fond clair.**
+  Sur blanc il plafonne à 3,7:1, sous le seuil WCAG AA de 4,5:1. Il reste la couleur des
+  aplats et des tracés (seuil 3:1), et c'est le vert foncé `#186849` — lui aussi de la
+  charte — qui prend le relais dès qu'il s'agit de texte : 6,7:1.
+- **Les bordures de champ de saisie sont plus marquées que sur le site** (`#5F8890`),
+  pour atteindre les 3:1 qu'exige la délimitation d'un composant (WCAG 1.4.11).
+- **La couleur d'accent d'un produit est assombrie dès qu'elle sert de texte** (numéro
+  d'étape, vignette) : posée sur sa propre pastille teintée, la teinte brute tombait à
+  2,97:1.
 
 L'ensemble des paires couleur de texte / fond a été vérifié dans les deux thèmes :
 toutes passent AA.

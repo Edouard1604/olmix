@@ -176,11 +176,11 @@ void (async () => {
   await attendre(1600);
   await capturer(fenetre, '7-confirmation');
 
-  console.log('8. Thème sombre sur l’accueil');
+  console.log('8. Thème clair (alternative) sur l’accueil');
   await js(`document.querySelector('.confirmation .btn--principal')?.click(); true`);
   await attendre(900);
   await js(`[...document.querySelectorAll('.barre__droite .btn--fantome')][0].click(); true`);
-  await capturer(fenetre, '8-accueil-sombre');
+  await capturer(fenetre, '8-accueil-theme-clair');
 
   console.log('9. Administration');
   await js(`[...document.querySelectorAll('.barre__droite .btn--fantome')][1].click(); true`);

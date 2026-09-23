@@ -1,14 +1,18 @@
 /* ------------------------------------------------------------------ *
  * Jetons de design — charte Olmix.
  *
- * Les valeurs ci-dessous sont relevées directement sur olmix.com :
+ * Valeurs relevées sur olmix.com :
  *   #005263  teal Olmix, bouton « Contactez-nous », titres, logo
  *   #01495A  teal profond, fond de la section « Chiffres clés »
  *   #269755  vert Olmix, bouton « Rejoignez-nous »
  *   #186849  vert foncé, fond de la section végétale
- *   #23804C  vert intermédiaire du dégradé
  *   #BEE0CC  vert clair, surlignage des titres
- *   #212121  texte courant
+ *
+ * DEUX CONTEXTES DE TEXTE, et c'est la clé de ce fichier :
+ *   - le CANVAS (le fond de page, sombre)  -> texte clair ;
+ *   - les SURFACES claires posées dessus   -> texte foncé.
+ * `--texte` et `--texte-doux` portent les valeurs du canvas ; les surfaces
+ * claires les redéfinissent localement (voir global.css, « Surfaces claires »).
  *
  * Changer la charte revient à modifier ce seul fichier.
  * ------------------------------------------------------------------ */
@@ -26,12 +30,35 @@
   --marin-700: #01495a;
   --marin-600: #005263;
 
-  /* Accents clairs.
-     `--menthe-clair` doit rester distinct du fond de page, désormais lui-même
-     en #BEE0CC : c'est un vert plus soutenu. */
-  --menthe: #4fb27d;
+  /* Accents clairs */
+  --menthe: #4fd08a;
   --menthe-clair: #7fc79b;
-  --ecume: #dcf1e5;
+  --ecume: #e0f2ea;
+
+  /* ---------------- Canvas : nuit teal ---------------- */
+  --fond: #04212a;
+  --fond-degrade: radial-gradient(1400px 780px at 12% -10%, #0a3945 0%, transparent 60%),
+    radial-gradient(1100px 620px at 102% 106%, #073642 0%, transparent 58%),
+    linear-gradient(168deg, #04212a 0%, #06303a 62%, #083c48 100%);
+
+  /* Surfaces claires posées sur le canvas */
+  --surface: #ffffff;
+  --surface-2: #f5faf9;
+  --surface-3: #e9f4f2;
+  --bordure: #d3e6e4;
+  --bordure-forte: #5f8890;
+
+  /* Texte du canvas */
+  --texte: #f2fbf8;
+  --texte-doux: #a3c6c9;
+  --texte-inverse: #04212a;
+
+  /* Texte des surfaces claires */
+  --texte-sur-clair: #01495a;
+  --texte-doux-sur-clair: #375e68;
+
+  /* Couleur des grands titres, posés sur le canvas */
+  --titre-couleur: #4fd08a;
 
   /* États */
   --alerte: #b8670f;
@@ -41,63 +68,32 @@
   --erreur: #b3352a;
   --erreur-fond: #fdecea;
   --erreur-bord: #f0b2ab;
-  /* Le vert vif sert aux aplats et aux tracés (seuil 3:1) ; le vert foncé,
-     repris lui aussi de la charte, sert dès qu'il devient couleur de TEXTE,
-     où le vert vif tombe à 3,7:1 sur blanc. */
   --succes: #269755;
   --succes-texte: #186849;
   --succes-fond: #e0f0e7;
 
-  /* Surfaces — thème clair.
-     Le fond de page est le vert clair #BEE0CC de la charte (celui qui souligne
-     les mots-clés des titres du site). Les contenus reposent dessus sur des
-     cartes blanches : c'est ce contraste carte/fond qui structure la page et
-     évite l'effet d'aplat uniforme. */
-  --fond: #ecf8f2;
-  /* Le dégradé assombrit légèrement les bords au lieu d'éclaircir le centre :
-     la teinte perçue reste bien #BEE0CC sur la majeure partie de l'écran. */
-  --fond-degrade: radial-gradient(1200px 700px at 100% 108%, #daf0e6 0%, transparent 62%),
-    radial-gradient(900px 520px at -8% -10%, #def2e9 0%, transparent 55%), #ecf8f2;
-  --surface: #ffffff;
-  --surface-2: #f4faf6;
-  --surface-3: #e6f3eb;
-  /* Sur un fond presque blanc, la couleur ne sépare plus les cartes de la
-     page : ce sont le filet et l'ombre qui les tiennent. Le filet est donc
-     assez marqué pour dessiner un contour net (1,60:1 sur le blanc). */
-  --bordure: #b0d5c3;
-  --bordure-forte: #5f8890;
-
-  /* Texte */
-  --texte: #01495a;
-  --texte-doux: #375e68;
-  --texte-inverse: #ffffff;
-
-  /* Rayons, ombres, espacement */
+  /* Rayons, ombres, espacement.
+     Sur un canvas sombre, une carte claire se détache d'elle-même : les ombres
+     servent à l'ancrer, pas à la séparer. */
   --r-s: 10px;
   --r-m: 16px;
   --r-l: 22px;
   --r-xl: 28px;
-  /* Ombres renforcées pour la même raison : c'est désormais l'élévation, et
-     non la teinte, qui détache une carte de la page. */
-  --ombre-1: 0 1px 2px rgba(1, 73, 90, 0.07), 0 3px 10px rgba(1, 73, 90, 0.09);
-  --ombre-2: 0 5px 16px rgba(1, 73, 90, 0.13), 0 16px 40px rgba(1, 73, 90, 0.1);
-  --ombre-3: 0 20px 54px rgba(1, 73, 90, 0.2);
-  /* Anneau de focus en teal : lisible aussi bien sur une carte blanche que
-     sur le fond vert, ce que ne faisait pas un anneau vert. */
-  --anneau: 0 0 0 4px rgba(1, 73, 90, 0.34);
+  --ombre-1: 0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 18px rgba(0, 0, 0, 0.14);
+  --ombre-2: 0 8px 24px rgba(0, 0, 0, 0.26), 0 18px 48px rgba(0, 0, 0, 0.2);
+  --ombre-3: 0 24px 64px rgba(0, 0, 0, 0.36);
+  --anneau: 0 0 0 4px rgba(79, 208, 138, 0.42);
 
   /* Typographie.
-     Le serif éditorial de la charte est appliqué à toute l'interface, titres
-     comme texte courant. Les polices d'Olmix étant sous licence, on s'appuie
-     sur des polices présentes sur tout poste Windows : l'application doit
-     fonctionner hors connexion, sans téléchargement de fonte.
+     Le serif éditorial de la charte est appliqué à toute l'interface. Les
+     polices d'Olmix étant sous licence, on s'appuie sur des polices présentes
+     sur tout poste Windows : l'application doit fonctionner hors connexion,
+     sans téléchargement de fonte.
      Cambria passe devant Georgia : Georgia n'a que des chiffres elzéviriens
      (le 3, le 4, le 7 et le 9 descendent sous la ligne de base), ce qui gêne
      la lecture d'un relevé numérique — or c'est le cœur du métier ici.
      Cambria, livrée avec Windows depuis Vista et dessinée pour l'écran, a des
-     chiffres alignés.
-     `--police-titre` reste défini séparément pour pouvoir redonner une police
-     distincte aux titres sans toucher au reste. */
+     chiffres alignés. */
   --police: Cambria, Georgia, 'Times New Roman', serif;
   --police-titre: var(--police);
 
@@ -114,45 +110,40 @@
 
   --transition: 180ms cubic-bezier(0.2, 0.7, 0.3, 1);
 
-  /* Le logo est monochrome : en thème clair il garde sa couleur d'origine. */
-  --filtre-logo: none;
+  /* Le logo teal est illisible sur le canvas sombre : on le passe en blanc. */
+  --filtre-logo: brightness(0) invert(1);
 }
 
-[data-theme='sombre'] {
-  /* Le thème sombre est bâti sur le teal profond de la section
-     « Chiffres clés », et non sur un gris neutre. */
-  --fond: #052731;
-  --fond-degrade: radial-gradient(1100px 620px at 8% -12%, #0a3d45 0%, transparent 60%),
-    radial-gradient(900px 520px at 104% 2%, #073540 0%, transparent 55%), #052731;
-  --surface: #0a3744;
-  --surface-2: #0d404e;
-  --surface-3: #114a5a;
-  --bordure: #1b5b6c;
-  --bordure-forte: #4b97ab;
+/* ------------------------------------------------------------------ *
+ * Thème clair, en alternative : canvas vert clair de la charte, texte
+ * teal. Les surfaces restent blanches, donc leur texte ne change pas.
+ * ------------------------------------------------------------------ */
 
-  --texte: #e9f2f3;
-  --texte-doux: #9cbac0;
+[data-theme='clair'] {
+  --fond: #bee0cc;
+  --fond-degrade: radial-gradient(1200px 700px at 100% 108%, #afd8bf 0%, transparent 62%),
+    radial-gradient(900px 520px at -8% -10%, #b3dac2 0%, transparent 55%), #bee0cc;
 
-  --menthe: #7fcda2;
-  --ecume: #114a5a;
+  --surface: #ffffff;
+  --surface-2: #f4faf6;
+  --surface-3: #e6f3eb;
+  --bordure: #c3e0d2;
+  --bordure-forte: #5f8890;
 
-  --alerte-fond: #3a2a13;
-  --alerte-bord: #7a5520;
-  --alerte-texte: #f0c48a;
-  --erreur: #e8796c;
-  --erreur-fond: #3d1d19;
-  --erreur-bord: #7d3229;
-  --succes: #4fbd7c;
-  --succes-texte: #6fd396;
-  --succes-fond: #0f3f33;
+  --texte: var(--texte-sur-clair);
+  --texte-doux: var(--texte-doux-sur-clair);
+  --texte-inverse: #ffffff;
 
-  --ombre-1: 0 1px 2px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.26);
-  --ombre-2: 0 6px 18px rgba(0, 0, 0, 0.4);
-  --ombre-3: 0 22px 60px rgba(0, 0, 0, 0.52);
-  --anneau: 0 0 0 4px rgba(111, 193, 148, 0.34);
+  --titre-couleur: #005263;
+  --menthe: #4fb27d;
+  --ecume: #dcf1e5;
 
-  /* Le logo teal deviendrait illisible sur fond sombre : on le passe en blanc. */
-  --filtre-logo: brightness(0) invert(1);
+  --ombre-1: 0 1px 2px rgba(1, 73, 90, 0.07), 0 3px 10px rgba(1, 73, 90, 0.09);
+  --ombre-2: 0 5px 16px rgba(1, 73, 90, 0.13), 0 16px 40px rgba(1, 73, 90, 0.1);
+  --ombre-3: 0 20px 54px rgba(1, 73, 90, 0.2);
+  --anneau: 0 0 0 4px rgba(1, 73, 90, 0.34);
+
+  --filtre-logo: none;
 }
 
 /* Respect du réglage système « animations réduites ». */
