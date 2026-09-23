@@ -53,17 +53,18 @@
      les mots-clés des titres du site). Les contenus reposent dessus sur des
      cartes blanches : c'est ce contraste carte/fond qui structure la page et
      évite l'effet d'aplat uniforme. */
-  --fond: #d4ede0;
+  --fond: #ecf8f2;
   /* Le dégradé assombrit légèrement les bords au lieu d'éclaircir le centre :
      la teinte perçue reste bien #BEE0CC sur la majeure partie de l'écran. */
-  --fond-degrade: radial-gradient(1200px 700px at 100% 108%, #c4e5d4 0%, transparent 62%),
-    radial-gradient(900px 520px at -8% -10%, #c8e7d7 0%, transparent 55%), #d4ede0;
+  --fond-degrade: radial-gradient(1200px 700px at 100% 108%, #daf0e6 0%, transparent 62%),
+    radial-gradient(900px 520px at -8% -10%, #def2e9 0%, transparent 55%), #ecf8f2;
   --surface: #ffffff;
   --surface-2: #f4faf6;
   --surface-3: #e6f3eb;
-  /* Un peu plus présent que le fond, sinon le filet des cartes blanches s'y
-     confondrait. */
-  --bordure: #c3e0d2;
+  /* Sur un fond presque blanc, la couleur ne sépare plus les cartes de la
+     page : ce sont le filet et l'ombre qui les tiennent. Le filet est donc
+     assez marqué pour dessiner un contour net (1,60:1 sur le blanc). */
+  --bordure: #b0d5c3;
   --bordure-forte: #5f8890;
 
   /* Texte */
@@ -76,9 +77,11 @@
   --r-m: 16px;
   --r-l: 22px;
   --r-xl: 28px;
-  --ombre-1: 0 1px 2px rgba(0, 82, 99, 0.06), 0 2px 8px rgba(0, 82, 99, 0.05);
-  --ombre-2: 0 4px 14px rgba(0, 82, 99, 0.1), 0 14px 38px rgba(0, 82, 99, 0.07);
-  --ombre-3: 0 18px 50px rgba(0, 82, 99, 0.17);
+  /* Ombres renforcées pour la même raison : c'est désormais l'élévation, et
+     non la teinte, qui détache une carte de la page. */
+  --ombre-1: 0 1px 2px rgba(1, 73, 90, 0.07), 0 3px 10px rgba(1, 73, 90, 0.09);
+  --ombre-2: 0 5px 16px rgba(1, 73, 90, 0.13), 0 16px 40px rgba(1, 73, 90, 0.1);
+  --ombre-3: 0 20px 54px rgba(1, 73, 90, 0.2);
   /* Anneau de focus en teal : lisible aussi bien sur une carte blanche que
      sur le fond vert, ce que ne faisait pas un anneau vert. */
   --anneau: 0 0 0 4px rgba(1, 73, 90, 0.34);

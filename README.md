@@ -535,17 +535,19 @@ relevées directement sur les visuels du site, pas estimées à l'œil.
 
 | Élément | Couleur |
 |---|---|
-| Fond de page | `#D4EDE0` — éclairci à partir du vert clair `#BEE0CC` de la charte |
+| Fond de page | `#ECF8F2` — éclairci à partir du vert clair `#BEE0CC` de la charte |
 | Cartes, champs, barre supérieure | blanc `#FFFFFF` |
 | Texte | `#01495A` — le teal profond |
 | Texte secondaire | `#375E68` |
 | Bouton principal | dégradé `#186849` → `#005263`, texte blanc |
 | Surlignage des mots-clés | `#7FC79B` |
 
-C'est le contraste **carte blanche sur fond vert** qui structure la page : sans lui, un
-aplat vert uniforme aplatit la hiérarchie et fatigue à l'usage. Le dégradé de fond
-assombrit très légèrement les bords plutôt que d'éclaircir le centre, pour que la
-teinte perçue reste bien `#D4EDE0` sur la majeure partie de l'écran.
+Le fond étant très clair, une carte blanche ne s'en détache plus par sa couleur
+(1,09:1) : ce sont **le filet `#B0D5C3` et l'ombre portée** qui dessinent les cartes.
+Éclaircir davantage le fond, ou affaiblir l'un des deux, ferait perdre à la page sa
+structure. Le dégradé de fond assombrit très légèrement les bords plutôt que
+d'éclaircir le centre, pour que la
+teinte perçue reste bien `#ECF8F2` sur la majeure partie de l'écran.
 
 Tout est déclaré dans [`src/styles/tokens.css`](src/styles/tokens.css) : **changer la
 charte ne demande de modifier que ce fichier**. Le thème sombre y est décliné à partir
