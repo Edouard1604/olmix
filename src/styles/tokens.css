@@ -53,15 +53,17 @@
      les mots-clés des titres du site). Les contenus reposent dessus sur des
      cartes blanches : c'est ce contraste carte/fond qui structure la page et
      évite l'effet d'aplat uniforme. */
-  --fond: #bee0cc;
+  --fond: #d4ede0;
   /* Le dégradé assombrit légèrement les bords au lieu d'éclaircir le centre :
      la teinte perçue reste bien #BEE0CC sur la majeure partie de l'écran. */
-  --fond-degrade: radial-gradient(1200px 700px at 100% 108%, #afd8bf 0%, transparent 62%),
-    radial-gradient(900px 520px at -8% -10%, #b3dac2 0%, transparent 55%), #bee0cc;
+  --fond-degrade: radial-gradient(1200px 700px at 100% 108%, #c4e5d4 0%, transparent 62%),
+    radial-gradient(900px 520px at -8% -10%, #c8e7d7 0%, transparent 55%), #d4ede0;
   --surface: #ffffff;
   --surface-2: #f4faf6;
   --surface-3: #e6f3eb;
-  --bordure: #cbe4d6;
+  /* Un peu plus présent que le fond, sinon le filet des cartes blanches s'y
+     confondrait. */
+  --bordure: #c3e0d2;
   --bordure-forte: #5f8890;
 
   /* Texte */

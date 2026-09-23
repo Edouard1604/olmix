@@ -535,7 +535,7 @@ relevées directement sur les visuels du site, pas estimées à l'œil.
 
 | Élément | Couleur |
 |---|---|
-| Fond de page | `#BEE0CC` — le vert clair de la charte |
+| Fond de page | `#D4EDE0` — éclairci à partir du vert clair `#BEE0CC` de la charte |
 | Cartes, champs, barre supérieure | blanc `#FFFFFF` |
 | Texte | `#01495A` — le teal profond |
 | Texte secondaire | `#375E68` |
@@ -545,7 +545,7 @@ relevées directement sur les visuels du site, pas estimées à l'œil.
 C'est le contraste **carte blanche sur fond vert** qui structure la page : sans lui, un
 aplat vert uniforme aplatit la hiérarchie et fatigue à l'usage. Le dégradé de fond
 assombrit très légèrement les bords plutôt que d'éclaircir le centre, pour que la
-teinte perçue reste bien `#BEE0CC` sur la majeure partie de l'écran.
+teinte perçue reste bien `#D4EDE0` sur la majeure partie de l'écran.
 
 Tout est déclaré dans [`src/styles/tokens.css`](src/styles/tokens.css) : **changer la
 charte ne demande de modifier que ce fichier**. Le thème sombre y est décliné à partir
