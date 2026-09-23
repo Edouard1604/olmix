@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { duree, ease, transitionAdaptee, useAnimationsReduites } from '../lib/motion';
 
 export default function Bandeau({
   ton = 'info',
@@ -17,11 +18,13 @@ export default function Bandeau({
   actions?: ReactNode;
 }) {
   const icones = { info: 'ℹ️', alerte: '⚠️', erreur: '⛔', succes: '✅' } as const;
+  const reduit = useAnimationsReduites();
   return (
     <motion.div
       className={`bandeau${ton === 'info' ? '' : ` bandeau--${ton}`}`}
-      initial={{ opacity: 0, y: -8 }}
+      initial={{ opacity: 0, y: reduit ? 0 : -8 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={transitionAdaptee(reduit, { duration: duree.base, ease: ease.out })}
     >
       <span className="bandeau__icone" aria-hidden>
         {icone ?? icones[ton]}

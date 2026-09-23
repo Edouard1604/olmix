@@ -10,6 +10,10 @@ import os from 'node:os';
 import path from 'node:path';
 
 app.commandLine.appendSwitch('lang', 'fr-FR');
+// Une fenetre masquee par d'autres ne doit pas voir ses animations ralenties :
+// les captures d'animation (splash, compteurs) seraient faussees.
+app.commandLine.appendSwitch('disable-features', 'CalculateNativeWinOcclusion');
+app.commandLine.appendSwitch('disable-renderer-backgrounding');
 
 const racineProjet = process.env.OLMIX_RACINE!;
 const bac = fs.mkdtempSync(path.join(os.tmpdir(), 'olmix-capture-'));
@@ -58,7 +62,8 @@ window.__t = {
     return Math.round(((Number(m[1]) + Number(m[2])) / 2) * 10) / 10;
   },
   remplirEtape() {
-    for (const champ of document.querySelectorAll('.champ')) {
+    // L'etape qui sort (inert) est ignoree : seule l'etape affichee est remplie.
+    for (const champ of document.querySelectorAll('.etape:not([inert]) .champ')) {
       const nombre = champ.querySelector('.champ-nombre input');
       if (nombre) { this.ecrire(nombre, String(this.nombreDe(champ))); continue; }
       const select = champ.querySelector('select.saisie');
@@ -86,8 +91,12 @@ true`;
 
 const attendre = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function capturer(fenetre: BrowserWindow, nom: string): Promise<void> {
-  await attendre(700);
+/** Les animations (cascades, compteurs d'environ 1,2 s) doivent etre terminees. */
+async function capturer(fenetre: BrowserWindow, nom: string, attente = 1600): Promise<void> {
+  await attendre(attente);
+  // Sans cela, une fenetre en arriere-plan peut rendre une image perimee.
+  fenetre.webContents.invalidate();
+  await attendre(120);
   const image = await fenetre.webContents.capturePage();
   const fichier = path.join(dossierCaptures, `${nom}.png`);
   fs.writeFileSync(fichier, image.toPNG());
@@ -113,10 +122,15 @@ void (async () => {
       preload: path.join(racineProjet, 'dist', 'electron', 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      backgroundThrottling: false,
     },
   });
+  fenetre.moveTop();
+  fenetre.focus();
   await fenetre.loadFile(path.join(racineProjet, 'dist', 'renderer', 'index.html'));
-  await attendre(1200);
+  console.log('0. Ouverture (mini-splash)');
+  await capturer(fenetre, '0-splash', 750);
+  await attendre(1500);
   const js = async (code: string) => {
     try {
       return await fenetre.webContents.executeJavaScript(code);
@@ -146,19 +160,26 @@ void (async () => {
   await js(`__t.remplirEtape(); true`);
   await capturer(fenetre, '4-etape-remplie');
 
+  const basculerTheme = () => js(`document.querySelector('.barre__droite .btn--theme').click(); true`);
+
+  console.log('4b. Étape remplie — thème sombre');
+  await basculerTheme();
+  await capturer(fenetre, '4b-etape-remplie-sombre', 900);
+  await basculerTheme();
+
   console.log('5. Valeur hors bornes → commentaire exigé');
   await js(`__t.suivant(); true`);
   await attendre(500);
   await js(`__t.remplirEtape(); true`);
   await attendre(300);
   await js(`(() => {
-    const champ = [...document.querySelectorAll('.champ')].find(c => c.querySelector('.champ-nombre input'));
+    const champ = [...document.querySelectorAll('.etape:not([inert]) .champ')].find(c => c.querySelector('.champ-nombre input'));
     __t.ecrire(champ.querySelector('.champ-nombre input'), '9999'); return true; })()`);
   await capturer(fenetre, '5-hors-bornes');
 
   console.log('6. Parcours jusqu’au récapitulatif');
   await js(`(() => {
-    const zone = [...document.querySelectorAll('.champ textarea')][0];
+    const zone = [...document.querySelectorAll('.etape:not([inert]) .champ textarea')][0];
     if (zone) __t.ecrire(zone, 'Consigne relevée par le chef d’équipe.'); return true; })()`);
   for (let i = 0; i < 8; i += 1) {
     const surRecap = await js(`!!document.querySelector('.recap__bloc')`);
@@ -169,21 +190,30 @@ void (async () => {
     await attendre(460);
   }
   await js('(() => { document.querySelector(".ecran").scrollTop = 0; return true; })()');
-  await capturer(fenetre, '6-recapitulatif');
+  await capturer(fenetre, '6-recapitulatif', 2200);
+
+  console.log('6b. Récapitulatif — thème sombre');
+  await basculerTheme();
+  await capturer(fenetre, '6b-recapitulatif-sombre', 900);
+  await basculerTheme();
 
   console.log('7. Confirmation');
   await js(`[...document.querySelectorAll('.actions .btn--principal')].pop().click(); true`);
-  await attendre(1600);
-  await capturer(fenetre, '7-confirmation');
+  await capturer(fenetre, '7-confirmation', 2600);
+
+  console.log('7b. Confirmation — thème sombre');
+  await basculerTheme();
+  await capturer(fenetre, '7b-confirmation-sombre', 700);
+  await basculerTheme();
 
   console.log('8. Thème sombre sur l’accueil');
   await js(`document.querySelector('.confirmation .btn--principal')?.click(); true`);
   await attendre(900);
-  await js(`[...document.querySelectorAll('.barre__droite .btn--fantome')][0].click(); true`);
-  await capturer(fenetre, '8-accueil-sombre');
+  await basculerTheme();
+  await capturer(fenetre, '8-accueil-sombre', 2200);
 
   console.log('9. Administration');
-  await js(`[...document.querySelectorAll('.barre__droite .btn--fantome')][1].click(); true`);
+  await js(`document.querySelector('.barre__droite .btn--admin').click(); true`);
   await attendre(800);
   await js(`(() => {
     __t.ecrire(document.querySelector('.connexion input'), 'olmix');
@@ -196,7 +226,38 @@ void (async () => {
   await js(`[...document.querySelectorAll('.btn')].find(b => b.textContent.includes('Diagnostic'))?.click(); true`);
   await capturer(fenetre, '10-admin-diagnostic');
 
+  console.log('11. Réglages (animations réduites)');
+  await js(`[...document.querySelectorAll('.btn')].find(b => b.textContent.includes('Réglages'))?.click(); true`);
+  await attendre(600);
+  await js(`document.getElementById('r-animations')?.scrollIntoView({ block: 'center' }); true`);
+  await capturer(fenetre, '11-admin-reglages', 600);
+
+  console.log('12. Accueil — animations réduites (prefers-reduced-motion émulé)');
+  await js(`[...document.querySelectorAll('.btn')].find(b => b.textContent.includes('Retour à la saisie'))?.click(); true`);
+  await basculerTheme();
+  fenetre.webContents.debugger.attach();
+  await fenetre.webContents.debugger.sendCommand('Emulation.setEmulatedMedia', {
+    features: [{ name: 'prefers-reduced-motion', value: 'reduce' }],
+  });
+  await capturer(fenetre, '12-accueil-animations-reduites', 700);
+  // En mode réduit, rien ne doit rester invisible : le décoratif est coupé,
+  // pas le contenu.
+  const invisibles = await js(`[...document.querySelectorAll('.grille-produits__cellule, .accueil__entete, .accueil__identite')]
+    .filter(e => Number(getComputedStyle(e).opacity) < 0.99).length`);
+  const mode = await js(`document.documentElement.dataset.mouvement`);
+  console.log(`  mode = ${mode}, éléments encore invisibles : ${invisibles}`);
+  if (mode !== 'reduit' || invisibles !== 0) {
+    console.error('  Échec : le mode « animations réduites » ne s’applique pas correctement.');
+    app.exit(1);
+    return;
+  }
+
   console.log('\nCaptures terminées.');
-  fs.rmSync(bac, { recursive: true, force: true });
+  try {
+    fs.rmSync(bac, { recursive: true, force: true });
+  } catch {
+    // Windows : le cache GPU d'Electron reste verrouille tant que le
+    // processus vit ; le dossier temporaire sera purge par le systeme.
+  }
   app.exit(0);
 })();

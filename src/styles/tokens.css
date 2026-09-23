@@ -1,110 +1,219 @@
 /* ------------------------------------------------------------------ *
- * Jetons de design — palette inspiree du vegetal et du marin.
- * Toutes les couleurs sont declarees ici : changer la charte revient a
- * modifier ce seul fichier.
+ * Jetons de design — identité Olmix (relevée sur olmix.com).
+ *
+ * « Nature & science » : pétrole profond, vert végétal, beaucoup de
+ * blanc, titres serif jamais gras, boutons en pilule, ombres très
+ * douces. Toutes les couleurs sont déclarées ici : changer la charte
+ * revient à modifier ce seul fichier.
+ *
+ * Les polices sont embarquées (paquets @fontsource copiés dans dist/ au
+ * build) : aucune requête réseau, la CSP font-src 'self' est respectée.
  * ------------------------------------------------------------------ */
 
+@import '@fontsource/libre-baskerville/latin-400.css';
+@import '@fontsource/plus-jakarta-sans/latin-400.css';
+@import '@fontsource/plus-jakarta-sans/latin-500.css';
+@import '@fontsource/plus-jakarta-sans/latin-600.css';
+@import '@fontsource/plus-jakarta-sans/latin-700.css';
+@import '@fontsource/plus-jakarta-sans/latin-800.css';
+
 :root {
-  /* Verts profonds */
-  --vert-900: #093d33;
-  --vert-800: #0f5e4e;
-  --vert-700: #167a63;
-  --vert-600: #1f8a70;
-  --vert-500: #2fa387;
+  /* --- Palette de marque ------------------------------------------ */
+  --olmix-petrole: #005263;
+  --olmix-vert: #269756;
+  --olmix-bleu: #007797;
+  --olmix-brume: #b1c9cf;
+  --olmix-sauge: #808d88;
+  --olmix-texte: #212121;
+  --olmix-blanc: #ffffff;
+  --olmix-degrade-1: linear-gradient(to right, #269756, #005263);
+  --olmix-degrade-2: linear-gradient(to right, #808d88, #007797);
+  --olmix-surlignage: rgba(38, 151, 86, 0.3);
+  /* Dégradé des boutons et jauges (redéfini en sombre pour ne pas se
+     fondre dans le fond pétrole). */
+  --degrade-signature: var(--olmix-degrade-1);
 
-  /* Bleus-verts marins */
-  --marin-800: #0e4a5a;
-  --marin-700: #135f73;
-  --marin-600: #1d6f8c;
+  /* Déclinaisons calculées pour le contraste (AA sur blanc). Le vert de
+     marque (3,8:1) reste réservé aux aplats, traits et grands textes ;
+     le petit texte vert utilise --olmix-vert-texte (5,3:1). */
+  --olmix-vert-texte: #1e7b46;
+  --olmix-vert-pale: #e9f5ee;
+  --olmix-petrole-profond: #003b47;
+  --olmix-petrole-pale: #eaf2f4;
+  --olmix-sauge-texte: #5b6863;
 
-  /* Accents lumineux */
-  --menthe: #4dd0a7;
-  --menthe-clair: #a8efd5;
-  --ecume: #d8f5ea;
+  /* --- Codes couleur métier (intouchables) ------------------------ *
+   * Orange = valeur hors bornes (commentaire exigé).
+   * Rouge  = réponse obligatoire manquante / erreur.
+   * Volontairement éloignés du vert de marque, en teinte et en valeur. */
+  --alerte-orange: #c26a00;
+  --alerte-orange-fond: #fff4e5;
+  --alerte-orange-bord: #f0c483;
+  --alerte-orange-texte: #7a4200;
+  --erreur-rouge: #c0261f;
+  --erreur-rouge-fond: #fdf0ef;
+  --erreur-rouge-bord: #efb9b4;
 
-  /* Etats */
-  --alerte: #d9822b;
-  --alerte-fond: #fdf2e3;
-  --alerte-bord: #f0c48a;
-  --erreur: #c0392b;
-  --erreur-fond: #fdecea;
-  --erreur-bord: #f1b0a9;
-  --succes: #1f8a70;
-  --succes-fond: #e6f6f1;
+  /* --- Rôles sémantiques (utilisés par les composants) ------------- */
+  --alerte: var(--alerte-orange);
+  --alerte-fond: var(--alerte-orange-fond);
+  --alerte-bord: var(--alerte-orange-bord);
+  --alerte-texte: var(--alerte-orange-texte);
+  --erreur: var(--erreur-rouge);
+  --erreur-fond: var(--erreur-rouge-fond);
+  --erreur-bord: var(--erreur-rouge-bord);
+  --succes: var(--olmix-vert);
+  --succes-texte: var(--olmix-vert-texte);
+  --succes-fond: var(--olmix-vert-pale);
 
-  /* Surfaces — theme clair */
-  --fond: #f1f6f4;
-  --fond-degrade: radial-gradient(1200px 600px at 12% -8%, #e2f2ec 0%, transparent 60%),
-    radial-gradient(900px 500px at 105% 10%, #dceef3 0%, transparent 55%), #f1f6f4;
+  --titre: var(--olmix-petrole);
+  --lien: var(--olmix-bleu);
+  --focus: var(--olmix-bleu);
+  --accent: var(--olmix-vert);
+
+  /* Alias historiques, conservés pour les écrans d'administration. */
+  --vert-600: var(--olmix-vert);
+  --vert-700: var(--olmix-petrole);
+  --vert-800: var(--olmix-petrole-profond);
+  --marin-600: var(--olmix-bleu);
+  --ecume: var(--olmix-vert-pale);
+
+  /* --- Surfaces — thème clair -------------------------------------- */
+  --fond: #f6f9f9;
+  --fond-degrade: linear-gradient(180deg, #ffffff 0%, #f3f7f7 100%);
   --surface: #ffffff;
-  --surface-2: #f7faf9;
-  --surface-3: #eef4f2;
-  --bordure: #d9e5e1;
-  --bordure-forte: #b9cfc8;
+  --surface-2: #f7fafa;
+  --surface-3: #edf3f4;
+  --bordure: #d8e4e7;
+  --bordure-forte: var(--olmix-brume);
+  --saisie-fond: #fbfdfd;
 
-  /* Texte */
-  --texte: #10221e;
-  --texte-doux: #4f6862;
+  /* Section « chiffres clés » : fond pétrole dans les deux thèmes. */
+  --chiffres-fond: var(--olmix-petrole);
+  --chiffres-bord: rgba(255, 255, 255, 0.22);
+  --chiffres-sous-titre: #7fdca5;
+  --chiffres-texte: #ffffff;
+  --chiffres-doux: rgba(255, 255, 255, 0.78);
+
+  /* Filigrane végétal de l'accueil */
+  --filigrane: var(--olmix-brume);
+  --filigrane-opacite: 0.42;
+
+  /* --- Texte ------------------------------------------------------- */
+  --texte: var(--olmix-texte);
+  --texte-doux: #4f5d59;
+  --texte-tenu: var(--olmix-sauge-texte);
   --texte-inverse: #ffffff;
 
-  /* Rayons, ombres, espacement */
+  /* --- Rayons ------------------------------------------------------ */
   --r-s: 10px;
-  --r-m: 16px;
-  --r-l: 22px;
-  --r-xl: 28px;
-  --ombre-1: 0 1px 2px rgba(9, 61, 51, 0.06), 0 2px 8px rgba(9, 61, 51, 0.05);
-  --ombre-2: 0 4px 14px rgba(9, 61, 51, 0.09), 0 14px 38px rgba(9, 61, 51, 0.07);
-  --ombre-3: 0 18px 50px rgba(9, 61, 51, 0.16);
-  --anneau: 0 0 0 4px rgba(77, 208, 167, 0.35);
+  --r-m: 14px;
+  --r-l: 18px;
+  --r-xl: 22px;
+  --r-pilule: 200px;
 
-  /* Typographie — volontairement grande pour la lecture en atelier */
-  --police: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  /* --- Ombres : très douces, légèrement teintées pétrole ----------- */
+  --ombre-1: 0 1px 2px rgba(0, 59, 71, 0.05), 0 2px 8px rgba(0, 59, 71, 0.04);
+  --ombre-2: 0 2px 6px rgba(0, 59, 71, 0.06), 0 12px 28px rgba(0, 59, 71, 0.08);
+  --ombre-3: 0 4px 12px rgba(0, 59, 71, 0.08), 0 24px 48px rgba(0, 59, 71, 0.14);
+  --ombre-interne: inset 0 1px 2px rgba(0, 59, 71, 0.04);
+  --anneau: 0 0 0 3px rgba(0, 119, 151, 0.22);
+  --anneau-erreur: 0 0 0 3px rgba(192, 38, 31, 0.18);
+
+  /* --- Typographie ------------------------------------------------- *
+   * Titres : Libre Baskerville 400 — jamais en gras, réservée aux
+   * titres ≥ 24 px. Tout le reste : Plus Jakarta Sans.               */
+  --police: 'Plus Jakarta Sans', 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --police-titre: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+
+  --t-micro: 0.75rem;
   --t-xs: 0.8125rem;
   --t-s: 0.9375rem;
   --t-m: 1.0625rem;
-  --t-l: 1.25rem;
+  --t-l: 1.25rem; /* texte de saisie : 20 px minimum */
   --t-xl: 1.5rem;
-  --t-2xl: 2rem;
-  --t-3xl: 2.75rem;
+  --t-2xl: 1.875rem;
+  --t-3xl: 2.625rem;
 
-  /* Cible tactile minimale (recommandation d'ergonomie : 48 px) */
+  --ls-titre: -0.01em;
+  --ls-sous-titre: -0.006em;
+  --ls-micro: 0.08em;
+
+  /* --- Rythme d'espacement (base 4) -------------------------------- */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 20px;
+  --e-6: 24px;
+  --e-8: 32px;
+  --e-10: 40px;
+  --e-12: 48px;
+
+  /* Cibles tactiles : 48 px minimum, 64 px pour les boutons principaux. */
   --cible: 56px;
+  --cible-grande: 64px;
 
-  --transition: 180ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  /* --- Mouvement (courbes relevées sur olmix.com) ------------------ */
+  --ease-out: cubic-bezier(0.3, 1, 0.3, 1);
+  --ease-doux: cubic-bezier(0.25, 1, 0.33, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --transition: 200ms var(--ease-doux);
+  --transition-lent: 650ms var(--ease-out);
 }
+
+/* ------------------------------------------------------------------ *
+ * Thème sombre — pétrole très profond. Le vert est éclairci pour garder
+ * le contraste ; l'orange et le rouge restent chauds et distincts.
+ * ------------------------------------------------------------------ */
 
 [data-theme='sombre'] {
-  --fond: #0b1a18;
-  --fond-degrade: radial-gradient(1100px 600px at 10% -10%, #10302b 0%, transparent 60%),
-    radial-gradient(900px 500px at 105% 5%, #0f2c35 0%, transparent 55%), #0b1a18;
-  --surface: #122724;
-  --surface-2: #16302c;
-  --surface-3: #1b3a35;
-  --bordure: #25443e;
-  --bordure-forte: #35625a;
+  --olmix-vert-texte: #4fd08a;
+  --olmix-vert-pale: #0d3f35;
+  --olmix-petrole-pale: #0c4350;
 
-  --texte: #e8f4f0;
-  --texte-doux: #9dbab2;
+  --alerte-orange: #f0a13a;
+  --alerte-orange-fond: #33260f;
+  --alerte-orange-bord: #7a5520;
+  --alerte-orange-texte: #ffc56e;
+  --erreur-rouge: #ff7d73;
+  --erreur-rouge-fond: #3a1a1c;
+  --erreur-rouge-bord: #7d3434;
 
-  --ecume: #17403a;
-  --alerte-fond: #3a2a13;
-  --alerte-bord: #7a5520;
-  --erreur-fond: #3b1d19;
-  --erreur-bord: #7d3229;
-  --succes-fond: #113a31;
+  --olmix-surlignage: rgba(60, 196, 122, 0.34);
+  --degrade-signature: linear-gradient(to right, #269756, #0b6f84);
 
-  --ombre-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
-  --ombre-2: 0 6px 18px rgba(0, 0, 0, 0.38);
-  --ombre-3: 0 22px 60px rgba(0, 0, 0, 0.5);
-}
+  --succes: #3cc47a;
+  --titre: #d7eef2;
+  --lien: #5cc2dd;
+  --focus: #5cc2dd;
+  --accent: #3cc47a;
+  --vert-600: #3cc47a;
+  --vert-700: #1a8a8f;
 
-/* Respect du reglage systeme « animations reduites ». */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
+  --fond: #04232b;
+  --fond-degrade: linear-gradient(180deg, #062f38 0%, #04232b 100%);
+  --surface: #0a3a45;
+  --surface-2: #0c404c;
+  --surface-3: #104a57;
+  --bordure: rgba(255, 255, 255, 0.15);
+  --bordure-forte: rgba(255, 255, 255, 0.26);
+  --saisie-fond: #062f38;
+
+  --chiffres-fond: #062f38;
+  --chiffres-bord: rgba(255, 255, 255, 0.18);
+
+  --filigrane: #7fb3bd;
+  --filigrane-opacite: 0.12;
+
+  --texte: #f2f7f8;
+  --texte-doux: #b5cacf;
+  --texte-tenu: #93adb3;
+
+  --ombre-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.18);
+  --ombre-2: 0 2px 6px rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.3);
+  --ombre-3: 0 4px 12px rgba(0, 0, 0, 0.4), 0 24px 48px rgba(0, 0, 0, 0.45);
+  --ombre-interne: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  --anneau: 0 0 0 3px rgba(92, 194, 221, 0.3);
+  --anneau-erreur: 0 0 0 3px rgba(255, 125, 115, 0.25);
 }

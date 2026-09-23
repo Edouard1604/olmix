@@ -76,7 +76,29 @@ n'écrase jamais la configuration de l'atelier.
 
 ## 3. Installation pour le développement
 
-Prérequis : **Node.js 20 ou plus**.
+Prérequis : **Node.js 20 ou plus** ([nodejs.org](https://nodejs.org), version LTS).
+
+### Le plus simple : depuis l'Explorateur Windows
+
+Deux fichiers sont fournis à la racine du projet, à **double-cliquer** :
+
+| Fichier | Effet |
+|---|---|
+| `Lancer-application.bat` | installe les dépendances au premier lancement, puis démarre l'application |
+| `Creer-executable.bat` | fabrique l'installeur `.exe` dans `release\` et ouvre le dossier |
+
+Une fenêtre noire s'ouvre et reste ouverte pendant l'utilisation : la fermer arrête
+l'application.
+
+> Windows peut afficher « Windows a protégé votre ordinateur » au premier double-clic
+> sur un `.bat` provenant d'un téléchargement. Cliquer sur **Informations
+> complémentaires** puis **Exécuter quand même**.
+
+### En ligne de commande
+
+Depuis l'Explorateur : ouvrir le dossier du projet, cliquer dans la **barre d'adresse**,
+taper `cmd` et valider — l'invite de commandes s'ouvre déjà positionnée dans le dossier.
+Puis :
 
 ```bash
 npm install          # installe les dépendances
@@ -445,10 +467,17 @@ shared/                      Code partagé interface ↔ processus principal
 src/                         Interface React
   App.tsx                    Orchestration, thème, transitions
   screens/                   Accueil, Formulaire, Récapitulatif, Confirmation, Admin
-  components/                Cartographie, barre supérieure, indicateur de sync, champs
+  components/                Cartographie, barre supérieure, indicateur de sync, champs,
+                             section « chiffres clés »
+  components/motion/         Apparition, Cascade, Compteur, TraitDessine, Surlignage,
+                             Scene (transitions), MotifPousse, Splash, LogoOlmix
+  lib/motion.ts              Courbes, durées, réglage « Animations réduites »
   state/useSession.ts        État de la saisie en cours
-  styles/tokens.css          Palette et typographie — un seul fichier à modifier
+  styles/tokens.css          Palette Olmix et typographie — un seul fichier à modifier
+  assets/                    Logo officiel (tout .svg ou .png dont le nom contient « logo »)
 
+Lancer-application.bat       Double-clic : installe si besoin, puis démarre
+Creer-executable.bat         Double-clic : fabrique l'installeur .exe
 config/produits.example.json Configuration d'exemple (2 produits)
 exemples/                    Classeur Excel d'exemple pré-rempli
 scripts/                     Build du processus principal, test e2e, générateurs
@@ -458,6 +487,27 @@ Les règles de saisie de `shared/validation.ts` sont appliquées **deux fois** :
 l'interface pour le retour immédiat, et par le processus principal avant écriture. Une
 saisie invalide ne peut donc pas atteindre le classeur, même si l'interface était
 contournée.
+
+### Charte graphique et animations
+
+L'interface reprend l'identité d'olmix.com : pétrole `#005263`, vert `#269756`,
+titres en **Libre Baskerville** (jamais en gras, réservée aux titres ≥ 24 px), tout le
+reste en **Plus Jakarta Sans**. Les deux polices sont embarquées (`@fontsource`), donc
+aucune requête réseau à l'exécution.
+
+- **Couleurs métier inchangées** : orange = valeur hors bornes (commentaire exigé),
+  rouge = réponse manquante ou erreur. Le « Non » d'une question oui/non est en
+  pétrole, pour que le rouge reste réservé aux erreurs.
+- **Animations** (framer-motion + CSS) : apparitions en cascade, compteurs, traits qui
+  se dessinent, transitions d'étapes en chevauchement. Aucune ne bloque la saisie :
+  les champs et boutons restent actifs, et l'écran qui sort devient `inert`.
+- **Animations réduites** : ⚙️ → Réglages → Affichage, ou le réglage
+  « animations réduites » de Windows. Le décoratif est coupé ; seuls restent des fondus
+  de 150 ms.
+- **Logo** : fichier officiel dans `src/assets/` (actuellement
+  `Logo-olmix-Animal-Care-300-dpi.png`). Tout fichier .svg ou .png dont le nom contient
+  « logo » est pris en compte après recompilation, le SVG étant préféré. En thème
+  sombre, il est affiché en blanc.
 
 ---
 
@@ -474,3 +524,5 @@ l'application et la parcourt comme le ferait un opérateur.
 | *Valeur hors plage : alerte orange et commentaire exigé* | *Récapitulatif, modifiable étape par étape* |
 | ![Confirmation](captures/7-confirmation.png) | ![Administration](captures/9-admin-produits.png) |
 | *Confirmation horodatée et état de l'export* | *Mode administrateur, thème sombre* |
+| ![Formulaire sombre](captures/4b-etape-remplie-sombre.png) | ![Récapitulatif sombre](captures/6b-recapitulatif-sombre.png) |
+| *Formulaire et cartographie, thème sombre* | *Chiffres clés du récapitulatif, thème sombre* |

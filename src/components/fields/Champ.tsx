@@ -10,9 +10,11 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import type { OptionQuestion, Question, ValeurReponse } from '@shared/types';
 import { estHorsBornes, estVide, libelleBornes, type ProblemeChamp } from '@shared/validation';
+import { duree, ease, FONDU_REDUIT, transitionAdaptee, useAnimationsReduites } from '../../lib/motion';
+import TraitDessine from '../motion/TraitDessine';
 
 interface ProprietesChamp {
   question: Question;
@@ -21,9 +23,17 @@ interface ProprietesChamp {
   probleme?: ProblemeChamp;
   /** Force l'affichage des erreurs (tentative de passage a l'etape suivante). */
   forcerAffichage: boolean;
+  /** Rang dans l'etape : regle le decalage de la cascade d'apparition. */
+  rang?: number;
+  /** Incremente a chaque clic refuse sur « Suivant » : relance la pulsation rouge. */
+  signalManquant?: number;
   onValeur: (valeur: ValeurReponse) => void;
   onCommentaire: (commentaire: string) => void;
 }
+
+/** Cascade rapide : 60 ms entre deux cartes, plafonnee a 300 ms. */
+const PAS_CASCADE = 0.06;
+const DELAI_MAX = 0.3;
 
 export default function Champ({
   question,
@@ -31,11 +41,14 @@ export default function Champ({
   commentaire,
   probleme,
   forcerAffichage,
+  rang = 0,
+  signalManquant = 0,
   onValeur,
   onCommentaire,
 }: ProprietesChamp) {
   const [touche, setTouche] = useState(false);
-  const conteneur = useRef<HTMLDivElement>(null);
+  const reduit = useAnimationsReduites();
+  const controles = useAnimationControls();
 
   const bloquant = probleme?.gravite === 'bloquant';
   const commentaireManquant = probleme?.code === 'commentaire_requis';
@@ -46,13 +59,33 @@ export default function Champ({
   const renseigne = question.type === 'booleen' || !estVide(valeur);
   const valide = !probleme && renseigne;
 
-  // Mise en evidence : on amene le premier champ fautif sous les yeux.
+  // Apparition en cascade (le defilement vers le premier champ fautif est
+  // gere par l'ecran, qui seul sait lequel est le premier).
   useEffect(() => {
-    if (forcerAffichage && bloquant) {
-      conteneur.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    void controles.start({
+      opacity: 1,
+      y: 0,
+      transition: transitionAdaptee(reduit, {
+        duration: duree.base,
+        delay: Math.min(rang * PAS_CASCADE, DELAI_MAX),
+        ease: ease.out,
+      }),
+    });
+    // Une seule fois, au montage.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Hors bornes : une seule petite secousse, a l'instant ou la valeur sort.
+  const etaitHorsBornes = useRef(horsBornes);
+  useEffect(() => {
+    if (horsBornes && !etaitHorsBornes.current && !reduit) {
+      void controles.start({ x: [0, -6, 6, -4, 4, 0], transition: { duration: 0.42, ease: 'easeInOut' } });
     }
-    // Un seul champ doit defiler : le parent ne force l'affichage qu'une fois.
-  }, [forcerAffichage, bloquant]);
+    etaitHorsBornes.current = horsBornes;
+  }, [horsBornes, reduit, controles]);
+
+  // Pulsation rouge unique a chaque clic refuse, sur les champs fautifs.
+  const pulsation = bloquant && signalManquant > 0 ? signalManquant : 0;
 
   const classes = [
     'champ',
@@ -67,13 +100,21 @@ export default function Champ({
 
   return (
     <motion.div
-      ref={conteneur}
       className={classes}
-      layout
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.26, ease: [0.2, 0.7, 0.3, 1] }}
+      data-bloquant={bloquant ? 'true' : undefined}
+      initial={{ opacity: 0, y: reduit ? 0 : 20 }}
+      animate={controles}
     >
+      {pulsation > 0 && (
+        <motion.span
+          key={pulsation}
+          className="champ__pulse"
+          aria-hidden
+          initial={{ opacity: 0.95, scale: 1 }}
+          animate={{ opacity: 0, scale: reduit ? 1 : 1.025 }}
+          transition={{ duration: reduit ? FONDU_REDUIT : 0.75, ease: ease.out }}
+        />
+      )}
       <div className="champ__entete">
         <div>
           <div className="champ__libelle">
@@ -83,21 +124,18 @@ export default function Champ({
                 *
               </span>
             )}
-            <AnimatePresence>
-              {valide && (
-                <motion.span
-                  key="coche"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 520, damping: 22 }}
-                  style={{ marginLeft: 10, color: 'var(--succes)', fontSize: '1rem' }}
-                  aria-hidden
-                >
-                  ✓
-                </motion.span>
-              )}
-            </AnimatePresence>
+            {/* La coche se dessine quand la reponse devient valide. */}
+            <svg
+              className="champ__coche"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <TraitDessine d="M4.5 12.5 L9.5 17.5 L19.5 6.5" actif={valide} duree={0.35} />
+            </svg>
           </div>
           {question.aide && <div className="champ__aide">{question.aide}</div>}
         </div>
@@ -116,6 +154,7 @@ export default function Champ({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
+            transition={transitionAdaptee(reduit, { duration: duree.base, ease: ease.out })}
           >
             <span className="message__icone" aria-hidden>
               {montrerErreur ? '⛔' : '⚠️'}
@@ -136,6 +175,7 @@ export default function Champ({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
+            transition={transitionAdaptee(reduit, { duration: duree.base, ease: ease.out })}
           >
             <div className="commentaire-requis__titre">
               Commentaire obligatoire : pourquoi cette valeur sort-elle de la plage&nbsp;?

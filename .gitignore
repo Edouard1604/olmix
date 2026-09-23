@@ -5,3 +5,6 @@ release/
 .DS_Store
 Thumbs.db
 _t*.mjs
+
+# Copie de travail locale, hors projet
+olmix-claude-epic-darwin-76lfdn/

@@ -237,6 +237,12 @@ void (async () => {
 
   console.log(`\n${echecs.length === 0 ? '✅ Tous les contrôles passent.' : `❌ ${echecs.length} échec(s) :`}`);
   for (const echec of echecs) console.log(`   - ${echec}`);
-  fs.rmSync(bac, { recursive: true, force: true });
+  try {
+    fs.rmSync(bac, { recursive: true, force: true });
+  } catch {
+    // Windows : le cache GPU d'Electron reste verrouille tant que le
+    // processus vit ; sans cette garde, app.exit n'etait jamais atteint et
+    // le test ne se terminait pas.
+  }
   app.exit(echecs.length === 0 ? 0 : 1);
 })();

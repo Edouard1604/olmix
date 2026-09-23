@@ -5,7 +5,7 @@
       "id": "granules_nutri_algue",
       "nom": "Granulés Nutri-Algue",
       "description": "Granulés séchés pour alimentation animale — ligne 1",
-      "couleur": "#1F8A70",
+      "couleur": "#0F6349",
       "icone": "🌿",
       "actif": true,
       "etapes": [
@@ -309,7 +309,7 @@
       "id": "poudre_marine_premium",
       "nom": "Poudre Marine Premium",
       "description": "Poudre fine micronisée — ligne 2",
-      "couleur": "#1D6F8C",
+      "couleur": "#135A6E",
       "icone": "🌊",
       "actif": true,
       "etapes": [

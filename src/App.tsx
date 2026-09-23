@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import type { ConfigurationChargee } from '@shared/api';
 import type { Brouillon, Produit, ResumeEnregistrement, StatutSync, Theme } from '@shared/types';
 import { useSession, useValidationEtape } from './state/useSession';
@@ -15,15 +15,14 @@ import EcranFormulaire from './screens/EcranFormulaire';
 import EcranRecapitulatif from './screens/EcranRecapitulatif';
 import EcranConfirmation from './screens/EcranConfirmation';
 import EcranAdmin from './screens/EcranAdmin';
+import Scene from './components/motion/Scene';
+import Splash, { splashAttendu } from './components/motion/Splash';
+import { useAnimationsReduites, useMouvement } from './lib/motion';
 
 const STATUT_INITIAL: StatutSync = { etat: 'a_jour', enAttente: 0, dernierSuccesIso: null, message: null };
 
-/** Glissement horizontal entre les ecrans, dans le sens de la navigation. */
-const transitions = {
-  initial: (direction: number) => ({ opacity: 0, x: direction * 42 }),
-  animate: { opacity: 1, x: 0 },
-  exit: (direction: number) => ({ opacity: 0, x: direction * -42 }),
-};
+/** Evalue une seule fois, au chargement du module (et non a chaque rendu). */
+const SPLASH_AU_DEMARRAGE = splashAttendu();
 
 export default function App() {
   const session = useSession();
@@ -41,6 +40,11 @@ export default function App() {
   const [resume, setResume] = useState<ResumeEnregistrement | null>(null);
 
   const minuterieBrouillon = useRef<number | null>(null);
+
+  const reduit = useAnimationsReduites();
+  const definirMouvementReduit = useMouvement((e) => e.definirReglage);
+  const [splash, setSplash] = useState(SPLASH_AU_DEMARRAGE);
+  const finSplash = useCallback(() => setSplash(false), []);
 
   /* ---------------- Chargement initial ---------------- */
 
@@ -64,11 +68,12 @@ export default function App() {
         window.olmix.lireBrouillon(),
       ]);
       setTheme(reglages.theme);
+      definirMouvementReduit(reglages.animationsReduites ?? false);
       setStatut(statutInitial);
       setBrouillon(brouillonEnregistre);
       setChargement(false);
     })();
-  }, [rechargerConfiguration]);
+  }, [rechargerConfiguration, definirMouvementReduit]);
 
   useEffect(() => window.olmix.surStatutSync(setStatut), []);
 
@@ -81,6 +86,10 @@ export default function App() {
         : theme;
     document.documentElement.dataset.theme = applique;
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.dataset.mouvement = reduit ? 'reduit' : 'normal';
+  }, [reduit]);
 
   /* ---------------- Suivi de l'etape maximale atteinte ---------------- */
 
@@ -203,6 +212,7 @@ export default function App() {
             produit={session.produit}
             indexEtape={session.indexEtape}
             indexMaxAtteint={indexMaxAtteint}
+            direction={session.direction}
             valeurs={session.valeurs}
             commentaires={session.commentaires}
             validation={validation}
@@ -222,6 +232,7 @@ export default function App() {
             produit={session.produit}
             operateur={session.operateur}
             matricule={session.matricule}
+            debutIso={session.debutIso}
             valeurs={session.valeurs}
             commentaires={session.commentaires}
             enregistrement={enregistrement}
@@ -269,62 +280,59 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chargement, session, validation, indexMaxAtteint, enregistrement, erreurSoumission, resume, statut, brouillon, config, produits]);
 
-  if (chargement) {
-    return (
-      <div className="confirmation">
-        <div className="carte confirmation__carte">Chargement…</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="app">
-      <BarreSuperieure
-        produit={session.vue === 'formulaire' || session.vue === 'recapitulatif' ? session.produit : null}
-        operateur={session.operateur}
-        matricule={session.matricule}
-        indexEtape={session.indexEtape}
-        nbEtapes={session.vue === 'formulaire' ? (session.produit?.etapes.length ?? 0) : 0}
-        nomEtape={etapeCourante?.nom ?? null}
-        statut={statut}
-        theme={theme}
-        onForcerSync={() => void window.olmix.forcerSync().then(setStatut)}
-        onBasculerTheme={() => void basculerTheme()}
-        onAdmin={() => session.allerVue('admin', 1)}
-      />
+    // En mode reduit, framer-motion ne joue plus que les fondus (ni
+    // translation, ni mise en page animee) : filet de securite global.
+    <MotionConfig reducedMotion={reduit ? 'always' : 'never'}>
+      {chargement ? (
+        <div className="chargement">Chargement…</div>
+      ) : (
+        <div className="app">
+          <BarreSuperieure
+            produit={session.vue === 'formulaire' || session.vue === 'recapitulatif' ? session.produit : null}
+            operateur={session.operateur}
+            matricule={session.matricule}
+            indexEtape={session.indexEtape}
+            nbEtapes={session.vue === 'formulaire' ? (session.produit?.etapes.length ?? 0) : 0}
+            nomEtape={etapeCourante?.nom ?? null}
+            statut={statut}
+            theme={theme}
+            onForcerSync={() => void window.olmix.forcerSync().then(setStatut)}
+            onBasculerTheme={() => void basculerTheme()}
+            onAdmin={() => session.allerVue('admin', 1)}
+          />
 
-      {erreurConfig && (
-        <div style={{ padding: '14px 26px 0' }}>
-          <Bandeau
-            ton="erreur"
-            titre="Configuration inutilisable"
-            actions={
-              <button type="button" className="btn btn--secondaire" onClick={() => void rechargerConfiguration()}>
-                Recharger
-              </button>
-            }
-          >
-            <div style={{ whiteSpace: 'pre-line' }}>{erreurConfig}</div>
-          </Bandeau>
+          {erreurConfig && (
+            <div style={{ padding: '14px 26px 0' }}>
+              <Bandeau
+                ton="erreur"
+                titre="Configuration inutilisable"
+                actions={
+                  <button type="button" className="btn btn--secondaire" onClick={() => void rechargerConfiguration()}>
+                    Recharger
+                  </button>
+                }
+              >
+                <div style={{ whiteSpace: 'pre-line' }}>{erreurConfig}</div>
+              </Bandeau>
+            </div>
+          )}
+
+          <main className="contenu">
+            {/* Les ecrans se chevauchent : le nouveau est utilisable des son
+                apparition. Les etapes du formulaire sont animees a l'interieur
+                de l'ecran, pour que la cartographie reste en place. */}
+            <AnimatePresence custom={session.direction} initial={false}>
+              <Scene key={session.vue} className="ecran" direction={session.direction}>
+                {contenu}
+              </Scene>
+            </AnimatePresence>
+          </main>
         </div>
       )}
-
-      <main className="contenu">
-        <AnimatePresence mode="wait" custom={session.direction} initial={false}>
-          <motion.div
-            key={`${session.vue}-${session.vue === 'formulaire' ? session.indexEtape : ''}`}
-            className="ecran"
-            custom={session.direction}
-            variants={transitions}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={{ duration: 0.26, ease: [0.2, 0.7, 0.3, 1] }}
-          >
-            {contenu}
-          </motion.div>
-        </AnimatePresence>
-      </main>
-    </div>
+      {/* Meme position dans l'arbre pendant et apres le chargement : le
+          splash n'est jamais remonte, donc jamais rejoue. */}
+      <Splash visible={splash} onFin={finSplash} />
+    </MotionConfig>
   );
 }

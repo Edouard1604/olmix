@@ -84,7 +84,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
     const nouveau: Produit = {
       id: `produit_${numero}`,
       nom: `Nouveau produit ${numero}`,
-      couleur: '#1f8a70',
+      couleur: '#0f6349',
       icone: '🏭',
       actif: true,
       etapes: [{ id: 'etape_1', nom: 'Étape 1', questions: [] }],
@@ -205,7 +205,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                 type="color"
                 className="saisie saisie--compacte"
                 style={{ width: 70, padding: 4 }}
-                value={produit.couleur ?? '#1f8a70'}
+                value={produit.couleur ?? '#0f6349'}
                 onChange={(e) => majProduit({ couleur: e.target.value })}
                 aria-label="Couleur d'accent"
               />
