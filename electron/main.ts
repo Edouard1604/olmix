@@ -72,7 +72,7 @@ function demarrer(): void {
  * Fond de la fenetre avant le premier rendu : il evite le flash blanc au
  * demarrage. Doit rester aligne sur `--fond` dans src/styles/tokens.css.
  */
-const FOND_FENETRE = { clair: '#f1f6f4', sombre: '#0b1a18' } as const;
+const FOND_FENETRE = { clair: '#f2f6f6', sombre: '#052731' } as const;
 
 function creerFenetre(): void {
   const sombre = lireReglages().theme === 'sombre';

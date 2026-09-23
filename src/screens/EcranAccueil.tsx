@@ -156,7 +156,7 @@ export default function EcranAccueil({
           letterSpacing: '-0.01em',
         }}
       >
-        Quel produit vient de terminer son cycle&nbsp;?
+        Quel produit vient de terminer son <span className="surlignage">cycle</span>&nbsp;?
       </h2>
 
       {produits.length > 4 && (

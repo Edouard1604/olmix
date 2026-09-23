@@ -92,7 +92,7 @@ export default function Champ({
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0, opacity: 0 }}
                   transition={{ type: 'spring', stiffness: 520, damping: 22 }}
-                  style={{ marginLeft: 10, color: 'var(--succes)', display: 'inline-flex' }}
+                  style={{ marginLeft: 10, color: 'var(--succes-texte)', display: 'inline-flex' }}
                   aria-hidden
                 >
                   <Icone nom="coche" taille={18} epaisseur={2.6} />

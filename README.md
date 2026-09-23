@@ -24,6 +24,7 @@ données distante.
 9. [Robustesse : file d'attente, brouillon, sauvegardes](#9-robustesse--file-dattente-brouillon-sauvegardes)
 10. [Dépannage](#10-dépannage)
 11. [Organisation du code](#11-organisation-du-code)
+12. [Charte graphique](#12-charte-graphique)
 12. [Version web de démonstration](#12-version-web-de-démonstration)
 
 ---
@@ -512,6 +513,58 @@ Les règles de saisie de `shared/validation.ts` sont appliquées **deux fois** :
 l'interface pour le retour immédiat, et par le processus principal avant écriture. Une
 saisie invalide ne peut donc pas atteindre le classeur, même si l'interface était
 contournée.
+
+---
+
+## 12. Charte graphique
+
+L'interface reprend l'identité visuelle d'olmix.com. Les valeurs ci-dessous ont été
+relevées directement sur les visuels du site, pas estimées à l'œil.
+
+| Rôle | Hex | Où elle apparaît sur le site |
+|---|---|---|
+| Teal Olmix — couleur primaire | `#005263` | bouton « Contactez-nous », titres, logo |
+| Teal profond — fonds | `#01495A` | section « Chiffres clés » |
+| Vert Olmix — action | `#269755` | bouton « Rejoignez-nous » |
+| Vert foncé | `#186849` | fond de la section végétale |
+| Vert intermédiaire | `#23804C` | dégradé de la section végétale |
+| Vert clair | `#BEE0CC` | surlignage des mots-clés dans les titres |
+| Texte courant | `#212121` | corps de texte |
+
+Tout est déclaré dans [`src/styles/tokens.css`](src/styles/tokens.css) : **changer la
+charte ne demande de modifier que ce fichier**. Le thème sombre y est décliné à partir
+du teal profond, et non d'un gris neutre.
+
+### Typographie
+
+Le site associe un serif éditorial aux grands titres et un sans-serif géométrique au
+reste. Les polices d'Olmix étant sous licence, l'application s'appuie sur des polices
+présentes sur tout poste Windows (Georgia pour les titres, Segoe UI pour le reste) :
+elle doit fonctionner hors connexion, sans téléchargement de fonte. Pour utiliser les
+vraies polices, déposer les fichiers dans `src/assets/` et ajuster `--police` et
+`--police-titre`.
+
+### Logo
+
+`src/assets/olmix-logo.png` — détouré (fond blanc rendu transparent) et embarqué dans
+l'application, jamais chargé depuis le web : l'atelier fonctionne hors connexion. Le
+logo étant monochrome, il est passé en blanc par un filtre CSS en thème sombre.
+
+### Lisibilité en atelier
+
+Une charte corporate est pensée pour un écran de bureau, pas pour un poste tactile
+sous éclairage industriel. Deux écarts assumés :
+
+- **Le vert Olmix `#269755` n'est pas utilisé comme couleur de texte.** Sur blanc il
+  plafonne à 3,7:1, sous le seuil WCAG AA de 4,5:1. Il reste la couleur des aplats et
+  des tracés (seuil 3:1), et c'est le vert foncé `#186849` — lui aussi de la charte —
+  qui prend le relais dès qu'il s'agit de texte : 6,7:1.
+- **Les bordures de champ de saisie sont plus marquées que sur le site** (`#6F9098` au
+  lieu d'un filet très clair), pour atteindre les 3:1 qu'exige la délimitation d'un
+  composant de saisie (WCAG 1.4.11).
+
+L'ensemble des paires couleur de texte / fond a été vérifié dans les deux thèmes :
+toutes passent AA.
 
 ---
 

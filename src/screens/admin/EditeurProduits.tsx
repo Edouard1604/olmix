@@ -19,7 +19,7 @@ import type {
 } from '@shared/types';
 
 /** Accent proposé pour un nouveau produit ; repris du jeu de jetons. */
-const COULEUR_PRODUIT_DEFAUT = '#1f8a70';
+const COULEUR_PRODUIT_DEFAUT = '#269755';
 
 const TYPES: { valeur: TypeQuestion; libelle: string }[] = [
   { valeur: 'texte', libelle: 'Texte court' },
@@ -145,7 +145,11 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             className={`admin__element${index === selection ? ' admin__element--actif' : ''}`}
             onClick={() => setSelection(index)}
           >
-            <span aria-hidden style={{ fontWeight: 800, color: p.couleur ?? 'var(--vert-600)' }}>
+            <span
+              aria-hidden
+              className="admin__initiales"
+              style={{ ['--accent' as string]: p.couleur ?? 'var(--vert-600)' }}
+            >
               {p.icone ?? initiales(p.nom)}
             </span>
             <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nom}</span>

@@ -5,6 +5,7 @@
 
 import { useEffect, useState } from 'react';
 import type { Produit, StatutSync, Theme } from '@shared/types';
+import logoOlmix from '../assets/olmix-logo.png';
 import { dateLongue, heure } from '../lib/format';
 import Icone from './Icone';
 import IndicateurSync from './IndicateurSync';
@@ -48,11 +49,9 @@ export default function BarreSuperieure({
   return (
     <header className="barre">
       <div className="barre__marque">
-        <div className="barre__logo" aria-hidden>
-          OL
-        </div>
+        <img className="barre__logo" src={logoOlmix} alt="Olmix" />
         <div>
-          <div className="barre__titre">OLMIX — Saisie de fin de cycle</div>
+          <div className="barre__titre">Saisie de fin de cycle</div>
           <div className="barre__sous-titre">
             {dateLongue(maintenant)} · {heure(maintenant)}
           </div>

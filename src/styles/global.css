@@ -103,10 +103,9 @@ h1, h2, h3, p { margin: 0; }
 }
 .barre__marque { display: flex; align-items: center; gap: 12px; }
 .barre__logo {
-  width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
-  background: linear-gradient(140deg, var(--vert-600), var(--marin-600));
-  color: #fff; font-weight: 800; font-size: var(--t-m); letter-spacing: 0.5px;
-  box-shadow: var(--ombre-1);
+  height: 56px; width: auto; display: block;
+  /* Monochrome : passé en blanc par le filtre en thème sombre. */
+  filter: var(--filtre-logo);
 }
 .barre__titre { font-size: var(--t-s); font-weight: 700; letter-spacing: 0.02em; }
 .barre__sous-titre { font-size: var(--t-xs); color: var(--texte-doux); }
@@ -168,7 +167,21 @@ h1, h2, h3, p { margin: 0; }
 .ecran { position: absolute; inset: 0; overflow: auto; }
 .ecran__interieur { max-width: 1320px; margin: 0 auto; padding: 34px 30px 46px; }
 
-.titre-ecran { font-size: var(--t-3xl); font-weight: 800; letter-spacing: -0.02em; line-height: 1.12; }
+.titre-ecran {
+  font-family: var(--police-titre);
+  font-size: var(--t-3xl); font-weight: 700; letter-spacing: -0.01em; line-height: 1.14;
+  color: var(--marin-600);
+}
+[data-theme='sombre'] .titre-ecran { color: var(--texte); }
+
+/* Surlignage vert des mots-clés, repris des titres du site Olmix. */
+.surlignage {
+  background: linear-gradient(transparent 58%, var(--menthe-clair) 58%);
+  padding: 0 3px;
+}
+[data-theme='sombre'] .surlignage {
+  background: linear-gradient(transparent 58%, rgba(111, 193, 148, 0.32) 58%);
+}
 .sous-titre-ecran { margin-top: 8px; font-size: var(--t-l); color: var(--texte-doux); }
 
 .carte {
@@ -212,7 +225,7 @@ h1, h2, h3, p { margin: 0; }
 .produit__icone {
   width: 62px; height: 62px; border-radius: 18px; display: grid; place-items: center;
   font-size: 24px; font-weight: 800; letter-spacing: 0.5px;
-  color: var(--accent, var(--vert-600));
+  color: var(--accent-lisible, var(--accent, var(--vert-600)));
   background: color-mix(in srgb, var(--accent, var(--vert-600)) 14%, var(--surface-2));
 }
 .produit__nom { font-size: var(--t-xl); font-weight: 750; letter-spacing: -0.01em; }
@@ -233,10 +246,15 @@ h1, h2, h3, p { margin: 0; }
 .etape-entete { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
 .etape-entete__icone {
   width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center;
-  font-size: 25px; font-weight: 800; color: var(--accent, var(--vert-600));
+  font-size: 25px; font-weight: 800; color: var(--accent-lisible, var(--accent, var(--vert-600)));
   background: color-mix(in srgb, var(--accent, var(--vert-600)) 15%, var(--surface-2));
 }
-.etape-entete__nom { font-size: var(--t-2xl); font-weight: 780; letter-spacing: -0.02em; }
+.etape-entete__nom {
+  font-family: var(--police-titre);
+  font-size: var(--t-2xl); font-weight: 700; letter-spacing: -0.01em;
+  color: var(--marin-600);
+}
+[data-theme='sombre'] .etape-entete__nom { color: var(--texte); }
 .etape-entete__desc { font-size: var(--t-s); color: var(--texte-doux); }
 
 /* --- Champs --- */
@@ -288,7 +306,7 @@ select.saisie { cursor: pointer; appearance: none;
   font-size: var(--t-l); font-weight: 700; cursor: pointer; transition: all var(--transition);
 }
 .bascule__option:hover { border-color: var(--vert-500); }
-.bascule__option--actif-oui { background: var(--succes-fond); border-color: var(--succes); color: var(--succes); }
+.bascule__option--actif-oui { background: var(--succes-fond); border-color: var(--succes); color: var(--succes-texte); }
 .bascule__option--actif-non { background: var(--erreur-fond); border-color: var(--erreur); color: var(--erreur); }
 
 /* Choix multiples */
@@ -435,6 +453,7 @@ select.saisie { cursor: pointer; appearance: none;
 }
 .admin__element:hover { background: var(--surface-3); }
 .admin__element--actif { background: var(--ecume); border-color: var(--vert-600); }
+.admin__initiales { font-weight: 800; color: var(--accent-lisible, var(--accent, var(--vert-600))); }
 .admin__panneau { padding: 26px; }
 .admin__section + .admin__section { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--bordure); }
 .admin__titre-section { font-size: var(--t-l); font-weight: 750; margin-bottom: 16px; }
@@ -456,3 +475,13 @@ textarea.saisie--compacte { padding: 11px 13px; min-height: 74px; }
 .pile { display: flex; flex-direction: column; gap: 14px; }
 .rangee { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .pousser { margin-left: auto; }
+
+/* En thème sombre, tout élément portant un accent produit voit sa variante
+   « lisible » calculée automatiquement : l'accent éclairci vers le blanc. */
+[data-theme='sombre'] .produit,
+[data-theme='sombre'] .produit__icone,
+[data-theme='sombre'] .etape-entete,
+[data-theme='sombre'] .etape-entete__icone,
+[data-theme='sombre'] .admin__initiales {
+  --accent-lisible: color-mix(in srgb, var(--accent, var(--vert-600)) 42%, #ffffff);
+}

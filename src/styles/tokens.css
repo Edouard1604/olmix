@@ -1,51 +1,65 @@
 /* ------------------------------------------------------------------ *
- * Jetons de design — palette inspiree du vegetal et du marin.
- * Toutes les couleurs sont declarees ici : changer la charte revient a
- * modifier ce seul fichier.
+ * Jetons de design — charte Olmix.
+ *
+ * Les valeurs ci-dessous sont relevées directement sur olmix.com :
+ *   #005263  teal Olmix, bouton « Contactez-nous », titres, logo
+ *   #01495A  teal profond, fond de la section « Chiffres clés »
+ *   #269755  vert Olmix, bouton « Rejoignez-nous »
+ *   #186849  vert foncé, fond de la section végétale
+ *   #23804C  vert intermédiaire du dégradé
+ *   #BEE0CC  vert clair, surlignage des titres
+ *   #212121  texte courant
+ *
+ * Changer la charte revient à modifier ce seul fichier.
  * ------------------------------------------------------------------ */
 
 :root {
-  /* Verts profonds */
-  --vert-900: #093d33;
-  --vert-800: #0f5e4e;
-  --vert-700: #167a63;
-  --vert-600: #1f8a70;
-  --vert-500: #2fa387;
+  /* Verts Olmix, du plus sombre au plus clair */
+  --vert-900: #0d4630;
+  --vert-800: #14603f;
+  --vert-700: #186849;
+  --vert-600: #23804c;
+  --vert-500: #269755;
 
-  /* Bleus-verts marins */
-  --marin-800: #0e4a5a;
-  --marin-700: #135f73;
-  --marin-600: #1d6f8c;
+  /* Teals Olmix */
+  --marin-800: #013a48;
+  --marin-700: #01495a;
+  --marin-600: #005263;
 
-  /* Accents lumineux */
-  --menthe: #4dd0a7;
-  --menthe-clair: #a8efd5;
-  --ecume: #d8f5ea;
+  /* Accents clairs */
+  --menthe: #6fc194;
+  --menthe-clair: #bee0cc;
+  --ecume: #e4f1ea;
 
-  /* Etats */
-  --alerte: #d9822b;
-  --alerte-fond: #fdf2e3;
-  --alerte-bord: #f0c48a;
+  /* États */
+  --alerte: #b8670f;
+  --alerte-fond: #fdf3e6;
+  --alerte-bord: #eec696;
   --alerte-texte: #8a5512;
-  --erreur: #c0392b;
+  --erreur: #b3352a;
   --erreur-fond: #fdecea;
-  --erreur-bord: #f1b0a9;
-  --succes: #1f8a70;
-  --succes-fond: #e6f6f1;
+  --erreur-bord: #f0b2ab;
+  /* Le vert vif sert aux aplats et aux tracés (seuil 3:1) ; le vert foncé,
+     repris lui aussi de la charte, sert dès qu'il devient couleur de TEXTE,
+     où le vert vif tombe à 3,7:1 sur blanc. */
+  --succes: #269755;
+  --succes-texte: #186849;
+  --succes-fond: #e4f1ea;
 
-  /* Surfaces — theme clair */
-  --fond: #f1f6f4;
-  --fond-degrade: radial-gradient(1200px 600px at 12% -8%, #e2f2ec 0%, transparent 60%),
-    radial-gradient(900px 500px at 105% 10%, #dceef3 0%, transparent 55%), #f1f6f4;
+  /* Surfaces — thème clair.
+     Le site Olmix est très lumineux : blanc franc, teinté de gris-vert pâle. */
+  --fond: #f2f6f6;
+  --fond-degrade: radial-gradient(1200px 620px at 10% -10%, #e2efe9 0%, transparent 60%),
+    radial-gradient(900px 520px at 104% 4%, #dfecef 0%, transparent 55%), #f2f6f6;
   --surface: #ffffff;
-  --surface-2: #f7faf9;
-  --surface-3: #eef4f2;
-  --bordure: #d9e5e1;
-  --bordure-forte: #b9cfc8;
+  --surface-2: #f8fafa;
+  --surface-3: #eef4f4;
+  --bordure: #dbe6e7;
+  --bordure-forte: #6f9098;
 
   /* Texte */
-  --texte: #10221e;
-  --texte-doux: #4f6862;
+  --texte: #212121;
+  --texte-doux: #566a6f;
   --texte-inverse: #ffffff;
 
   /* Rayons, ombres, espacement */
@@ -53,13 +67,19 @@
   --r-m: 16px;
   --r-l: 22px;
   --r-xl: 28px;
-  --ombre-1: 0 1px 2px rgba(9, 61, 51, 0.06), 0 2px 8px rgba(9, 61, 51, 0.05);
-  --ombre-2: 0 4px 14px rgba(9, 61, 51, 0.09), 0 14px 38px rgba(9, 61, 51, 0.07);
-  --ombre-3: 0 18px 50px rgba(9, 61, 51, 0.16);
-  --anneau: 0 0 0 4px rgba(77, 208, 167, 0.35);
+  --ombre-1: 0 1px 2px rgba(0, 82, 99, 0.06), 0 2px 8px rgba(0, 82, 99, 0.05);
+  --ombre-2: 0 4px 14px rgba(0, 82, 99, 0.1), 0 14px 38px rgba(0, 82, 99, 0.07);
+  --ombre-3: 0 18px 50px rgba(0, 82, 99, 0.17);
+  --anneau: 0 0 0 4px rgba(38, 151, 85, 0.32);
 
-  /* Typographie — volontairement grande pour la lecture en atelier */
+  /* Typographie.
+     Le site associe un serif éditorial aux grands titres et un sans-serif
+     géométrique au reste. Les polices d'Olmix étant sous licence, on s'appuie
+     sur des polices présentes sur tout poste Windows : l'application doit
+     fonctionner hors connexion, sans téléchargement de fonte. */
   --police: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --police-titre: Georgia, 'Cambria', 'Times New Roman', serif;
+
   --t-xs: 0.8125rem;
   --t-s: 0.9375rem;
   --t-m: 1.0625rem;
@@ -72,35 +92,49 @@
   --cible: 56px;
 
   --transition: 180ms cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* Le logo est monochrome : en thème clair il garde sa couleur d'origine. */
+  --filtre-logo: none;
 }
 
 [data-theme='sombre'] {
-  --fond: #0b1a18;
-  --fond-degrade: radial-gradient(1100px 600px at 10% -10%, #10302b 0%, transparent 60%),
-    radial-gradient(900px 500px at 105% 5%, #0f2c35 0%, transparent 55%), #0b1a18;
-  --surface: #122724;
-  --surface-2: #16302c;
-  --surface-3: #1b3a35;
-  --bordure: #25443e;
-  --bordure-forte: #35625a;
+  /* Le thème sombre est bâti sur le teal profond de la section
+     « Chiffres clés », et non sur un gris neutre. */
+  --fond: #052731;
+  --fond-degrade: radial-gradient(1100px 620px at 8% -12%, #0a3d45 0%, transparent 60%),
+    radial-gradient(900px 520px at 104% 2%, #073540 0%, transparent 55%), #052731;
+  --surface: #0a3744;
+  --surface-2: #0d404e;
+  --surface-3: #114a5a;
+  --bordure: #1b5b6c;
+  --bordure-forte: #4b97ab;
 
-  --texte: #e8f4f0;
-  --texte-doux: #9dbab2;
+  --texte: #e9f2f3;
+  --texte-doux: #9cbac0;
 
-  --ecume: #17403a;
+  --menthe: #7fcda2;
+  --ecume: #114a5a;
+
   --alerte-fond: #3a2a13;
   --alerte-bord: #7a5520;
   --alerte-texte: #f0c48a;
-  --erreur-fond: #3b1d19;
+  --erreur: #e8796c;
+  --erreur-fond: #3d1d19;
   --erreur-bord: #7d3229;
-  --succes-fond: #113a31;
+  --succes: #4fbd7c;
+  --succes-texte: #6fd396;
+  --succes-fond: #0f3f33;
 
-  --ombre-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
-  --ombre-2: 0 6px 18px rgba(0, 0, 0, 0.38);
-  --ombre-3: 0 22px 60px rgba(0, 0, 0, 0.5);
+  --ombre-1: 0 1px 2px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.26);
+  --ombre-2: 0 6px 18px rgba(0, 0, 0, 0.4);
+  --ombre-3: 0 22px 60px rgba(0, 0, 0, 0.52);
+  --anneau: 0 0 0 4px rgba(111, 193, 148, 0.34);
+
+  /* Le logo teal deviendrait illisible sur fond sombre : on le passe en blanc. */
+  --filtre-logo: brightness(0) invert(1);
 }
 
-/* Respect du reglage systeme « animations reduites ». */
+/* Respect du réglage système « animations réduites ». */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
