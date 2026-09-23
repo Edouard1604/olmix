@@ -15,7 +15,7 @@ const validation = validerConfiguration(JSON.parse(fs.readFileSync(chemin, 'utf-
 console.log(`Fichier : ${chemin}\n`);
 
 if (!validation.valide || !validation.configuration) {
-  console.error('❌ Configuration REFUSEE :');
+  console.error('[ECHEC] Configuration REFUSEE :');
   for (const p of validation.problemes) console.error(`   [${p.niveau}] ${p.message}`);
   process.exit(1);
 }
@@ -23,9 +23,9 @@ if (!validation.valide || !validation.configuration) {
 const erreurs = validation.problemes.filter((p) => p.niveau === 'erreur');
 const avertissements = validation.problemes.filter((p) => p.niveau === 'avertissement');
 
-for (const p of erreurs) console.error(`   ❌ ${p.message}`);
-for (const p of avertissements) console.warn(`   ⚠️  ${p.message}`);
-if (!validation.problemes.length) console.log('✅ Aucune anomalie, aucun avertissement.\n');
+for (const p of erreurs) console.error(`   [ERREUR] ${p.message}`);
+for (const p of avertissements) console.warn(`   [AVERT]  ${p.message}`);
+if (!validation.problemes.length) console.log('[OK] Aucune anomalie, aucun avertissement.\n');
 
 // Recense les colonnes et le nombre de produits qui les alimentent.
 const parColonne = new Map<string, string[]>();

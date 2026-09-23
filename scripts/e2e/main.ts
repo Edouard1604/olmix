@@ -21,7 +21,7 @@ app.setPath('userData', bac);
 
 const echecs: string[] = [];
 function verifier(condition: boolean, libelle: string): void {
-  console.log(`${condition ? '  ✓' : '  ✗'} ${libelle}`);
+  console.log(`${condition ? '  [ok]  ' : '  [ECHEC]'} ${libelle}`);
   if (!condition) echecs.push(libelle);
 }
 
@@ -235,7 +235,9 @@ void (async () => {
     echecs.push(String(e));
   }
 
-  console.log(`\n${echecs.length === 0 ? '✅ Tous les contrôles passent.' : `❌ ${echecs.length} échec(s) :`}`);
+  console.log(
+    `\n${echecs.length === 0 ? '[OK] Tous les contrôles passent.' : `[ECHEC] ${echecs.length} échec(s) :`}`,
+  );
   for (const echec of echecs) console.log(`   - ${echec}`);
   fs.rmSync(bac, { recursive: true, force: true });
   app.exit(echecs.length === 0 ? 0 : 1);

@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import { suggererColonne } from '@shared/schema';
 import { normaliserEntete } from '@shared/columns';
+import Icone, { initiales } from '../../components/Icone';
 import type {
   ConfigurationProduits,
   EtapeProcessus,
@@ -85,7 +86,6 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
       id: `produit_${numero}`,
       nom: `Nouveau produit ${numero}`,
       couleur: '#1f8a70',
-      icone: '🏭',
       actif: true,
       etapes: [{ id: 'etape_1', nom: 'Étape 1', questions: [] }],
     };
@@ -142,7 +142,9 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             className={`admin__element${index === selection ? ' admin__element--actif' : ''}`}
             onClick={() => setSelection(index)}
           >
-            <span aria-hidden>{p.icone ?? '🏭'}</span>
+            <span aria-hidden style={{ fontWeight: 800, color: p.couleur ?? 'var(--vert-600)' }}>
+              {p.icone ?? initiales(p.nom)}
+            </span>
             <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nom}</span>
             {p.actif === false && <span className="mini-puce">inactif</span>}
           </button>
@@ -160,7 +162,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
               Produit
             </div>
             <button type="button" className="btn btn--fantome pousser" onClick={supprimerProduit}>
-              🗑 Supprimer ce produit
+              <Icone nom="corbeille" taille={18} /> Supprimer ce produit
             </button>
           </div>
 
@@ -192,14 +194,16 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             />
           </div>
           <div className="admin__ligne">
-            <label>Icône et couleur</label>
+            <label>Symbole et couleur</label>
             <div className="rangee">
               <input
                 className="saisie saisie--compacte"
                 style={{ width: 80, textAlign: 'center' }}
                 value={produit.icone ?? ''}
                 onChange={(e) => majProduit({ icone: e.target.value })}
-                aria-label="Icône du produit"
+                placeholder="Auto"
+                title="Laissez vide pour afficher les initiales du produit"
+                aria-label="Symbole du produit"
               />
               <input
                 type="color"
@@ -285,7 +289,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                       }}
                       title="Supprimer l'étape"
                     >
-                      🗑
+                      <Icone nom="corbeille" taille={18} />
                     </button>
                   </div>
                 </div>
@@ -314,11 +318,13 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                         />
                       </div>
                       <div>
-                        <span className="admin__mini">Icône</span>
+                        <span className="admin__mini">Symbole</span>
                         <input
                           className="saisie saisie--compacte"
                           style={{ textAlign: 'center' }}
                           value={etape.icone ?? ''}
+                          placeholder="Auto"
+                          title="Laissez vide pour afficher le numéro de l'étape"
                           onChange={(e) => majEtape(etape.id, { icone: e.target.value })}
                         />
                       </div>
@@ -427,7 +433,7 @@ function EditeurQuestion({
             onClick={onSupprimer}
             title="Supprimer la question"
           >
-            🗑
+            <Icone nom="corbeille" taille={18} />
           </button>
         </div>
       </div>

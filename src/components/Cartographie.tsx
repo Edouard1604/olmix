@@ -10,6 +10,7 @@
 
 import { motion } from 'framer-motion';
 import type { EtapeProcessus } from '@shared/types';
+import Icone from './Icone';
 
 interface Proprietes {
   etapes: EtapeProcessus[];
@@ -56,7 +57,7 @@ export default function Cartographie({ etapes, indexCourant, indexMaxAtteint, ac
                 layout
               >
                 <div className="noeud__pastille">
-                  {faite ? <span aria-hidden>✓</span> : (etape.icone ?? index + 1)}
+                  {faite ? <Icone nom="coche" taille={26} epaisseur={2.6} /> : (etape.icone ?? index + 1)}
                 </div>
                 <div className="noeud__texte">
                   <div className="noeud__nom">{etape.nom}</div>

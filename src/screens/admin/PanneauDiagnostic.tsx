@@ -34,7 +34,7 @@ export default function PanneauDiagnostic({
         <Ligne
           libelle="Classeur Excel"
           valeur={infos?.cheminExcel ?? '—'}
-          complement={infos?.excelExiste ? '✓ présent' : '⏳ sera créé à la première validation'}
+          complement={infos?.excelExiste ? 'présent' : 'sera créé à la première validation'}
           action={
             <>
               <button type="button" className="btn btn--fantome" onClick={onOuvrirClasseur}>

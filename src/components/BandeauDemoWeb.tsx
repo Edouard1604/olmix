@@ -10,6 +10,7 @@
  */
 
 import { useState } from 'react';
+import Icone from './Icone';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function BandeauDemoWeb() {
@@ -42,9 +43,7 @@ export default function BandeauDemoWeb() {
             fontSize: 'var(--t-s)',
           }}
         >
-          <span aria-hidden style={{ fontSize: 'var(--t-xl)', lineHeight: 1.1, flex: 'none' }}>
-            🌐
-          </span>
+          <Icone nom="globe" taille={26} style={{ flex: 'none' }} />
           <div style={{ minWidth: 0 }}>
             <strong>Version web de démonstration.</strong> L'interface et les règles de saisie sont
             celles de l'application réelle, mais les cycles validés restent dans ce navigateur : aucun

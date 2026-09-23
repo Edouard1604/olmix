@@ -6,14 +6,12 @@
       "nom": "Granulés Nutri-Algue",
       "description": "Granulés séchés pour alimentation animale — ligne 1",
       "couleur": "#1F8A70",
-      "icone": "🌿",
       "actif": true,
       "etapes": [
         {
           "id": "reception",
           "nom": "Réception matières premières",
           "description": "Contrôle et pesée des matières entrantes",
-          "icone": "📦",
           "questions": [
             {
               "id": "lot_matiere_premiere",
@@ -88,7 +86,6 @@
           "id": "broyage",
           "nom": "Broyage",
           "description": "Réduction granulométrique",
-          "icone": "⚙️",
           "questions": [
             {
               "id": "granulometrie_cible",
@@ -165,7 +162,6 @@
           "id": "melange",
           "nom": "Mélange",
           "description": "Incorporation des additifs selon recette",
-          "icone": "🌀",
           "questions": [
             {
               "id": "numero_recette",
@@ -235,7 +231,6 @@
           "id": "sechage",
           "nom": "Séchage",
           "description": "Passage tour de séchage",
-          "icone": "🔥",
           "questions": [
             {
               "id": "temperature_sechage",
@@ -284,7 +279,6 @@
           "id": "conditionnement",
           "nom": "Conditionnement",
           "description": "Ensachage, étiquetage et palettisation",
-          "icone": "🏷️",
           "questions": [
             {
               "id": "format_sac",
@@ -361,14 +355,12 @@
       "nom": "Poudre Marine Premium",
       "description": "Poudre fine micronisée — ligne 2",
       "couleur": "#1D6F8C",
-      "icone": "🌊",
       "actif": true,
       "etapes": [
         {
           "id": "reception",
           "nom": "Réception matières premières",
           "description": "Contrôle et pesée des matières entrantes",
-          "icone": "📦",
           "questions": [
             {
               "id": "lot_matiere_premiere",
@@ -422,7 +414,6 @@
           "id": "melange",
           "nom": "Mélange",
           "description": "Préparation de la charge",
-          "icone": "🌀",
           "questions": [
             {
               "id": "numero_recette",
@@ -466,7 +457,6 @@
           "id": "sechage",
           "nom": "Séchage",
           "description": "Séchage puis micronisation",
-          "icone": "🔥",
           "questions": [
             {
               "id": "temperature_sechage",
@@ -518,7 +508,6 @@
           "id": "conditionnement",
           "nom": "Conditionnement",
           "description": "Ensachage sous atmosphère contrôlée",
-          "icone": "🏷️",
           "questions": [
             {
               "id": "format_sac",
@@ -590,14 +579,12 @@
       "nom": "Edouard Vasse",
       "description": "Produit de démonstration — à adapter ou à supprimer",
       "couleur": "#3FA7A0",
-      "icone": "🧪",
       "actif": true,
       "etapes": [
         {
           "id": "reception",
           "nom": "Réception matières premières",
           "description": "Contrôle et pesée des matières entrantes",
-          "icone": "📦",
           "questions": [
             {
               "id": "lot_matiere_premiere",
@@ -638,7 +625,6 @@
           "id": "preparation",
           "nom": "Préparation",
           "description": "Dosage et mélange selon recette",
-          "icone": "🌀",
           "questions": [
             {
               "id": "numero_recette",
@@ -707,7 +693,6 @@
           "id": "sechage",
           "nom": "Séchage",
           "description": "Passage tour de séchage",
-          "icone": "🔥",
           "questions": [
             {
               "id": "temperature_sechage",
@@ -755,7 +740,6 @@
           "id": "conditionnement",
           "nom": "Conditionnement",
           "description": "Ensachage et étiquetage",
-          "icone": "🏷️",
           "questions": [
             {
               "id": "format_sac",

@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Brouillon, Produit } from '@shared/types';
 import Bandeau from '../components/Bandeau';
+import Icone, { initiales } from '../components/Icone';
 import { dateHeure } from '../lib/format';
 
 interface Proprietes {
@@ -77,7 +78,7 @@ export default function EcranAccueil({
       {brouillon && (
         <Bandeau
           ton="alerte"
-          icone="💾"
+          icone="sauvegarde"
           titre="Une saisie non terminée a été retrouvée"
           actions={
             <>
@@ -97,7 +98,7 @@ export default function EcranAccueil({
 
       <div className="accueil__entete">
         <div>
-          <h1 className="titre-ecran">Bonjour 👋</h1>
+          <h1 className="titre-ecran">Bonjour</h1>
           <p className="sous-titre-ecran">
             Identifiez-vous, puis choisissez le produit dont le cycle vient de se terminer.
           </p>
@@ -125,7 +126,7 @@ export default function EcranAccueil({
           {tentative && !identiteComplete && (
             <div className="message message--erreur">
               <span className="message__icone" aria-hidden>
-                ⛔
+                <Icone nom="erreur" taille={18} />
               </span>
               <span>Saisissez votre nom avant de choisir un produit.</span>
             </div>
@@ -161,7 +162,7 @@ export default function EcranAccueil({
       {produits.length > 4 && (
         <div className="accueil__recherche">
           <span className="accueil__loupe" aria-hidden>
-            🔍
+            <Icone nom="recherche" taille={22} />
           </span>
           <input
             className="saisie"
@@ -176,12 +177,12 @@ export default function EcranAccueil({
       {produits.length === 0 ? (
         <div className="carte vide">
           <div className="vide__icone" aria-hidden>
-            📋
+            <Icone nom="liste" taille={52} epaisseur={1.5} style={{ margin: '0 auto' }} />
           </div>
           <div>
             Aucun produit actif dans la configuration.
             <br />
-            Ouvrez le mode administrateur (⚙️) pour en ajouter.
+            Ouvrez le mode administrateur pour en ajouter.
           </div>
         </div>
       ) : (
@@ -201,7 +202,7 @@ export default function EcranAccueil({
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="produit__icone" aria-hidden>
-                  {produit.icone ?? '🏭'}
+                  {produit.icone ?? initiales(produit.nom)}
                 </div>
                 <div className="produit__nom">{produit.nom}</div>
                 {produit.description && <div className="produit__desc">{produit.description}</div>}

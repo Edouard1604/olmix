@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Sauvegarde } from '@shared/api';
 import type { ConfigurationProduits, Cycle, InfosApplication, Reglages, StatutSync } from '@shared/types';
 import Bandeau from '../components/Bandeau';
+import Icone from '../components/Icone';
 import EditeurProduits from './admin/EditeurProduits';
 import PanneauReglages from './admin/PanneauReglages';
 import PanneauDiagnostic from './admin/PanneauDiagnostic';
@@ -78,8 +79,8 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
     return (
       <div className="connexion">
         <div className="carte connexion__carte">
-          <div style={{ fontSize: 52, marginBottom: 14 }} aria-hidden>
-            🔐
+          <div style={{ marginBottom: 14, color: 'var(--vert-600)' }} aria-hidden>
+            <Icone nom="verrou" taille={52} epaisseur={1.5} style={{ margin: '0 auto' }} />
           </div>
           <h1 className="titre-ecran" style={{ fontSize: 'var(--t-2xl)' }}>
             Mode administrateur
@@ -150,17 +151,18 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
       <div className="rangee" style={{ marginBottom: 18, gap: 10 }}>
         {(
           [
-            ['produits', '📋 Produits et questions'],
-            ['reglages', '⚙️ Réglages'],
-            ['diagnostic', '🩺 Diagnostic'],
+            ['produits', 'liste', 'Produits et questions'],
+            ['reglages', 'reglages', 'Réglages'],
+            ['diagnostic', 'diagnostic', 'Diagnostic'],
           ] as const
-        ).map(([cle, libelle]) => (
+        ).map(([cle, icone, libelle]) => (
           <button
             key={cle}
             type="button"
             className={`btn ${onglet === cle ? 'btn--principal' : 'btn--secondaire'}`}
             onClick={() => setOnglet(cle)}
           >
+            <Icone nom={icone} taille={19} />
             {libelle}
           </button>
         ))}
@@ -187,7 +189,7 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
                 }
               }}
             >
-              ⬇ Importer un JSON
+              <Icone nom="importer" taille={19} /> Importer un JSON
             </button>
             <button
               type="button"
@@ -199,7 +201,7 @@ export default function EcranAdmin({ statut, onQuitter, onConfigurationModifiee 
                   setMessageConfig({ ton: 'succes', texte: `Exporté vers ${resultat.valeur}` });
               }}
             >
-              ⬆ Exporter en JSON
+              <Icone nom="exporter" taille={19} /> Exporter en JSON
             </button>
             <div className="pousser rangee">
               <button

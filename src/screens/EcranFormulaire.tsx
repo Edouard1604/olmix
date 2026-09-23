@@ -12,6 +12,7 @@ import type { Produit, ValeurReponse } from '@shared/types';
 import type { EtatEtape } from '@shared/validation';
 import Champ from '../components/fields/Champ';
 import Cartographie from '../components/Cartographie';
+import Icone from '../components/Icone';
 
 interface Proprietes {
   produit: Produit;
@@ -106,12 +107,15 @@ export default function EcranFormulaire({
             <div className="actions__info">
               {validation.complete ? (
                 validation.nbAvertissements > 0 ? (
-                  <>
-                    ⚠️ {validation.nbAvertissements} valeur{validation.nbAvertissements > 1 ? 's' : ''} hors plage,
-                    commentée{validation.nbAvertissements > 1 ? 's' : ''} — vous pouvez continuer.
-                  </>
+                  <span className="actions__ligne">
+                    <Icone nom="alerte" taille={17} />
+                    {validation.nbAvertissements} valeur{validation.nbAvertissements > 1 ? 's' : ''} hors
+                    plage, commentée{validation.nbAvertissements > 1 ? 's' : ''} — vous pouvez continuer.
+                  </span>
                 ) : (
-                  <>✓ Étape complète</>
+                  <span className="actions__ligne">
+                    <Icone nom="coche" taille={17} /> Étape complète
+                  </span>
                 )
               ) : (
                 <>

@@ -48,7 +48,7 @@ données distante.
 2. Lancer **Saisie Production** depuis le bureau ou le menu Démarrer.
 3. Au premier démarrage, l'application crée son dossier de données et y copie la
    configuration produits d'exemple.
-4. Ouvrir le **mode administrateur** (icône ⚙️ en haut à droite, mot de passe initial
+4. Ouvrir le **mode administrateur** (bouton en forme d'engrenage en haut à droite, mot de passe initial
    `olmix`) puis :
    - onglet **Réglages** → définir le chemin du classeur Excel (dossier réseau, OneDrive
      ou SharePoint synchronisé) ;
@@ -206,7 +206,7 @@ win:
 
 Deux voies équivalentes, qui écrivent le même fichier :
 
-- **Mode administrateur** (⚙️ → mot de passe) : ajout/modification/suppression de
+- **Mode administrateur** (engrenage en haut à droite, puis mot de passe) : ajout/modification/suppression de
   produits, d'étapes et de questions, réordonnancement, import/export du JSON. Chaque
   enregistrement archive la version précédente dans
   `%APPDATA%\olmix-saisie-production\config\historique\`.
@@ -229,14 +229,14 @@ démonstration : supprimez-le, ou renommez-le pour en faire votre premier vrai p
       "nom": "Granulés Nutri-Algue",
       "description": "Ligne 1",
       "couleur": "#1F8A70",            // accent de la carte et de la cartographie
-      "icone": "🌿",
+      "icone": null,                   // absent : la carte affiche les initiales
       "actif": true,                   // false = masqué aux opérateurs, conservé
       "etapes": [
         {
           "id": "reception",
           "nom": "Réception matières premières",
           "description": "Contrôle et pesée",
-          "icone": "📦",
+          "icone": null,                 // absent : la cartographie affiche le numéro
           "questions": [
             {
               "id": "quantite_recue",            // unique dans le produit
@@ -459,7 +459,7 @@ Excel peut être supprimé, déplacé ou recréé : les saisies restent disponib
 |---|---|
 | Bandeau rouge « Configuration inutilisable » | JSON mal formé ou règle enfreinte. Le message donne la ligne fautive. Corriger `produits.json` puis cliquer sur **Recharger**. |
 | Indicateur orange « N en attente » | Le classeur est verrouillé. Le refermer dans Excel, ou vérifier l'accès au dossier réseau. L'écriture repart seule. |
-| Indicateur rouge « Erreur Excel » | Dossier inexistant ou droits insuffisants. Voir le message dans ⚙️ → Diagnostic, puis corriger le chemin dans Réglages. |
+| Indicateur rouge « Erreur Excel » | Dossier inexistant ou droits insuffisants. Voir le message dans Administration → Diagnostic, puis corriger le chemin dans Réglages. |
 | Power BI ne voit pas les nouvelles lignes | La source pointe sur la *feuille* et non sur le *Tableau*. Refaire la connexion en sélectionnant `T_Saisies`. |
 | Une colonne est apparue en double | `colonne` a été renommée dans la configuration. Rétablir l'ancien nom, ou fusionner les deux colonnes côté Power BI. |
 | Mot de passe administrateur oublié | Supprimer `reglages.json` dans le dossier de données : le mot de passe revient à `olmix`. Le chemin du classeur devra être redéfini. |

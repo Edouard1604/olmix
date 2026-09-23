@@ -74,7 +74,7 @@ export default function EcranConfirmation({
           <div className="confirmation__ligne">
             <span>Export Excel</span>
             <span style={{ color: resume.ecritDansExcel ? 'var(--succes)' : 'var(--alerte)' }}>
-              {resume.ecritDansExcel ? 'Ligne ajoutée ✓' : 'En attente ⏳'}
+              {resume.ecritDansExcel ? 'Ligne ajoutée' : 'En attente'}
             </span>
           </div>
         </div>

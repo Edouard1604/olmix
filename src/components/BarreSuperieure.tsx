@@ -6,6 +6,7 @@
 import { useEffect, useState } from 'react';
 import type { Produit, StatutSync, Theme } from '@shared/types';
 import { dateLongue, heure } from '../lib/format';
+import Icone from './Icone';
 import IndicateurSync from './IndicateurSync';
 
 interface Proprietes {
@@ -89,7 +90,7 @@ export default function BarreSuperieure({
         )}
         {operateur && (
           <span className="puce" title="Opérateur">
-            <span aria-hidden>👤</span>
+            <Icone nom="utilisateur" taille={16} />
             {operateur}
             {matricule ? ` · ${matricule}` : ''}
           </span>
@@ -102,7 +103,7 @@ export default function BarreSuperieure({
           onClick={onBasculerTheme}
           title={theme === 'sombre' ? 'Passer en thème clair' : 'Passer en thème sombre'}
         >
-          {theme === 'sombre' ? '☀️' : '🌙'}
+          <Icone nom={theme === 'sombre' ? 'soleil' : 'lune'} />
         </button>
         <button
           type="button"
@@ -111,7 +112,7 @@ export default function BarreSuperieure({
           onClick={onAdmin}
           title="Mode administrateur"
         >
-          ⚙️
+          <Icone nom="reglages" />
         </button>
       </div>
     </header>
