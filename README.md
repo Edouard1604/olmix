@@ -526,93 +526,51 @@ contournée.
 
 ## 12. Charte graphique
 
-L'interface reprend l'identité visuelle d'olmix.com. Les valeurs ci-dessous ont été
-relevées directement sur les visuels du site, pas estimées à l'œil.
+L'identité visuelle est celle de la refonte « identité Olmix », bâtie sur les couleurs
+relevées sur olmix.com.
 
-| Rôle | Hex | Où elle apparaît sur le site |
+| Jeton | Hex | Rôle |
 |---|---|---|
-| Teal Olmix — couleur primaire | `#005263` | bouton « Contactez-nous », titres, logo |
-| Teal profond — fonds | `#01495A` | section « Chiffres clés » |
-| Vert Olmix — action | `#269755` | bouton « Rejoignez-nous » |
-| Vert foncé | `#186849` | fond de la section végétale |
-| Vert intermédiaire | `#23804C` | dégradé de la section végétale |
-| Vert clair | `#BEE0CC` | surlignage des mots-clés dans les titres |
-| Texte courant | `#212121` | corps de texte |
-
-### Application à l'interface
-
-L'interface est bâtie sur un **canvas sombre et des surfaces claires** : le fond de page
-reprend le teal nuit d'Olmix, les cartes, champs et panneaux sont blancs et posés
-dessus. C'est ce qui donne à la fois le caractère de la charte et la lisibilité d'un
-document imprimé là où l'opérateur lit et saisit.
-
-| Élément | Couleur |
-|---|---|
-| Fond de page | dégradé `#04212A` → `#083C48` |
-| Cartes, champs, panneaux | blanc `#FFFFFF` |
-| Texte **sur le fond** | `#F2FBF8`, secondaire `#A3C6C9` |
-| Texte **sur les cartes** | `#01495A`, secondaire `#375E68` |
-| Grands titres | vert lumineux `#4FD08A` |
-| Bouton principal | dégradé `#186849` → `#005263`, texte blanc |
-| Barre supérieure | voile sombre translucide sur le fond |
-
-**Deux contextes de texte coexistent donc**, et c'est le point structurant du fichier de
-jetons : `--texte` et `--texte-doux` portent les valeurs du canvas, et chaque surface
-claire (`.carte`, `.champ`, `.produit`, `.actions`, `.bandeau`, `.saisie`,
-`.btn--secondaire`) les redéfinit pour elle-même et sa descendance. Ces règles
-réappliquent aussi `color` : redéfinir la variable ne suffit pas, la couleur héritée du
-`body` resterait celle du canvas.
-
-Un **thème clair** reste disponible via le bouton de la barre supérieure : canvas vert
-`#BEE0CC`, mêmes cartes blanches, texte teal.
+| `--olmix-petrole` | `#005263` | couleur primaire, fonds profonds |
+| `--olmix-vert` | `#269756` | vert d'action, dégradé signature |
+| `--olmix-bleu` | `#007797` | second bleu du dégradé secondaire |
+| `--olmix-brume` | `#B1C9CF` | texte secondaire sur fond sombre |
+| `--olmix-vert-texte` | `#1E7B46` | vert assombri, utilisé dès qu'il s'agit de TEXTE |
 
 Tout est déclaré dans [`src/styles/tokens.css`](src/styles/tokens.css) : **changer la
-charte ne demande de modifier que ce fichier**. Le thème sombre y est décliné à partir
-du teal profond, et non d'un gris neutre.
+charte ne demande de modifier que ce fichier.** Un thème clair reste accessible par le
+bouton de la barre supérieure.
 
 ### Typographie
 
-Le serif éditorial de la charte est appliqué à **toute** l'interface, titres comme
-texte courant. Les polices d'Olmix étant sous licence, l'application s'appuie sur des
-polices présentes sur tout poste Windows : elle doit fonctionner hors connexion, sans
-téléchargement de fonte.
+Deux polices, **embarquées dans l'application** via `@fontsource` et donc identiques sur
+tous les postes, sans téléchargement au démarrage :
 
-La pile est `Cambria, Georgia, 'Times New Roman', serif`. **Cambria passe devant
-Georgia volontairement** : Georgia n'a que des chiffres elzéviriens — le 3, le 4, le 7
-et le 9 descendent sous la ligne de base — ce qui gêne la lecture d'un relevé
-numérique, or c'est précisément ce que saisissent les opérateurs. Cambria, livrée avec
-Windows depuis Vista et dessinée pour l'écran, a des chiffres alignés.
+- **Libre Baskerville** pour les titres — le serif éditorial de la charte ;
+- **Plus Jakarta Sans** pour le texte courant, les libellés et les champs.
 
-Seuls l'identifiant de cycle et les chemins de fichiers restent en police à chasse
-fixe : on les recopie ou on les compare caractère par caractère, et la distinction
-entre `0` et `O` y est essentielle.
+C'est préférable à des polices système : le rendu ne dépend plus de ce qui est installé
+sur le poste, et l'application reste utilisable hors connexion.
 
-Pour utiliser les vraies polices d'Olmix, déposer les fichiers dans `src/assets/` et
-ajuster `--police` (et `--police-titre` si les titres doivent différer).
+Le libellé d'une question est volontairement **plus grand que la valeur saisie**
+(`--t-question`, 1,625 rem) : c'est la question qu'on lit en premier, pas le chiffre
+qu'on vient de taper. Un seul jeton à ajuster si l'atelier la veut plus grande.
+
+Seuls l'identifiant de cycle et les chemins de fichiers restent en police à chasse fixe :
+on les recopie ou on les compare caractère par caractère, et la distinction entre `0` et
+`O` y est essentielle.
 
 ### Logo
 
-`src/assets/olmix-logo.png` — détouré (fond blanc rendu transparent) et embarqué dans
-l'application, jamais chargé depuis le web : l'atelier fonctionne hors connexion. Le
-logo étant monochrome, il est passé en blanc par un filtre CSS en thème sombre.
+`src/assets/olmix-logo.png` — détouré et embarqué dans l'application, jamais chargé
+depuis le web : l'atelier fonctionne hors connexion.
 
 ### Lisibilité en atelier
 
-Une charte corporate est pensée pour un écran de bureau, pas pour un poste tactile sous
-éclairage industriel. Trois écarts assumés :
+Le vert vif `#269756` n'est pas utilisé comme couleur de texte : sur fond clair il
+plafonne sous le seuil WCAG AA. Il reste la couleur des aplats et des tracés, et c'est
+`--olmix-vert-texte` qui prend le relais dès qu'il s'agit de texte.
 
-- **Le vert Olmix `#269755` n'est pas utilisé comme couleur de texte sur fond clair.**
-  Sur blanc il plafonne à 3,7:1, sous le seuil WCAG AA de 4,5:1. Il reste la couleur des
-  aplats et des tracés (seuil 3:1), et c'est le vert foncé `#186849` — lui aussi de la
-  charte — qui prend le relais dès qu'il s'agit de texte : 6,7:1.
-- **Les bordures de champ de saisie sont plus marquées que sur le site** (`#5F8890`),
-  pour atteindre les 3:1 qu'exige la délimitation d'un composant (WCAG 1.4.11).
-- **La couleur d'accent d'un produit est assombrie dès qu'elle sert de texte** (numéro
-  d'étape, vignette) : posée sur sa propre pastille teintée, la teinte brute tombait à
-  2,97:1.
-
-L'ensemble des paires couleur de texte / fond a été vérifié dans les deux thèmes :
-toutes passent AA.
 
 ---
 

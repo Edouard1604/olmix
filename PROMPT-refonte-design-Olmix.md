@@ -88,7 +88,7 @@ Fond blanc (sombre : pétrole profond), logo Olmix à gauche, titre en Plus Jaka
 ### Accueil
 - Au premier lancement de la journée : **mini-splash ≤ 1,2 s** (le motif de pousse se dessine, le logo apparaît en fondu), passable d'un clic ou d'une touche. Jamais rejoué dans la même session.
 - Filigrane de pousse géant et très pâle en fond, avec une légère dérive lente (ou parallaxe discrète à la souris).
-- Titre serif « Bonjour, **Marc** » avec le prénom surligné (bande qui se dessine dès que le nom est saisi). Remplace l'emoji 👋.
+- Titre serif « Bonjour, **Marc** » avec le prénom surligné (bande qui se dessine dès que le nom est saisi). Remplace l'emoji.
 - **Cartes produit façon blocs « solutions »** : zone visuelle en haut (texture/pictogramme sur dégradé de la couleur du produit), **bande pleine en bas** avec le nom en serif blanc souligné, puis pastilles « 5 étapes · 25 questions » dont les chiffres comptent. Apparition en cascade (0/150/300 ms). Survol/toucher : la carte monte de 4 px, le visuel zoome à 1,05 en 0,65 s, le soulignement du titre s'allonge. Appui : `scale(0.98)`.
 
 ### Formulaire

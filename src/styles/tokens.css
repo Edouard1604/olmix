@@ -133,6 +133,12 @@
   --t-l: 1.25rem; /* texte de saisie : 20 px minimum */
   --t-xl: 1.5rem;
   --t-2xl: 1.875rem;
+
+  /* Taille du libellé d'une question. Elle doit dominer la valeur saisie
+     (--t-l) : c'est la question qu'on lit en premier, pas le chiffre qu'on
+     vient de taper. Un seul jeton à ajuster si l'atelier la veut encore plus
+     grande. */
+  --t-question: 1.625rem;
   --t-3xl: 2.625rem;
 
   --ls-titre: -0.01em;

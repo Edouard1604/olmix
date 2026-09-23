@@ -10,6 +10,7 @@ import { resoudreAffichage } from '@shared/cycle';
 import { estHorsBornes, estVide, validerEtape } from '@shared/validation';
 import type { Produit, ValeurReponse } from '@shared/types';
 import Bandeau from '../components/Bandeau';
+import Icone from '../components/Icone';
 import ChiffresCles, { type Chiffre } from '../components/ChiffresCles';
 import Apparition from '../components/motion/Apparition';
 
@@ -191,7 +192,7 @@ export default function EcranRecapitulatif({
               {etape.nom}
             </h2>
             <button type="button" className="btn btn--secondaire" onClick={() => onModifier(index)}>
-              ✎ Modifier
+              <Icone nom="crayon" taille={18} /> Modifier
             </button>
           </header>
           <table className="recap__table">
@@ -210,13 +211,16 @@ export default function EcranRecapitulatif({
                         {vide ? 'Non renseigné' : affichage}
                         {!vide && question.unite ? ` ${question.unite}` : ''}
                         {alerte && (
-                          <span style={{ marginLeft: 10, color: 'var(--alerte)' }} title="Hors plage">
-                            ⚠️
+                          <span style={{ marginLeft: 10, color: 'var(--alerte)', display: 'inline-flex' }}>
+                            <Icone nom="alerte" taille={18} titre="Valeur hors plage" />
                           </span>
                         )}
                       </div>
                       {alerte && commentaires[cle] && (
-                        <div className="recap__commentaire">💬 {commentaires[cle]}</div>
+                        <div className="recap__commentaire">
+                          <Icone nom="commentaire" taille={16} />
+                          {commentaires[cle]}
+                        </div>
                       )}
                     </td>
                   </tr>
@@ -238,7 +242,7 @@ export default function EcranRecapitulatif({
           {enregistrement ? 'Enregistrement en cours…' : 'La validation est définitive pour ce cycle.'}
         </div>
         <button type="button" className="btn btn--principal btn--grand" disabled={!pretAValider} onClick={onValider}>
-          {enregistrement ? 'Enregistrement…' : 'Valider et enregistrer ✓'}
+          {enregistrement ? 'Enregistrement…' : 'Valider et enregistrer'}
         </button>
       </div>
     </div>

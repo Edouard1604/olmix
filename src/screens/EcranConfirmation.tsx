@@ -102,8 +102,8 @@ export default function EcranConfirmation({
               texte: <span className="confirmation__id">{resume.cycleId}</span>,
             },
             resume.ecritDansExcel
-              ? { cle: 'export', sousTitre: 'Export Excel', texte: 'Ligne ajoutée ✓', ton: 'ok' }
-              : { cle: 'export', sousTitre: 'Export Excel', texte: 'En attente ⏳', ton: 'alerte' },
+              ? { cle: 'export', sousTitre: 'Export Excel', texte: 'Ligne ajoutée', ton: 'ok' }
+              : { cle: 'export', sousTitre: 'Export Excel', texte: 'En attente', ton: 'alerte' },
           ]}
         />
 

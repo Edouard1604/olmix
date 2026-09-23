@@ -5,10 +5,11 @@
 
 import { useMemo, useState } from 'react';
 import type { Brouillon, Produit } from '@shared/types';
+import { erreurMatricule, LONGUEUR_MATRICULE, nettoyerMatricule } from '@shared/validation';
 import Bandeau from '../components/Bandeau';
+import Icone from '../components/Icone';
 import Apparition from '../components/motion/Apparition';
 import Cascade from '../components/motion/Cascade';
-import Compteur from '../components/motion/Compteur';
 import MotifPousse from '../components/motion/MotifPousse';
 import Surlignage from '../components/motion/Surlignage';
 import { dateHeure } from '../lib/format';
@@ -47,13 +48,16 @@ export default function EcranAccueil({
     );
   }, [produits, recherche]);
 
-  const identiteComplete = operateur.trim().length >= 2;
+  const nomComplet = operateur.trim().length >= 2;
+  const problemeMatricule = erreurMatricule(matricule);
+  const identiteComplete = nomComplet && !problemeMatricule;
   const prenom = operateur.trim().split(/\s+/)[0] ?? '';
 
   const choisir = (produit: Produit) => {
     if (!identiteComplete) {
+      // Le focus va sur le premier champ fautif, pas systématiquement sur le nom.
       setTentative(true);
-      document.getElementById('champ-operateur')?.focus();
+      document.getElementById(nomComplet ? 'champ-matricule' : 'champ-operateur')?.focus();
       return;
     }
     onChoisir(produit);
@@ -88,7 +92,7 @@ export default function EcranAccueil({
         {brouillon && (
           <Bandeau
             ton="alerte"
-            icone="💾"
+            icone="sauvegarde"
             titre="Une saisie non terminée a été retrouvée"
             actions={
               <>
@@ -139,15 +143,15 @@ export default function EcranAccueil({
               value={operateur}
               onChange={(e) => onIdentite(e.target.value, matricule)}
               style={
-                tentative && !identiteComplete
+                tentative && !nomComplet
                   ? { borderColor: 'var(--erreur)', background: 'var(--erreur-fond)' }
                   : undefined
               }
             />
-            {tentative && !identiteComplete && (
+            {tentative && !nomComplet && (
               <div className="message message--erreur">
                 <span className="message__icone" aria-hidden>
-                  ⛔
+                  <Icone nom="erreur" taille={18} />
                 </span>
                 <span>Saisissez votre nom avant de choisir un produit.</span>
               </div>
@@ -155,17 +159,35 @@ export default function EcranAccueil({
           </div>
           <div>
             <label className="admin__mini" htmlFor="champ-matricule">
-              Matricule (facultatif)
+              Matricule ({LONGUEUR_MATRICULE} chiffres, facultatif)
             </label>
             <input
               id="champ-matricule"
               className="saisie"
               type="text"
+              inputMode="numeric"
               autoComplete="off"
-              placeholder="Ex. : OP1042"
+              maxLength={LONGUEUR_MATRICULE}
+              placeholder={`Ex. : ${'1'.padEnd(LONGUEUR_MATRICULE, '0')}`}
               value={matricule}
-              onChange={(e) => onIdentite(operateur, e.target.value)}
+              /* La saisie est filtrée à la frappe : seuls les chiffres passent,
+                 et jamais plus que la longueur attendue. Le seul état invalide
+                 possible est donc un matricule commencé puis laissé incomplet. */
+              onChange={(e) => onIdentite(operateur, nettoyerMatricule(e.target.value))}
+              style={
+                problemeMatricule
+                  ? { borderColor: 'var(--erreur)', background: 'var(--erreur-fond)' }
+                  : undefined
+              }
             />
+            {problemeMatricule && (
+              <div className="message message--erreur">
+                <span className="message__icone" aria-hidden>
+                  <Icone nom="erreur" taille={18} />
+                </span>
+                <span>{problemeMatricule}</span>
+              </div>
+            )}
           </div>
         </Apparition>
 
@@ -192,12 +214,12 @@ export default function EcranAccueil({
         {produits.length === 0 ? (
           <div className="carte vide">
             <div className="vide__icone" aria-hidden>
-              📋
+              <Icone nom="liste" taille={52} epaisseur={1.5} style={{ margin: '0 auto' }} />
             </div>
             <div>
               Aucun produit actif dans la configuration.
               <br />
-              Ouvrez le mode administrateur (⚙️) pour en ajouter.
+              Ouvrez le mode administrateur pour en ajouter.
             </div>
           </div>
         ) : (
@@ -224,32 +246,25 @@ export default function EcranAccueil({
   );
 }
 
-/** Carte produit façon bloc « solutions » d'olmix.com. */
+/**
+ * Carte produit façon bloc « solutions » d'olmix.com, réduite à son titre :
+ * c'est la seule information dont l'opérateur a besoin pour choisir, et une
+ * tuile dépouillée se repère plus vite qu'une fiche détaillée.
+ */
 function CarteProduit({ produit, onChoisir }: { produit: Produit; onChoisir: (p: Produit) => void }) {
-  const nbQuestions = produit.etapes.reduce((n, e) => n + e.questions.length, 0);
-  const nbEtapes = produit.etapes.length;
   return (
     <button
       type="button"
       className="produit"
       style={{ ['--accent' as string]: produit.couleur ?? 'var(--olmix-petrole)' }}
       onClick={() => onChoisir(produit)}
+      title={produit.description}
     >
       <div className="produit__visuel" aria-hidden>
         <div className="produit__visuel-fond" />
-        <div className="produit__icone">{produit.icone ?? '🏭'}</div>
       </div>
       <div className="produit__bande">
         <div className="produit__nom">{produit.nom}</div>
-        {produit.description && <div className="produit__desc">{produit.description}</div>}
-        <div className="produit__pied">
-          <span className="mini-puce">
-            <Compteur valeur={nbEtapes} duree={0.9} delai={0.5} /> étape{nbEtapes > 1 ? 's' : ''}
-          </span>
-          <span className="mini-puce">
-            <Compteur valeur={nbQuestions} duree={1.2} delai={0.5} /> question{nbQuestions > 1 ? 's' : ''}
-          </span>
-        </div>
       </div>
     </button>
   );

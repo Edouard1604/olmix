@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import { suggererColonne } from '@shared/schema';
 import { normaliserEntete } from '@shared/columns';
+import Icone from '../../components/Icone';
 import type {
   ConfigurationProduits,
   EtapeProcessus,
@@ -85,7 +86,6 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
       id: `produit_${numero}`,
       nom: `Nouveau produit ${numero}`,
       couleur: '#0f6349',
-      icone: '🏭',
       actif: true,
       etapes: [{ id: 'etape_1', nom: 'Étape 1', questions: [] }],
     };
@@ -142,7 +142,11 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
             className={`admin__element${index === selection ? ' admin__element--actif' : ''}`}
             onClick={() => setSelection(index)}
           >
-            <span aria-hidden>{p.icone ?? '🏭'}</span>
+            <span
+              aria-hidden
+              className="admin__pastille"
+              style={{ ['--accent' as string]: p.couleur ?? 'var(--vert-600)' }}
+            />
             <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nom}</span>
             {p.actif === false && <span className="mini-puce">inactif</span>}
           </button>
@@ -160,7 +164,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
               Produit
             </div>
             <button type="button" className="btn btn--fantome pousser" onClick={supprimerProduit}>
-              🗑 Supprimer ce produit
+              <Icone nom="corbeille" taille={18} /> Supprimer ce produit
             </button>
           </div>
 
@@ -285,7 +289,7 @@ export default function EditeurProduits({ configuration, onChangement }: Proprie
                       }}
                       title="Supprimer l'étape"
                     >
-                      🗑
+                      <Icone nom="corbeille" taille={18} />
                     </button>
                   </div>
                 </div>
@@ -427,7 +431,7 @@ function EditeurQuestion({
             onClick={onSupprimer}
             title="Supprimer la question"
           >
-            🗑
+            <Icone nom="corbeille" taille={18} />
           </button>
         </div>
       </div>

@@ -17,6 +17,7 @@ import type { Produit, ValeurReponse } from '@shared/types';
 import type { EtatEtape } from '@shared/validation';
 import Champ from '../components/fields/Champ';
 import Cartographie from '../components/Cartographie';
+import Icone from '../components/Icone';
 import Scene from '../components/motion/Scene';
 import { useAnimationsReduites } from '../lib/motion';
 
@@ -97,11 +98,12 @@ export default function EcranFormulaire({
     ? validation.nbAvertissements > 0
       ? {
           ton: 'alerte',
-          texte: `⚠️ ${validation.nbAvertissements} valeur${validation.nbAvertissements > 1 ? 's' : ''} hors plage, commentée${
+          icone: 'alerte' as const,
+          texte: `${validation.nbAvertissements} valeur${validation.nbAvertissements > 1 ? 's' : ''} hors plage, commentée${
             validation.nbAvertissements > 1 ? 's' : ''
           } — vous pouvez continuer.`,
         }
-      : { ton: 'ok', texte: '✓ Étape complète' }
+      : { ton: 'ok', icone: 'coche' as const, texte: 'Étape complète' }
     : {
         ton: '',
         texte: `${validation.nbBloquants} réponse${validation.nbBloquants > 1 ? 's' : ''} manquante${
@@ -158,7 +160,10 @@ export default function EcranFormulaire({
               Précédent
             </button>
 
-            <div className={`actions__info${info.ton ? ` actions__info--${info.ton}` : ''}`}>{info.texte}</div>
+            <div className={`actions__info${info.ton ? ` actions__info--${info.ton}` : ''}`}>
+              {'icone' in info && info.icone && <Icone nom={info.icone} taille={17} />}
+              <span>{info.texte}</span>
+            </div>
 
             {/* Le bouton reste cliquable pour pouvoir signaler ce qui manque. */}
             <button

@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import type { OptionQuestion, Question, ValeurReponse } from '@shared/types';
 import { estHorsBornes, estVide, libelleBornes, type ProblemeChamp } from '@shared/validation';
+import Icone from '../Icone';
 import { duree, ease, FONDU_REDUIT, transitionAdaptee, useAnimationsReduites } from '../../lib/motion';
 import TraitDessine from '../motion/TraitDessine';
 
@@ -157,7 +158,7 @@ export default function Champ({
             transition={transitionAdaptee(reduit, { duration: duree.base, ease: ease.out })}
           >
             <span className="message__icone" aria-hidden>
-              {montrerErreur ? '⛔' : '⚠️'}
+              <Icone nom={montrerErreur ? 'erreur' : 'alerte'} taille={18} />
             </span>
             <span>
               {montrerErreur ? probleme?.message : `Valeur hors plage (${libelleBornes(question)}).`}
@@ -195,7 +196,7 @@ export default function Champ({
             {commentaireManquant && (touche || forcerAffichage) && (
               <div className="message message--erreur">
                 <span className="message__icone" aria-hidden>
-                  ⛔
+                  <Icone nom="erreur" taille={18} />
                 </span>
                 <span>Sans ce commentaire, l'étape ne peut pas être validée.</span>
               </div>
@@ -304,7 +305,7 @@ function ChampBooleen({ valeur, onValeur }: { valeur: boolean; onValeur: (v: Val
         className={`bascule__option${valeur ? ' bascule__option--actif-oui' : ''}`}
         onClick={() => onValeur(true)}
       >
-        <span aria-hidden>✓</span> Oui
+        <Icone nom="coche" taille={22} epaisseur={2.6} /> Oui
       </button>
       <button
         type="button"
@@ -313,7 +314,7 @@ function ChampBooleen({ valeur, onValeur }: { valeur: boolean; onValeur: (v: Val
         className={`bascule__option${!valeur ? ' bascule__option--actif-non' : ''}`}
         onClick={() => onValeur(false)}
       >
-        <span aria-hidden>✕</span> Non
+        <Icone nom="croix" taille={22} epaisseur={2.6} /> Non
       </button>
     </div>
   );
@@ -370,7 +371,7 @@ function ChampChoixMultiple({
             onClick={() => basculer(option.valeur)}
           >
             <span className="case-option__boite" aria-hidden>
-              {cochee ? '✓' : ''}
+              {cochee && <Icone nom="coche" taille={17} epaisseur={3} />}
             </span>
             {option.libelle}
           </button>
