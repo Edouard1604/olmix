@@ -531,6 +531,22 @@ relevées directement sur les visuels du site, pas estimées à l'œil.
 | Vert clair | `#BEE0CC` | surlignage des mots-clés dans les titres |
 | Texte courant | `#212121` | corps de texte |
 
+### Application à l'interface
+
+| Élément | Couleur |
+|---|---|
+| Fond de page | `#BEE0CC` — le vert clair de la charte |
+| Cartes, champs, barre supérieure | blanc `#FFFFFF` |
+| Texte | `#01495A` — le teal profond |
+| Texte secondaire | `#375E68` |
+| Bouton principal | dégradé `#186849` → `#005263`, texte blanc |
+| Surlignage des mots-clés | `#7FC79B` |
+
+C'est le contraste **carte blanche sur fond vert** qui structure la page : sans lui, un
+aplat vert uniforme aplatit la hiérarchie et fatigue à l'usage. Le dégradé de fond
+assombrit très légèrement les bords plutôt que d'éclaircir le centre, pour que la
+teinte perçue reste bien `#BEE0CC` sur la majeure partie de l'écran.
+
 Tout est déclaré dans [`src/styles/tokens.css`](src/styles/tokens.css) : **changer la
 charte ne demande de modifier que ce fichier**. Le thème sombre y est décliné à partir
 du teal profond, et non d'un gris neutre.
@@ -559,9 +575,14 @@ sous éclairage industriel. Deux écarts assumés :
   plafonne à 3,7:1, sous le seuil WCAG AA de 4,5:1. Il reste la couleur des aplats et
   des tracés (seuil 3:1), et c'est le vert foncé `#186849` — lui aussi de la charte —
   qui prend le relais dès qu'il s'agit de texte : 6,7:1.
-- **Les bordures de champ de saisie sont plus marquées que sur le site** (`#6F9098` au
+- **Les bordures de champ de saisie sont plus marquées que sur le site** (`#5F8890` au
   lieu d'un filet très clair), pour atteindre les 3:1 qu'exige la délimitation d'un
   composant de saisie (WCAG 1.4.11).
+
+La couleur d'accent d'un produit est par ailleurs recalculée dès qu'elle sert de
+couleur de **texte** (initiales sur les cartes, numéro d'étape) : assombrie en thème
+clair, éclaircie en thème sombre. Sans cela, le vert vif tombait à 2,97:1 sur sa propre
+vignette teintée, et le teal devenait invisible sur fond sombre.
 
 L'ensemble des paires couleur de texte / fond a été vérifié dans les deux thèmes :
 toutes passent AA.

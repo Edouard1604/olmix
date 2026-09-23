@@ -95,8 +95,8 @@ h1, h2, h3, p { margin: 0; }
   align-items: center;
   gap: 22px;
   padding: 14px 26px;
-  background: color-mix(in srgb, var(--surface) 86%, transparent);
-  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--surface) 68%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
   border-bottom: 1px solid var(--bordure);
   box-shadow: var(--ombre-1);
   z-index: 5;
@@ -134,7 +134,7 @@ h1, h2, h3, p { margin: 0; }
 }
 .progression__jauge {
   height: 100%; border-radius: 999px;
-  background: linear-gradient(90deg, var(--vert-600), var(--menthe));
+  background: linear-gradient(90deg, var(--marin-600), var(--vert-500));
   transition: width 420ms cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
@@ -418,7 +418,7 @@ select.saisie { cursor: pointer; appearance: none;
 .confirmation__carte { max-width: 640px; width: 100%; padding: 52px 46px; text-align: center; }
 .confirmation__pastille {
   width: 128px; height: 128px; margin: 0 auto 30px; border-radius: 50%; display: grid; place-items: center;
-  background: linear-gradient(135deg, var(--vert-600), var(--menthe)); box-shadow: var(--ombre-3);
+  background: linear-gradient(135deg, var(--marin-600), var(--vert-500)); box-shadow: var(--ombre-3);
 }
 .confirmation__coche { width: 62px; height: 62px; stroke: #fff; stroke-width: 7; fill: none;
   stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60;
@@ -476,8 +476,18 @@ textarea.saisie--compacte { padding: 11px 13px; min-height: 74px; }
 .rangee { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .pousser { margin-left: auto; }
 
-/* En thème sombre, tout élément portant un accent produit voit sa variante
-   « lisible » calculée automatiquement : l'accent éclairci vers le blanc. */
+/* Variante « lisible » de l'accent d'un produit, calculée automatiquement dès
+   que cet accent sert de COULEUR DE TEXTE : les vignettes d'initiales et les
+   numéros d'étape reposent sur une tuile teintée de ce même accent, où la
+   teinte brute tombe sous le seuil (2,97:1 pour le vert vif). On l'assombrit
+   en thème clair, on l'éclaircit en thème sombre. */
+.produit,
+.produit__icone,
+.etape-entete,
+.etape-entete__icone,
+.admin__initiales {
+  --accent-lisible: color-mix(in srgb, var(--accent, var(--vert-600)) 70%, #01203a);
+}
 [data-theme='sombre'] .produit,
 [data-theme='sombre'] .produit__icone,
 [data-theme='sombre'] .etape-entete,
