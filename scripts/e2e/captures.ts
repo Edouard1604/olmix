@@ -131,7 +131,7 @@ void (async () => {
   console.log('1. Accueil');
   await js(`(() => {
     __t.ecrire(document.getElementById('champ-operateur'), 'Marc Le Gall');
-    __t.ecrire(document.getElementById('champ-matricule'), 'OP1042'); return true; })()`);
+    __t.ecrire(document.getElementById('champ-matricule'), '10425'); return true; })()`);
   await capturer(fenetre, '1-accueil');
 
   console.log('2. Formulaire — étape 1 vierge (bouton Suivant bloqué)');

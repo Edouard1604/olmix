@@ -19,6 +19,30 @@ export interface ProblemeChamp {
   message: string;
 }
 
+/** Un matricule comporte exactement ce nombre de chiffres. */
+export const LONGUEUR_MATRICULE = 5;
+
+const MATRICULE = new RegExp(`^\\d{${LONGUEUR_MATRICULE}}$`);
+
+/** Ne conserve que les chiffres, dans la limite de la longueur attendue. */
+export function nettoyerMatricule(saisi: string): string {
+  return saisi.replace(/\D/g, '').slice(0, LONGUEUR_MATRICULE);
+}
+
+/**
+ * Le matricule reste facultatif ; mais s'il est renseigne, il doit comporter
+ * exactement `LONGUEUR_MATRICULE` chiffres.
+ * @returns le message d'erreur, ou null si la valeur est acceptable.
+ */
+export function erreurMatricule(matricule: string): string | null {
+  const valeur = matricule.trim();
+  if (valeur === '') return null;
+  if (!MATRICULE.test(valeur)) {
+    return `Le matricule doit comporter exactement ${LONGUEUR_MATRICULE} chiffres.`;
+  }
+  return null;
+}
+
 export function estVide(valeur: ValeurReponse): boolean {
   if (valeur === null || valeur === undefined) return true;
   if (typeof valeur === 'string') return valeur.trim() === '';

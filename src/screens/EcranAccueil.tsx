@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import type { Brouillon, Produit } from '@shared/types';
 import Bandeau from '../components/Bandeau';
 import Icone from '../components/Icone';
+import { erreurMatricule, LONGUEUR_MATRICULE, nettoyerMatricule } from '@shared/validation';
 import { dateHeure } from '../lib/format';
 
 interface Proprietes {
@@ -44,15 +45,17 @@ export default function EcranAccueil({
     );
   }, [produits, recherche]);
 
-  const identiteComplete = operateur.trim().length >= 2;
+  const nomComplet = operateur.trim().length >= 2;
+  const problemeMatricule = erreurMatricule(matricule);
+  const identiteComplete = nomComplet && !problemeMatricule;
 
   const choisir = (produit: Produit) => {
-    if (!identiteComplete) {
-      setTentative(true);
-      document.getElementById('champ-operateur')?.focus();
+    if (identiteComplete) {
+      onChoisir(produit);
       return;
     }
-    onChoisir(produit);
+    setTentative(true);
+    document.getElementById(nomComplet ? 'champ-matricule' : 'champ-operateur')?.focus();
   };
 
   const erreurs = problemesConfig.filter((p) => p.niveau === 'erreur');
@@ -120,10 +123,10 @@ export default function EcranAccueil({
             value={operateur}
             onChange={(e) => onIdentite(e.target.value, matricule)}
             style={
-              tentative && !identiteComplete ? { borderColor: 'var(--erreur)', background: 'var(--erreur-fond)' } : undefined
+              tentative && !nomComplet ? { borderColor: 'var(--erreur)', background: 'var(--erreur-fond)' } : undefined
             }
           />
-          {tentative && !identiteComplete && (
+          {tentative && !nomComplet && (
             <div className="message message--erreur">
               <span className="message__icone" aria-hidden>
                 <Icone nom="erreur" taille={18} />
@@ -134,17 +137,33 @@ export default function EcranAccueil({
         </div>
         <div>
           <label className="admin__mini" htmlFor="champ-matricule">
-            Matricule (facultatif)
+            Matricule ({LONGUEUR_MATRICULE} chiffres, facultatif)
           </label>
           <input
             id="champ-matricule"
             className="saisie"
             type="text"
+            inputMode="numeric"
             autoComplete="off"
-            placeholder="Ex. : OP1042"
+            maxLength={LONGUEUR_MATRICULE}
+            placeholder={`Ex. : ${'1'.padEnd(LONGUEUR_MATRICULE, '0')}`}
             value={matricule}
-            onChange={(e) => onIdentite(operateur, e.target.value)}
+            /* La saisie est filtrée à la frappe : seuls les chiffres passent,
+               et jamais plus que la longueur attendue. Le seul état invalide
+               possible est donc un matricule commencé puis laissé incomplet. */
+            onChange={(e) => onIdentite(operateur, nettoyerMatricule(e.target.value))}
+            style={
+              problemeMatricule ? { borderColor: 'var(--erreur)', background: 'var(--erreur-fond)' } : undefined
+            }
           />
+          {problemeMatricule && (
+            <div className="message message--erreur">
+              <span className="message__icone" aria-hidden>
+                <Icone nom="erreur" taille={18} />
+              </span>
+              <span>{problemeMatricule}</span>
+            </div>
+          )}
         </div>
       </div>
 

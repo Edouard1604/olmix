@@ -50,10 +50,10 @@ function piocher<T>(liste: T[]): T {
 }
 
 const OPERATEURS = [
-  { nom: 'Marc Le Gall', matricule: 'OP1042' },
-  { nom: 'Sophie Tanguy', matricule: 'OP1187' },
-  { nom: 'Yann Kerhervé', matricule: 'OP1256' },
-  { nom: 'Nadia Bouchard', matricule: 'OP1301' },
+  { nom: 'Marc Le Gall', matricule: '10425' },
+  { nom: 'Sophie Tanguy', matricule: '11873' },
+  { nom: 'Yann Kerhervé', matricule: '02561' },
+  { nom: 'Nadia Bouchard', matricule: '13017' },
 ];
 
 /** Remplit toutes les questions d'un produit avec des valeurs plausibles. */

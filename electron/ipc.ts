@@ -15,7 +15,7 @@ import path from 'node:path';
 import type { ConfigurationProduits, Reglages, Resultat, StatutSync } from '../shared/types';
 import type { ConfigurationChargee } from '../shared/api';
 import { construireCycle, genererIdCycle, type SaisieBrute } from '../shared/cycle';
-import { validerEtape } from '../shared/validation';
+import { erreurMatricule, validerEtape } from '../shared/validation';
 import {
   chargerConfiguration,
   configurationActive,
@@ -243,6 +243,8 @@ export function enregistrerCanaux(): void {
       const produit = configuration.produits.find((p) => p.id === saisie.produitId);
       if (!produit) throw new Error(`Produit inconnu : « ${saisie.produitId} ».`);
       if (!saisie.operateur?.trim()) throw new Error('Le nom de l’opérateur est obligatoire.');
+      const matriculeInvalide = erreurMatricule(saisie.matricule ?? '');
+      if (matriculeInvalide) throw new Error(matriculeInvalide);
 
       // Les regles de saisie sont rejouees cote principal : une interface
       // defaillante ne doit pas pouvoir inserer une ligne invalide.

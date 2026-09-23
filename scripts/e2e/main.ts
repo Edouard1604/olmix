@@ -73,7 +73,7 @@ const SCRIPT_REMPLISSAGE = `
   const soumission = await window.olmix.soumettreCycle({
     produitId: produit.id,
     operateur: 'Testeur E2E',
-    matricule: 'OP9999',
+    matricule: '09042',
     debutIso: new Date(Date.now() - 600000).toISOString(),
     valeurs, commentaires,
   });
@@ -149,6 +149,27 @@ async function executer(fenetre: BrowserWindow): Promise<void> {
   verifier(incomplet.ok === false, 'une saisie sans réponse obligatoire est rejetée');
   verifier(String(incomplet.erreur).includes('incomplète'), "le message d'erreur est explicite");
 
+  console.log('\n3 bis. Matricule : exactement cinq chiffres, ou rien');
+  const matriculeCourt = await fenetre.webContents.executeJavaScript(`
+    window.olmix.soumettreCycle({
+      produitId: 'granules_nutri_algue', operateur: 'Testeur E2E', matricule: '1042',
+      debutIso: new Date().toISOString(), valeurs: {}, commentaires: {},
+    })`);
+  verifier(
+    matriculeCourt.ok === false && String(matriculeCourt.erreur).includes('5 chiffres'),
+    'un matricule de 4 chiffres est rejeté',
+  );
+  const matriculeLettres = await fenetre.webContents.executeJavaScript(`
+    window.olmix.soumettreCycle({
+      produitId: 'granules_nutri_algue', operateur: 'Testeur E2E', matricule: 'OP104',
+      debutIso: new Date().toISOString(), valeurs: {}, commentaires: {},
+    })`);
+  verifier(matriculeLettres.ok === false, 'un matricule contenant des lettres est rejeté');
+  verifier(
+    classeur.lignes[0]!.Matricule === '09042',
+    `le matricule à zéro initial reste intact dans Excel (${classeur.lignes[0]!.Matricule})`,
+  );
+
   console.log('\n4. Classeur verrouillé : mise en file puis reprise');
   const verrou = path.join(path.dirname(cheminExcel), `~$${path.basename(cheminExcel)}`);
   fs.writeFileSync(verrou, '');
@@ -175,7 +196,7 @@ async function executer(fenetre: BrowserWindow): Promise<void> {
   await fenetre.webContents.executeJavaScript(`
     window.olmix.ecrireBrouillon({
       produitId: 'granules_nutri_algue', produitNom: 'Granulés Nutri-Algue',
-      operateur: 'Marc', matricule: 'OP1', debutIso: new Date().toISOString(),
+      operateur: 'Marc', matricule: '10425', debutIso: new Date().toISOString(),
       majIso: new Date().toISOString(), indexEtape: 2,
       valeurs: { 'reception.lot_matiere_premiere': 'L123' }, commentaires: {},
     })`);

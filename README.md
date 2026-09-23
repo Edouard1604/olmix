@@ -175,7 +175,9 @@ win:
 
 ## 5. Parcours opérateur
 
-1. **Accueil** — nom (obligatoire) et matricule (facultatif), puis choix du produit
+1. **Accueil** — nom (obligatoire) et matricule (facultatif, mais **exactement
+   5 chiffres** s'il est renseigné : le champ n'accepte que des chiffres et s'arrête à
+   cinq), puis choix du produit
    parmi des tuiles ne portant que son nom, repérées par leur couleur d'accent. Une
    barre de recherche apparaît au-delà de 4 produits. La description d'un produit,
    définie en configuration, sert d'infobulle et reste visible dans le mode
